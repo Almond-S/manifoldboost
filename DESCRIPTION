@@ -1,0 +1,14 @@
+Package: manifoldboost
+Type: Package
+Title: Boosting Regression Models for Manifold Valued Data
+Version: 0.0.1
+Authors@R: person("Almond", "Stoecker", role = c("aut", "cre"), 
+			        email = "almond.stoecker@hu-berlin.de")
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Depends: FDboost
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
