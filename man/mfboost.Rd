@@ -9,7 +9,7 @@ mfboost(formula, obj.formula = NULL, data = NULL, family = Gaussian(), ...)
 \arguments{
 \item{formula}{a symbolic description of the model formula \code{y ~ ...}
 on covariate level, i.e. specified as if the response was scalar,
-where \code{y} refers to an object (in \code{data}) containing all response data}
+where \code{y} refers to an object (in \code{data}) containing all response data.}
 
 \item{obj.formula}{intrinsic model formula for the internal representation
 of the response. E.g., for a functional response \eqn{y_i(t)} typically use
@@ -17,7 +17,7 @@ of the response. E.g., for a functional response \eqn{y_i(t)} typically use
 refers to the response evaluations (in \code{y}). See details for further
 information.}
 
-\item{data}{a data frame or list containing the variables in the model.
+\item{data}{a list containing the variables in the model.
 The response should be either provided as \code{tbl_cube} (regular case) or
 as list of \code{tbl_cube}s or \code{data.frame}s (irregular case). See details.}
 
@@ -28,6 +28,13 @@ as list of \code{tbl_cube}s or \code{data.frame}s (irregular case). See details.
 \value{
 An object of class \code{mfboost} inheriting from \code{FDboost} and
 \code{mboost}.
+
+Brockhaus, S., Scheipl, F., Hothorn, T. and Greven, S. (2015):
+The functional linear array model. Statistical Modelling, 15(3), 279-300.
+
+Currie, I.D., Durban, M. and Eilers P.H.C. (2006):
+Generalized linear array models with applications to multidimensional smoothing.
+Journal of the Royal Statistical Society, Series B-Statistical Methodology, 68(2), 259-280.
 }
 \description{
 An interface for model-based gradient boosting when response observations
@@ -55,36 +62,27 @@ For further details on available covariate effects see
 \code{\link[FDboost]{FDboost}} and the \code{\link[baselearners]{baselearners}}
 help of \code{mboost}.
 
-Computationally, it might make a huge difference whether the response observations
+Computationally, it might make a huge difference whether response observations
 are measured on a common regular grid or on irregular individual grids. In the
-regular case, the linear array model can be utilized (see ...) for the design
+regular case, the linear array model can be utilized
+(Brockhaus et al. 2015, Currie et al. 2006) for the design
 matrix and the regular structure might also be used to speed up pole and
 gradient computation.
-This distinction is reflected - and controled by - the data format and
+This distinction is reflected - and controlled by - the data format and
 in particular the format the response is provided in. For a data set with
 \eqn{N} observations, \code{data} should be
-provided as data frame containing covariate columns (with \eqn{N} rows) or
-as a list of these. The response should be contained as follows:
+provided as list containing scalar covariate vectors (of length \eqn{N}).
+The response should be contained as follows:
 \itemize{
-\item in the regular case, \code{data} has to be a list containing the response
-as \code{\link[tbl_cube]{tbl_cube}} with the
-\code{obj.formula} and \code{dim} variables as dimensions and the response
-values as measures, listed according to the covariates.
-\item in the irregular case, response can be given as either
-\itemize{
-\item a list of \code{data.frame}s for each observation in long format,
-i.e. with one column for the response measurements and one for each variable
-in \code{dim} and \code{obj.formula}. If the name of the response measurements
-does not correspond to the name of the response in \code{formula}, the name
-can be specified on the left-hand side of the \code{obj.formula} (or \code{dim}).
-\item a list of \code{tbl_cube}s corresponding to the regular case,
-but with one measure each.
-\item as a single \code{data.frame} including an additional ID variable indicating
-the 'row number' in the covariates. In this case, an extra \code{id} formula
-has to be specified as \code{FDboost} and \code{data} has to be a list.
-}
-\item in the format passed to \code{FDboost}, i.e., \code{data} is a list
-and the response is provided in seperate list elements:
+\item in the regular case, the response should be
+a \code{\link[tbl_cube]{tbl_cube}} with response
+values as measures and remaining variables contained in
+\code{obj.formula} as dimensions, listed according to the covariates.
+\item in the irregular case, the response should be a \code{data.frame}
+(or list) with the response variables appearing in the \code{obj.formula}.
+\item for backward compatibility, data can also be in the format of
+\code{FDboost}, i.e., \code{data} is again a list
+and the response is provided in separate list elements:
 \itemize{
 \item in the regular case, the response measurements are provided as matrix
 with \eqn{N} rows corresponding to the observations and the columns
@@ -94,4 +92,85 @@ variables as vectors along the columns of the matrix.
 are just separately added to the list.
 }
 }
+}
+\examples{
+
+# load irregular cell data
+data("cells", package = "manifoldboost")
+
+# subsample (one for each covariate combination)
+cellsub <- as.data.frame(cells[-which(names(cells)=="response")])
+cellsub$myd <- factor(with(cellsub, 
+                           paste0("a=", a, " r=", r, " b=", b, " m=", m)))
+subids <- match(unique(cellsub$myd), cellsub$myd)
+cellsub <- as.list(cellsub[subids, ])
+cellsub$response <- cells$response[as.numeric(cells$response$id) \%in\% subids, ]
+
+# fit model
+cell_model <- mfboost(
+  formula = response ~ bbs(a, df = 3, knots = 5) + 
+    bbs(r, df = 3, knots = 5) + 
+    bbs(b, df = 3, knots = 5) + 
+    bbs(m, df = 3, knots = 5),
+  obj.formula = value^dim ~ 
+    bbs(arg, df = 1, differences = 0, knots = 5, 
+        boundary.knots = c(0,1), cyclic = TRUE) | id, 
+  data = cellsub,
+  family = PlanarShapeL2()
+  )
+
+# cross-validation
+# set.seed(9382)
+# cell_cv <- cvrisk(cell_model, 
+#                           folds = cvLong(
+#                             id = cell_model$id, 
+#                             weights = cell_model$`(weights)`, 
+#                             type = "kfold"), 
+#                           grid = 0:mstop(cell_model))
+# cell_model[mstop(cell_cv)]
+
+# plot first four predictions
+par(mfrow = c(2,2), mar = rep(2, 4) )
+plot(cell_model, ids = 1:4, t = "l", 
+     main = cellsub$myd[1:4], 
+     seg_par = list(lty = "dashed"))
+legend(x = "bottomright", lty = c(1,1, 2),
+       legend = c("intercept", "prediction", "point correspondence"), 
+       col = c("grey", "black", "grey"))
+
+# compare with data
+plot(cell_model, ids = 1:4, t = "l", y0_ = cell_model$family@mf$y_[1:4], 
+     main = cellsub$myd[1:4], 
+     seg_par = list(lty = "dashed"))
+legend(x = "bottomright", lty = c(1,1, 2),
+       legend = c("observation", "prediction", "point correspondence"), 
+       col = c("grey", "black", "grey"))
+
+# predict dense cells on grids
+cellgrid <- cellsub
+cellgrid$response <- with(cellgrid$response, expand.grid(
+  id = unique(id), 
+  arg = seq(0,1, len = 100),
+  dim = unique(dim),
+  value = NA))
+cellgrid$response$value <- predict(cell_model, 
+                                   newdata = cellgrid, type = "response")
+
+
+# factorize effects
+cell_fac <- factorize(cell_model)
+
+vimp <- varimp(cell_fac$cov)
+plot(vimp, auto.key = FALSE)
+
+# plot two most important effect directions
+this <- cell_fac$cov$which(head(names(vimp)[order(vimp, decreasing = TRUE)], 2))
+par(mfcol = c(2,2))
+plot(cell_fac$resp, which = this, y0_par = list(type="l"))
+plot(cell_fac$cov, which = this)
+
+
+}
+\seealso{
+\code{\link{mfFamily}}
 }

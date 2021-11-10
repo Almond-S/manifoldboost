@@ -14,7 +14,7 @@
 Generated and simulated by Sophia Schaffer.
 }
 \usage{
-data(cells, package = "FDboost")
+data(cells, package = "manifoldboost")
 }
 \description{
 Outlines extracted from 2D cells simulated from the stochastic

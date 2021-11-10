@@ -225,7 +225,7 @@ RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control =
                       ))$new()
   
   update_formula <- function(timeformula, pole_) {
-
+    
     normal_vecs <- mf$get_normal(y0_ = pole_, weighted = TRUE)
     
     if(!is.null(normal_vecs)) {
@@ -247,8 +247,8 @@ RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control =
   
   mfFamily(mf, pole = pole, ngradient = ngradient, update_formula = update_formula,
            loss = loss, response = response, 
-         weights = "any", risk = risk, 
-         name = "Riemmanian L2-Boosting")
+           weights = "any", risk = risk, 
+           name = "Riemmanian L2-Boosting")
 }
 
 
@@ -278,7 +278,7 @@ PlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(
 #' @name PlanarSizeShapeL2
 #' @rdname mfFamily
 PlanarSizeShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(), 
-                          weight_fun = NULL, arg_range = NULL) {
+                              weight_fun = NULL, arg_range = NULL) {
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomPlanarSizeShape$new(weight_fun = weight_fun, arg_range = arg_range))
   
@@ -294,7 +294,7 @@ PlanarSizeShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_cont
 EuclideanL2 <- function(cyclic = FALSE,
                         arg.grid.len = 5000, weights = weights, 
                         arg.range = NULL,
-                          smoothed.cov = NULL, cov.k = 10) {
+                        smoothed.cov = NULL, cov.k = 10) {
   mf <- mfGeomEuclidean_irreg$new()
   
   # TODO: replace by proper Euclidean mean function
