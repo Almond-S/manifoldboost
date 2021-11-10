@@ -8,21 +8,16 @@
 #' in the model-based boosting package \code{mboost} via its functional pendant 
 #' \code{\link[FDboost]{FDboost}} from the \code{FDboost} package.
 #' For manifold valued responses, like shapes, appropriate loss functions 
-#' can be fitted using an \code{\link[mfFamily]{mfFamily}} implementing the 
-#' geometric structure of the response efficiently via an 
-#' \code{\link[mfGeometry]{mfGeometry}}.
+#' can be fitted using an \code{\link[mfFamily]{mfFamily}}.
 #' 
-#' @param formula a symbolic description of the model formula on covariate
-#' level, i.e. specified as if the response was scalar.  
+#' @param formula a symbolic description of the model formula \code{y ~ ...} 
+#' on covariate level, i.e. specified as if the response was scalar, 
+#' where \code{y} refers to an object (in \code{data}) containing all response data
 #' @param obj.formula intrinsic model formula for the internal representation 
 #' of the response. E.g., for a functional response \eqn{y_i(t)} typically use 
-#' \code{~ bbs(t)} to obtain smooth effects over \eqn{t}. Typically a one-sided
-#' formula, except if each response observation is provided as a data frame. Then
-#' the left-hand side of the formula indicates the variable the response values 
-#' are stored in.
-#' @param dim typically one-sided formula with the dimension indicator for 
-#' multidimensional response (curves). For each dimension the \code{obj.formula}
-#' is repeated (or the \code{formula} if \code{obj.formula} is not specified).   
+#' \code{value ~ bbs(t)} to obtain smooth effects over \eqn{t}, where \code{value}
+#' refers to the response evaluations (in \code{y}). See details for further 
+#' information.
 #' @param data a data frame or list containing the variables in the model. 
 #' The response should be either provided as \code{tbl_cube} (regular case) or
 #' as list of \code{tbl_cube}s or \code{data.frame}s (irregular case). See details.
