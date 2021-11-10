@@ -184,7 +184,7 @@ mfboost <- function(formula,               # response ~ xvars
 #' @param ids response ids to be plotted.
 #' @param multiplier a number multiplied to the predictor before passing it to the
 #' response function. Can be used for re-scaling / amplification.
-#' @param ... other arguments passed to \code{mfGeom} plot method.
+#' @param ... other arguments passed to \code{mfGeometry} plot method.
 #' 
 #' @details 
 #' Default plot function for \code{mfboost} objects. Example predictions are 
