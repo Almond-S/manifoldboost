@@ -4,7 +4,7 @@
 
 setOldClass("mfPole")
 
-#' R6 Class for mfboost pole model object
+#' R6 Class for mfboost pole model object for use in \code{mfboost_family}
 #'
 #' A pole (similar to an offset) for a \code{mfboost} model is typically result
 #' of some kind of model fit, which might be another simpler mfboost model
@@ -14,13 +14,7 @@ setOldClass("mfPole")
 #' to new pole predictions. The abstract R6 class \code{mfPole} implements
 #' the basic structure needed to provide a pole for mfboost.
 #'
-#' @param initialize an initialization function determining the pole from the 
-#' data. The function takes two arguments: 1. \code{obj.formula} is formula describing
-#' the inner object structure as in \code{mfboost}; 2. \code{data} provides the 
-#' data for fitting in FDboost format. 
-#' @param model the model object resulting from the fit conducted in \code{initialize}.
-#' @param predict a function taking \code{newdata} in the same format as \code{data}
-#' and generating a prediction as a simple vector fitting to the data.
+#' @field model A fitted model object.
 #'
 # #' @name mfPole
 # #' @rdname mfPole
@@ -29,10 +23,18 @@ setOldClass("mfPole")
 
 mfPole <- R6Class("mfPole", 
                   public = list(
+                    #' @description An initialization function determining the pole from the 
+                    #' data. The function takes two arguments.
+                    #' @param obj.formula Model formula for the pole model.
+                    #' @param data Data in \code{FDboost} format.
                     fit = function(obj.formula, data) {
                       stop("No pole model fitting procedure determined.")
                     },
                     model = NULL, # model object
+                    #' @description A function taking \code{newdata} in the same format as \code{data}
+                    #' and generating a prediction as a simple vector fitting to the data.
+                    #' @param newdata in \code{FDboost} format. The default \code{NULL}
+                    #' specifies the original data.
                     predict = function(newdata = NULL) {
                       predict(model, newdata = newdata)
                     }
@@ -52,8 +54,7 @@ mfPole <- R6Class("mfPole",
 #'
 #' @slot mf an \code{\link[mfGeometry]{mfGeometry}} object specifying the 
 #' underlying geometry.
-#' @slot pole a function generating the pole from \code{formula}, \code{dim}, 
-#' and the response, and returns it in the format required by \code{mf} .
+#' @slot pole an \code{\link[mfPole]{mfPole}} object containing a pole model.
 #' @slot ngradient,loss,risk,response,nuisance functions defining the 
 #' \code{mboost::boost_family} object.
 #' @slot weights,name \code{boost_family} slots indicating the weights allowed and
@@ -63,6 +64,7 @@ mfPole <- R6Class("mfPole",
 #' 
 #' @name mfboost_family-class
 #' @rdname mfboost_family-class
+#' @export
 setClass("mfboost_family", contains = "boost_family",
          representation = representation(
            mf = "ANY",
@@ -171,6 +173,11 @@ setMethod("clone", signature(object = "mfboost_family"),
 
 # constructor for Riemmanian L2 boosting ---------------------------------
 #' 
+#' @param mf The response geometry supplied as an \code{mfGeometry} object.
+#' @param pole.type one of "RiemannL2"(default) and "Gaussian"
+#' @param pole.control a list of parameters controlling the \code{mboost} algorithm. 
+#' For more details see \code{\link{boost_control}}.
+#' 
 #' @export
 #' @name RiemannL2
 #' @rdname mfFamily
@@ -254,8 +261,12 @@ RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control =
 
 # Planar shape regression family ------------------------------------------
 
-#' @param pole.type one of "RiemannL2"(default) and "Gaussian"
-#' @param ... further arguments passed to the
+#' @param weight_fun a function producing inner product weights 
+#' taking the arguments \code{arg} (vector of arguments of the function) and 
+#' \code{range} (range of the arguments). Passed to \code{mf$initialize}.
+#' @param arg_range vector of length 2 specifying the \code{range} argument of 
+#' the \code{weight_fun}. The default \code{NULL} will take the minimum and maximum 
+#' of the supplied \code{arg}.
 #' 
 #' @export
 #' @name PlanarShapeL2
@@ -271,8 +282,6 @@ PlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(
 
 # Planar size and shape regression family ------------------------------------------
 
-#' @param pole.type one of "RiemannL2"(default) and "Gaussian"
-#' @param ... further arguments passed to the
 #' 
 #' @export
 #' @name PlanarSizeShapeL2
