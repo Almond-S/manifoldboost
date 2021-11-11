@@ -66,7 +66,7 @@ get_dat <- function(data, formula) {
 #' @param x an object of class `shape_dat`.
 #'
 #' @return a formula
-#' @export
+# #' @export
 #'
 formula.shape_dat <- function(x) {
   attr(x, "formula")
@@ -82,7 +82,7 @@ formula.shape_dat <- function(x) {
 #' @param x an object of class `shape_dat`.
 #'
 #' @return a named character vector.
-#' @export
+# #' @export
 #'
 shape_names <- function(x) {
   .shape_names <- attr(x, "shape_names")
@@ -110,15 +110,15 @@ store_names <- function(.shape_names, ...) {
 # shape_dat-class ---------------------------------------------------------------
 
 #' @importFrom methods setOldClass
-#' @exportClass shape_dat
-#' @exportClass shape_frame
-#' @exportClass shape_frame_default
-#' @exportClass shape_frame_long
-#' @exportClass shape_cube
-#' @exportClass shape_cube_default
-#' @exportClass shape_col
-#' @exportClass shape_col_default
-#' @exportClass shape_col_long
+# #' @exportClass shape_dat
+# #' @exportClass shape_frame
+# #' @exportClass shape_frame_default
+# #' @exportClass shape_frame_long
+# #' @exportClass shape_cube
+# #' @exportClass shape_cube_default
+# #' @exportClass shape_col
+# #' @exportClass shape_col_default
+# #' @exportClass shape_col_long
 
 setOldClass("shape_dat")
 setOldClass("shape_frame")
@@ -463,7 +463,7 @@ validate_shape_col_default <- function(x) {
 #' @param x an object that should be coerced.
 #' @param ... other arguments passed to the individual methods.
 #' 
-#' @export
+# #' @export
 #' @name as_shape_dat
 #' @rdname as_shape_dat
 #' @example tests/shape_dat-class_example.R
@@ -495,7 +495,7 @@ as_shape_dat <- function(x, ...) {
 #' @name shape_dat
 #' @rdname shape_dat  
 #' @example tests/shape_dat-class_example.R  
-#' @export
+# #' @export
 #'
 
 as_shape_dat.default <- function(x, formula, validate = TRUE) {
@@ -539,14 +539,14 @@ as_shape_dat.default <- function(x, formula, validate = TRUE) {
 #' @param validate logical, should an additional validation of the constructed `shape_dat`
 #' be performed (if any)? Defaults to TRUE. FALSE might speed up computation time.
 #'  
-#' @export  
+# #' @export  
 #' @example tests/shape_dat-class_example.R
 
 as_shape_frame_long <- function(x, ...) {
   UseMethod("as_shape_frame_long")
 } 
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_long
 as_shape_frame_long.default <- function(x, formula, validate = TRUE) {
   
@@ -598,7 +598,7 @@ validate_shape_frame_long <- function(x) {
 #' @param validate logical, should an additional validation of the constructed `shape_dat`
 #' be performed (if any)? Defaults to TRUE. FALSE might speed up computation time.
 #'  
-#' @export
+# #' @export
 #' @name as_shape_frame_default
 #' @example tests/shape_dat-class_example.R 
 #' 
@@ -606,7 +606,7 @@ as_shape_frame_default <- function(x, ...) {
   UseMethod("as_shape_frame_default")
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_default
 as_shape_frame_default.default <- function(x, formula, validate = TRUE) {
   
@@ -652,7 +652,7 @@ validate_shape_frame_default <- function(x) {
 #' @param validate logical, should an additional validation of the constructed `shape_dat`
 #' be performed (if any)? Defaults to TRUE. FALSE might speed up computation time.
 #'  
-#' @export
+# #' @export
 #' @name as_shape_cube_default
 #' @example tests/shape_dat-class_example.R  
 #' 
@@ -662,14 +662,14 @@ as_shape_cube_default <- function(x, ...) {
   UseMethod("as_shape_cube_default")
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_cube_default
 as_shape_cube <- function(x, ...) {
   UseMethod("as_shape_cube_default")
 }
 
 
-#' @export
+# #' @export
 #' @rdname as_shape_cube_default
 as_shape_cube_default.default <- function(x, formula, validate = TRUE) {
   
@@ -701,14 +701,14 @@ as_shape_cube_default.default <- function(x, formula, validate = TRUE) {
 #' @param validate logical, should an additional validation of the constructed `shape_dat`
 #' be performed (if any)? Defaults to TRUE. FALSE might speed up computation time.
 #'  
-#' @export
+# #' @export
 #' @example tests/shape_dat-class_example.R  
 #'
 as_shape_col_long <- function(x, ...) {
   UseMethod("as_shape_col_long")
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_col_long
 as_shape_col_long.default <- function(x, formula, validate = TRUE) {
   
@@ -740,7 +740,7 @@ as_shape_col_long.default <- function(x, formula, validate = TRUE) {
 #' @param validate logical, should an additional validation of the constructed `shape_dat`
 #' be performed (if any)? Defaults to TRUE. FALSE might speed up computation time.
 #'  
-#' @export
+# #' @export
 #' @example tests/shape_dat-class_example.R  
 #' 
 
@@ -748,7 +748,7 @@ as_shape_col_default <- function(x, ...) {
   UseMethod("as_shape_col_default")
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_col_default
 as_shape_col_default.default <- function(x, formula, validate = TRUE) {
   
@@ -772,13 +772,13 @@ as_shape_col_default.default <- function(x, formula, validate = TRUE) {
 
 # mutual shape_dat conversions -------------------------------------------------
 
-#' @export
+# #' @export
 #' @rdname as_shape_col_default
 as_shape_col <- function(x, ...) {
   UseMethod("as_shape_col")
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_col_default
 as_shape_col.shape_frame <- function(x, shape.name = NULL, ...) {
   .shape_names <- store_names( shape_names(x), shape = shape.name )
@@ -804,13 +804,13 @@ as_shape_col.shape_frame <- function(x, shape.name = NULL, ...) {
             class = sub("shape_frame", "shape_col", .class))
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_default
 as_shape_frame <- function(x, ...) {
   UseMethod("as_shape_frame")
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_default
 as_shape_frame.shape_col <- function(x, id.name = NULL, ...) {
   .shape_names <- store_names( shape_names(x), id = id.name )
@@ -838,7 +838,7 @@ as_shape_frame.shape_col <- function(x, id.name = NULL, ...) {
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_default
 #' @importFrom tidyr pivot_wider
 as_shape_frame_default.shape_frame_long <- function(x, ...) {
@@ -867,7 +867,7 @@ as_shape_frame_default.shape_frame_long <- function(x, ...) {
   x
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_long
 as_shape_frame_long.shape_frame_default <- function(x, 
                                                     value.name = NULL, 
@@ -891,23 +891,23 @@ as_shape_frame_long.shape_frame_default <- function(x,
   attr(x, "formula") <- .formula
   structure(x, class = sub("shape_frame_default", "shape_frame_long", class(x)))
 }
-#' @export
+# #' @export
 #' @rdname as_shape_frame_default
 as_shape_frame_default.shape_dat <- function(x, ...) {
   as_shape_frame_default(as_shape_frame(x), ...)
 }
-#' @export
+# #' @export
 #' @rdname as_shape_frame_long
 as_shape_frame_long.shape_dat <- function(x, ...) {
   as_shape_frame_long(as_shape_frame(x), ...)
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_col_default
 as_shape_col_default.shape_dat <- function(x, ...) {
   as_shape_col(as_shape_frame_default(x), ...)
 }
-#' @export
+# #' @export
 #' @rdname as_shape_col_long
 as_shape_col_long.shape_dat <- function(x, ...) {
   as_shape_col(as_shape_frame_long(x, ...), ...)
@@ -915,7 +915,7 @@ as_shape_col_long.shape_dat <- function(x, ...) {
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#' @export
+# #' @export
 #' @rdname as_shape_frame_long
 as_shape_frame_long.shape_cube <- function(x, ...) {
   .formula <- formula(x)
@@ -935,7 +935,7 @@ as_shape_frame_long.shape_cube <- function(x, ...) {
                       setdiff(class(x), c("shape_cube_default", "shape_cube"))))
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_cube_default
 as_shape_cube_default.shape_frame_long <- function(x, shape.name = NULL, ...) {
   .shape_names <- store_names( shape_names(x), shape = shape.name )
@@ -959,7 +959,7 @@ as_shape_cube_default.shape_frame_long <- function(x, shape.name = NULL, ...) {
                       setdiff(class(x), c("shape_frame_long", "shape_frame"))))
 }
 
-#' @export
+# #' @export
 #' @rdname as_shape_cube_default
 as_shape_cube_default.shape_dat <- 
   as_shape_cube_default.shape_dat <- 
@@ -1042,7 +1042,7 @@ as_shape_frame_long.shape_frame_complex <- function(x, dim.name = NULL, ...) {
 
 # trivial converters -----------------------------------------------------------
 
-#' @export
+# #' @export
 as_shape_dat.shape_dat <-
  as_shape_col.shape_col <- 
   as_shape_col_default.shape_col_default <- 
@@ -1055,7 +1055,7 @@ as_shape_dat.shape_dat <-
 
 # `[` operator -----------------------------------------------------------------
 
-#' @export
+# #' @export
 `[.shape_dat` <- function(x, ...) {
   .formula <- formula(x)
   .shape_names <- shape_names(x)

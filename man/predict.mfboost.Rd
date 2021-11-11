@@ -9,7 +9,6 @@
   newdata = NULL,
   which = NULL,
   type = c("response", "link"),
-  raw = FALSE,
   ...
 )
 }

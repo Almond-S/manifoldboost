@@ -2,8 +2,13 @@
 % Please edit documentation in R/mfFamily.R
 \name{mfPole}
 \alias{mfPole}
-\title{R6 Class for mfboost pole model object}
+\title{R6 Class for mfboost pole model object for use in \code{mfboost_family}}
 \description{
+R6 Class for mfboost pole model object for use in \code{mfboost_family}
+
+R6 Class for mfboost pole model object for use in \code{mfboost_family}
+}
+\details{
 A pole (similar to an offset) for a \code{mfboost} model is typically result
 of some kind of model fit, which might be another simpler mfboost model
 or some other kind of model procedure estimating the pole from the data.
@@ -11,6 +16,13 @@ For later model predictions on new data, it is important to store the
 not only the resulting pole, but the whole model behind it, to have access
 to new pole predictions. The abstract R6 class \code{mfPole} implements
 the basic structure needed to provide a pole for mfboost.
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{model}}{A fitted model object.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -24,19 +36,40 @@ the basic structure needed to provide a pole for mfboost.
 \if{html}{\out{<a id="method-fit"></a>}}
 \if{latex}{\out{\hypertarget{method-fit}{}}}
 \subsection{Method \code{fit()}}{
+An initialization function determining the pole from the
+data. The function takes two arguments.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfPole$fit(obj.formula, data)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{obj.formula}}{Model formula for the pole model.}
+
+\item{\code{data}}{Data in \code{FDboost} format.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-predict"></a>}}
 \if{latex}{\out{\hypertarget{method-predict}{}}}
 \subsection{Method \code{predict()}}{
+A function taking \code{newdata} in the same format as \code{data}
+and generating a prediction as a simple vector fitting to the data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfPole$predict(newdata = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{newdata}}{in \code{FDboost} format. The default \code{NULL}
+specifies the original data.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

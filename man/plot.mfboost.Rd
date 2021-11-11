@@ -19,7 +19,7 @@ Per default all selected base-learners are plotted.}
 \item{multiplier}{a number multiplied to the predictor before passing it to the
 response function. Can be used for re-scaling / amplification.}
 
-\item{...}{other arguments passed to \code{mfGeom} plot method.}
+\item{...}{other arguments passed to \code{mfGeometry} plot method.}
 }
 \description{
 Illustrate estimated effects by comparing predictions with corresponding

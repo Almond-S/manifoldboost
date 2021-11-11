@@ -16,8 +16,7 @@ on the underlying geometry of the response.
 \item{\code{mf}}{an \code{\link[mfGeometry]{mfGeometry}} object specifying the
 underlying geometry.}
 
-\item{\code{pole}}{a function generating the pole from \code{formula}, \code{dim},
-and the response, and returns it in the format required by \code{mf} .}
+\item{\code{pole}}{an \code{\link[mfPole]{mfPole}} object containing a pole model.}
 
 \item{\code{ngradient,loss,risk,response,nuisance}}{functions defining the
 \code{mboost::boost_family} object.}
