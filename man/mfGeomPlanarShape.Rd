@@ -43,18 +43,36 @@ projective space.
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Initialize planar shape geometry for data given
+in (long) FDboost format.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$new(data, formula, weight_fun = NULL, arg_range = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{data in the format used in \code{\link{FDboost}}.}
+
+\item{\code{formula}}{formula describing the internal structure of the data,
+intended for the \code{obj.formula} of \code{mfboost}
+(interpreted by \code{mfInterpret_objformula}).}
+
+\item{\code{weight_fun}}{a function computing inner product weights for the geometry
+taking two arguments: \code{arg}, the argument of the functional data
+specified in \code{formula}, \code{range} the range of \code{arg}.}
+
+\item{\code{arg_range}}{the \code{range} supplied to the \code{weight_fun}.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-structure"></a>}}
 \if{latex}{\out{\hypertarget{method-structure}{}}}
 \subsection{Method \code{structure()}}{
-\code{y} vectors are centered and scaled to unit length and
-\code{v} vectors are orthogonalized with respect to \code{y0_} guaranteeing
-proper tangent vectors.
+convert 2D vectors (given in long format with dimension
+indicator) to complex
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$structure(y)}\if{html}{\out{</div>}}
 }
@@ -74,6 +92,7 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-unstructure"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
+convert complex back to long format numeric
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$unstructure(y_)}\if{html}{\out{</div>}}
 }
@@ -90,6 +109,8 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-unstructure_weights"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure_weights}{}}}
 \subsection{Method \code{unstructure_weights()}}{
+double inner product weights for complex vectors
+to appear in both dimensions in numeric long format
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$unstructure_weights(weights_)}\if{html}{\out{</div>}}
 }
@@ -99,6 +120,8 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-structure_weights"></a>}}
 \if{latex}{\out{\hypertarget{method-structure_weights}{}}}
 \subsection{Method \code{structure_weights()}}{
+remove double weights to obtain
+inner product weights for complex vectors
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$structure_weights(weights)}\if{html}{\out{</div>}}
 }
@@ -108,6 +131,7 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-register"></a>}}
 \if{latex}{\out{\hypertarget{method-register}{}}}
 \subsection{Method \code{register()}}{
+center \code{y_} and scale it to unit norm.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$register(y_)}\if{html}{\out{</div>}}
 }
@@ -124,6 +148,7 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-register_v"></a>}}
 \if{latex}{\out{\hypertarget{method-register_v}{}}}
 \subsection{Method \code{register_v()}}{
+orthogonally project \code{v_} into the tangent space of \code{y0_}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$register_v(v_, y0_ = self$pole_)}\if{html}{\out{</div>}}
 }
@@ -142,6 +167,7 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-log"></a>}}
 \if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
+Apply Log function of the sphere after rotation alignment
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$log(
   y_,
@@ -164,13 +190,14 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-transport"></a>}}
 \if{latex}{\out{\hypertarget{method-transport}{}}}
 \subsection{Method \code{transport()}}{
+for the parallel transport previous alignment is assumed,
+such that the transport of the sphere is directly applied.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$transport(
   v0_,
   y0_,
   y1_,
-  method = c("horizontal", "simple", "general"),
-  tol = 1e-15
+  method = c("horizontal", "simple", "general")
 )}\if{html}{\out{</div>}}
 }
 
@@ -188,6 +215,8 @@ imaginary part of the complex vector \code{y_}.}
 \if{html}{\out{<a id="method-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-plot}{}}}
 \subsection{Method \code{plot()}}{
+default plotting function for planar shapes, plotting \code{y_}
+in front of \code{y0_} (after alignment).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$plot(
   y_ = self$y_,
@@ -215,7 +244,17 @@ imaginary part of the complex vector \code{y_}.}
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
 
-\item{\code{...}}{arguments passed to \code{base::plot}.}
+\item{\code{ylab, xlab, xlim, ylim, xaxt, yaxt}}{graphical parameters passed to \code{base::plot}
+with modified defaults.}
+
+\item{\code{col, pch, type}}{graphical parameters passed to \code{base::plot} referring to \code{y_}.}
+
+\item{\code{seg_par}}{graphical parameters for line segments connecting \code{y_}
+and \code{y0_}.}
+
+\item{\code{...}}{other arguments passed to \code{base::plot}.}
+
+\item{\code{y0_param}}{graphical parameters for \code{y0_}.}
 }
 \if{html}{\out{</div>}}
 }

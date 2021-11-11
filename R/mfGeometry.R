@@ -353,6 +353,18 @@ mfGeomUnitSphere <- R6Class("mfGeomUnitSphere", inherit = mfGeomEuclidean,
 #' @export
 mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere, 
  public = list(
+   #' @description Initialize planar shape geometry for data given 
+   #' in (long) FDboost format. 
+   #' 
+   #' @param data data in the format used in \code{\link{FDboost}}.
+   #' @param formula formula describing the internal structure of the data, 
+   #' intended for the \code{obj.formula} of \code{mfboost} 
+   #' (interpreted by \code{mfInterpret_objformula}).
+   #' @param weight_fun a function computing inner product weights for the geometry
+   #' taking two arguments: \code{arg}, the argument of the functional data 
+   #' specified in \code{formula}, \code{range} the range of \code{arg}.
+   #' @param arg_range the \code{range} supplied to the \code{weight_fun}.
+   #' 
    initialize = function(data, formula, 
                          weight_fun = NULL, 
                          arg_range = NULL) {
@@ -409,9 +421,8 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
      
      invisible(self)
    },
-   #' @description \code{y} vectors are centered and scaled to unit length and 
-   #' \code{v} vectors are orthogonalized with respect to \code{y0_} guaranteeing 
-   #' proper tangent vectors.
+   #' @description convert 2D vectors (given in long format with dimension 
+   #' indicator) to complex
    structure = function(y) {
      if(is.null(private$structure_index)) 
        stop("Please, initialize geometry before using $structure.")
@@ -419,38 +430,55 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
      real = y[private$structure_index$real], 
      imag = y[private$structure_index$imaginary])
      },
+   #' @description convert complex back to long format numeric
    unstructure =  function(y_) {
      if(is.null(private$unstructure_index)) 
        stop("Please, initialize geometry before using $unstructure.")
      private$.unstructure(y_)[private$unstructure_index]
    },
+   #' @description double inner product weights for complex vectors 
+   #' to appear in both dimensions in numeric long format
    unstructure_weights = function(weights_) {
      self$unstructure(complex(re = weights_, im = weights_))
    },
+   #' @description remove double weights to obtain 
+   #' inner product weights for complex vectors 
    structure_weights = function(weights) {
      if(is.null(private$structure_index)) 
        stop("Please, initialize geometry before using $structure.")
      weights[private$structure_index$real]
      },
+   #' @description center \code{y_} and scale it to unit norm.
    register = function(y_) {
      ONE <- rep(1, length(y_))
      y_ <- y_ - private$.innerprod(ONE, y_) / private$.innerprod(ONE)
      y_ / sqrt(private$.innerprod(y_)) 
    },
+   #' @description orthogonally project \code{v_} into the tangent space of \code{y0_}.
    register_v = function(v_, y0_ = self$pole_) {
      v_ - y0_ * private$.innerprod(y0_, v_) 
    },
+   #' @description Apply Log function of the sphere after rotation alignment
    log = function(y_, y0_ = self$pole_, method = c("simple", "alternative")) {
     super$log(
       private$.align(y_, y0_)
       , y0_, method)
   },
-  # change default transport method
-  transport = function(v0_, y0_, y1_, method = c("horizontal", "simple", "general"), tol = 1e-15) {
+  #' @description for the parallel transport previous alignment is assumed,
+  #' such that the transport of the sphere is directly applied.
+  transport = function(v0_, y0_, y1_, method = c("horizontal", "simple", "general")) {
     method <- match.arg(method)
-    super$transport(v0_, y0_, y1_, method = method, tol = tol)
+    super$transport(v0_, y0_, y1_, method = method)
   },
-  #' @param ... arguments passed to \code{base::plot}.
+  #' @description default plotting function for planar shapes, plotting \code{y_}
+  #' in front of \code{y0_} (after alignment).
+  #' @param col,pch,type graphical parameters passed to \code{base::plot} referring to \code{y_}.
+  #' @param ylab,xlab,xlim,ylim,xaxt,yaxt graphical parameters passed to \code{base::plot} 
+  #' with modified defaults.
+  #' @param ... other arguments passed to \code{base::plot}.
+  #' @param y0_param graphical parameters for \code{y0_}.
+  #' @param seg_par graphical parameters for line segments connecting \code{y_} 
+  #' and \code{y0_}.
   plot = function(y_ = self$y_, y0_ = self$pole_, 
                   ylab = NA, xlab = NA, 
                   col = "black",
@@ -599,6 +627,7 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
                                  super$plot(y_ = y_, y0_ = y0_, 
                                             yaxt=yaxt, bty=bty, ...)
                                },
+                               #' @description 
                                get_normal = function(y0_ = self$pole_, weighted = FALSE) {
                                  if(is.null(private$unstructure_index)) 
                                    stop("Please, initialize geometry before using $get_normal.")
