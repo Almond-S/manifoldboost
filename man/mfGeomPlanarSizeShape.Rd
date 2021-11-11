@@ -153,6 +153,8 @@ invariant.
 \item{\code{y_}}{a complex vector on the sphere, orthogonal to the constant.}
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{...}}{arguments passed to \code{base::plot}.}
 }
 \if{html}{\out{</div>}}
 }

@@ -53,7 +53,8 @@ cell_model <- mfboost(
     bbs(arg, df = 1, differences = 0, knots = 5, 
         boundary.knots = c(0,1), cyclic = TRUE) | id, 
   data = cellsub,
-  family = PlanarShapeL2()
+  family = PlanarShapeL2(),
+  control = boost_control(mstop = 300)
   )
 
 # cross-validation

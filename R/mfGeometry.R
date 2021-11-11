@@ -4,24 +4,30 @@ setOldClass("mfGeometry")
 #'
 #' An abstract \code{mfGeometry} class implementing a set of methods, including 
 #' e.g. Exp- and Log-mappings, that are needed to define \code{mfboost} families
-#' in a concise and modular way. Children of this class 
-#' specify the geometry of interest. 
+#' in a concise and modular way. 
 #' The arguments of the methods are vectors, matrices
-#' or arrays possibly holding additional attributes. Children of this class 
-#' specify the geometry of interest. Besides these methods, objects
+#' or arrays possibly holding additional attributes. Besides these methods, objects
 #' of class \code{mfGeometry} offer an active slot for the 'pole' which serves 
-#' as prototype for elements of the manifold.
+#' as prototype for elements of the manifold. Children of this class 
+#' specify the geometry of interest, such as \code{\link{mfGeomEuclidean}}, 
+#' \code{\link{mfGeomSphere}}, \code{\link{mfGeomPlanarShape}}, and
+#' \code{\link{mfGeomPlanarSizeShape}}. 
 #'
-#' @param y a numeric vector representing an element of the manifold in an 
-#' unstructured 'flattened' way
-#' @param v a numeric vector representing an tangent vector in an 
-#' unstructured 'flattened' way
-#' @param y_ an object living in the manifold
-#' @param y0_ an object living in the manifold
-#' @param y1_ an object living in the manifold
-#' @param v_ an object repesenting a tangent vector
-#' @param v0_ an object repesenting a tangent vector
-#' @param v1_ an object repesenting a tangent vector
+#' @param y a numeric vector containing the elements of an object y in long format
+#' @param v a numeric vector containing the elements of a tangent vector in long format
+#' @param y_ an object in the internal format of the geometry 
+#' @param y0_ an object in the internal format of the geometry
+#' @param y1_ an object in the internal format of the geometry
+#' @param v_ an object repesenting a tangent vector (internal format)
+#' @param v0_ an object repesenting a tangent vector (internal format)
+#' @param v1_ an object repesenting a tangent vector (internal format)
+#' @param weights_ inner product weights in the internal format
+#' @param ... other arguments.
+#'
+#' @field y_ slot for a data object in the internal format
+#' @field pole_ slot for a data object in the internal format
+#' @field weights_ slot for inner product weights in the internal format 
+#'
 #'
 # #' @name mfGeometry
 # #' @rdname mfGeometry
@@ -30,41 +36,67 @@ setOldClass("mfGeometry")
 
 mfGeometry <- R6Class("mfGeometry", 
   public = list(
-    # data communicators with long format
+    
+    ## data communicators with long format
+    
+    #' @description structure a vector containing the elements of the response 
+    #' \code{y} in long format in the internal format of the geometry.
    structure = function(y) {
      fun <- as.character(match.call()[[1]])[3]
      private$.undefined(fun) },
+    #' @description inverse operation of \code{structure}.
    unstructure = function(y_) {
      fun <- as.character(match.call()[[1]])[3]
      private$.undefined(fun) },
+    #' @description convert internal inner product weights to a weight vector
+    #' matching the un-structered response \code{y} in long format.
    unstructure_weights = function(weights_) NULL,
-   # intrinsic functions
-   align = function(y_, y0_ = private$.pole_, ...) {
+   
+   ## intrinsic functions
+    
+    #' @description a function aligning \code{y_} to \code{y0_} primarly intended
+    #' for quotient geometries. 
+   align = function(y_, y0_ = private$.pole_) {
      fun <- as.character(match.call()[[1]])[3]
      private$.undefined(fun) },
+    #' @description a function registering \code{y_} to a proper subset, say to
+    #' a subspace or an embedded submanifold.
    register = function(y_) {
      fun <- as.character(match.call()[[1]])[3]
      private$.undefined(fun) },
-   distance = function(y0_, y1_, ...)
-     private$.distance(y0_, y1_, ...), 
+   
+    #' @description computes the distance or a vector of distances between objects.
+   distance = function(y0_, y1_)
+     private$.distance(y0_, y1_, ...),
+    #' @description the Riemannian Exp map mapping a tangent vector \code{v_} 
+    #' at \code{y_} to the manifold.
    exp = function(v_, y0_ = private$.pole_, ...) {
      fun <- as.character(match.call()[[1]])[3]
-     private$.undefined(fun) }, 
+     private$.undefined(fun) },
+    #' @description the inverse of the Riemannian Exp map.
    log = function(y_, y0_ = private$.pole_, ...) {
      fun <- as.character(match.call()[[1]])[3]
-     private$.undefined(fun) }, 
+     private$.undefined(fun) },
+    #' @description parallel transport of a tangent vector \code{v0_} 
+    #' at \code{y0_} to the tangent space at \code{y1_}.
    transport = function(v0_, y0_, y1_, ...) {
      fun <- as.character(match.call()[[1]])[3]
      private$.undefined(fun) },
+    #' @description computes the inner product or a vector of inner products 
+    #' between objects.
    innerprod = function(v0_, v1_ = v0_, ...)
      private$.innerprod(v0_, v1_, ...),
+    #' @description returns the normal vector (in unstructured format) to the 
+    #' tangent space at a point \code{y0_} considered as a linear subspace.
    get_normal = function(y0_ = private$.pole_, ...) {
      fun <- as.character(match.call()[[1]])[3]
      private$.undefined(fun) },
-   validate = function(y0_, ...) {
+   #' @description function for validating structure of internal object \code{y_}.
+   validate = function(y_, ...) {
      stopifnot(TRUE)
-     y0_
+     y_
    }
+   
    ), 
   private = list(
     .pole_ = NULL,
@@ -81,6 +113,7 @@ mfGeometry <- R6Class("mfGeometry",
       fun <- as.character(match.call()[[1]])[3]
       private$.undefined(fun) }
     ),
+  
   active = list(
     pole_ = function(value) {
     if(missing(value))
@@ -106,7 +139,7 @@ mfGeometry <- R6Class("mfGeometry",
 #' 
 #' An R6 class defining the Euclidean geometry for a single vector. 
 #' This class is typically not too much of practical interest, as in this case
-#' \code{Family} object could often by defined without it. However, it serves
+#' the \code{Family} could typically by defined without it. However, it serves
 #' as parent for most other geometries.
 #' 
 #' @param y a numeric vector
@@ -117,10 +150,16 @@ mfGeometry <- R6Class("mfGeometry",
 #' @param v_ a (tangent) numeric/complex vector
 #' @param v0_ a (tangent) numeric/complex vector
 #' @param v1_ a (tangent) numeric/complex vector
+#' @param weights a numeric vector
+#' @param weights_ a numeric vector of the same length as \code{y_} / \code{pole_}
 #' 
 #' @export
 mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
   public = list(
+    #' @description method for structuring either objects \code{y}, 
+    #' tangent vectors \code{v}, or weight vectors \code{weights}. Usually the 
+    #' identity, except for complex vectors. FOR COMPLEX VECTORS USE WITH CARE:
+    #' STILL ORDER DEPENDEND.
     structure = function(y, v, weights, y0_ = private$.y_) {
       if(missing(y) + missing(v) + missing(weights) != 2)
         stop("One and only one of 'y', 'v' and 'weights' have to be provided.")
@@ -141,6 +180,8 @@ mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
      if(!is.null(y0_)) stopifnot(length(y_) == length(y0_))
      y_
    },
+   #' @description inverse of \code{$structure}. FOR COMPLEX VECTORS USE WITH CARE:
+   #' STILL ORDER DEPENDEND.
    unstructure = function(y_, v_, weights_, y0_ = private$.y_) {
      if(missing(y_) + missing(v_) + missing(weights_) != 2)
        stop("One and only one of 'y_', 'v_' and 'weights_' has to be provided.") 
@@ -157,16 +198,24 @@ mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
          } else weights_
        }
    },
+   #' @description The identity.
    align = function(y_, y0_) private$.align(y_, y0_),
+   #' @description The identity.
    register = function(y_) y_,
+   #' @description Simple addition.
    exp = function(v_, y0_ = private$.pole_) y0_ + v_,
+   #' @description Simple substraction.
    log = function(y_, y0_ = private$.pole_) y_ - y0_,
+   #' @description The identity.
    transport = function(v0_, y0_, y1_) v0_,
+   #' @description The weighted scalar product.
    innerprod = function(v0_, v1_ = v0_, weights_ = private$.weights_)
      private$.innerprod(v0_, v1_, weights_),
+   #' @description Always returning \code{NULL}.
    get_normal = function(y0_ = private$.pole_) NULL,
-   validate = function(y0_) {
-     stopifnot(is.numeric(y0_) | is.complex(y0_))
+   #' @description Check whether numeric or complex.
+   validate = function(y_) {
+     stopifnot(is.numeric(y_) | is.complex(y_))
      y0_
    }
 ), private = list(
@@ -196,22 +245,24 @@ mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
 #' unstructured way
 #' @param y_ a numeric/complex vector on the sphere
 #' @param y0_ a numeric/complex vector on the sphere
+#' @param y1_ a numeric/complex vector on the sphere
 #' @param v_ a numeric/complex tangent vector
 #' @param v0_ a numeric/complex tangent vector
 #'
 #' @export
 mfGeomUnitSphere <- R6Class("mfGeomUnitSphere", inherit = mfGeomEuclidean,
  public = list(
-  #' @description \code{y} vectors are scaled to unit length and \code{v} vectors
-  #' are orthogonalized with respect to \code{y0_} guaranteeing proper tangent 
-  #' vectors.
+  #' @description \code{y} vectors are scaled to unit norm 
   register = function(y_) {
     y_ / sqrt(private$.innerprod(y_)) },
+  #' @description vectors \code{v} 
+  #' are orthogonalized with respect to \code{y0_} guaranteeing proper tangent 
+  #' vectors.
   register_v = function(v_, y0_ = private$.pole_) {
     v_ - y0_ * Re( private$.innerprod(y0_, v_) ) # complex sphere as real manifold!
   },
   #' @param method character string, for choosing one of two slightly different 
-  #' methods to implement log-method.
+  #' methods to implement log-method ("simple" or "alternative").
   log = function(y_, y0_ = private$.pole_, method = c("simple", "alternative")) {
     method = match.arg(method)
     switch(method, 
@@ -230,12 +281,17 @@ mfGeomUnitSphere <- R6Class("mfGeomUnitSphere", inherit = mfGeomEuclidean,
              else return( v_ * private$.distance(x_, x0_) / 
                             sqrt(private$.innerprod(v_)))  
            }) },
+  #' @description moving \code{v_} along an arc on the sphere.
   exp = function(v_, y0_) {
     if(private$.innerprod(v_) == 0) return(y0_)
     s <- sqrt(private$.innerprod(v_))
     return( y0_ * cos(s) + v_ / s * sin(s) )   
   },
-  transport = function(v0_, y0_, y1_, method = c("general", "horizontal", "simple"), tol = 1e-15) {
+  #' @param method expression used for parallel transport: "general" corresponds to the one of
+  #' Cornea et al. 2017, "horizontal" to the one of Dryden & Mardia 2012 p. 76, 
+  #' and "simple" to a simplified version of "general" where \code{v0_} 
+  #' is horizontal to \code{y0_}.
+  transport = function(v0_, y0_, y1_, method = c("general", "horizontal", "simple")) {
     method <- match.arg(method)
     # if( Im(private$.innerprod(y0_, y1_)) > tol & mode(v0_) == "complex") stop("For complex vector methods only work in the horizontal case, yet.")
     if( method == "horizontal" & mode(v0_) == "numeric") stop("horizontal method only works for the horizontal complex case")
@@ -260,7 +316,7 @@ mfGeomUnitSphere <- R6Class("mfGeomUnitSphere", inherit = mfGeomEuclidean,
                        ( 1 + Mod(private$.innerprod(y0_, y1_)) ) )
            })
   },
-  # normal vector just corresponds to the pole itself
+  #' @description normal vector just corresponds to the pole itself
   get_normal = function(y0_ = private$.pole_) cbind(Re(y0_), Im(y0_))
  ), private = list(
    .distance = function(y0_, y1_, squared = FALSE) {
@@ -394,6 +450,7 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
     method <- match.arg(method)
     super$transport(v0_, y0_, y1_, method = method, tol = tol)
   },
+  #' @param ... arguments passed to \code{base::plot}.
   plot = function(y_ = self$y_, y0_ = self$pole_, 
                   ylab = NA, xlab = NA, 
                   col = "black",
@@ -536,6 +593,7 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
                                                     ( 1 + Mod(private$.innerprod(y0_, y1_)) ) )
                                         })
                                },
+                               #' @param ... arguments passed to \code{base::plot}.
                                plot = function(y_ = self$y_, y0_ = self$pole_, 
                                                yaxt='s', bty='n', ...) {
                                  super$plot(y_ = y_, y0_ = y0_, 
@@ -594,6 +652,7 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
 #' @param v_ a list of tangent vectors living in the comp. manifolds
 #' @param v0_ a list of tangent vectors living in the comp. manifolds
 #' @param v1_ a list of tangent vectors living in the comp. manifolds
+#' @param ... other arguments passed to underlying \code{mfGeometry}.
 #'
 # #' @name mfGeometry
 # #' @rdname mfGeometry
@@ -847,145 +906,142 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                         })    
 ) #mfGeomProduct
 
-
-# Product geometries regular --------------------------------------------
-
-#' @export
-#' @rdname mfGeom_make_product
-mfGeom_make_powering <- function( inherit, classname = paste0(inherit$classname, "_reg"),
-                                  public = NULL, private = NULL, active = NULL) {
-  stopifnot(is.R6Class(inherit))
-  ## check whether is a mfGeometry class generator
-  # function from wch at https://stackoverflow.com/questions/37303552/r-r6-get-full-class-name-from-r6generator-object
-  findClasses <- function(x) {
-    if (is.null(x))
-      return(NULL)
-    parent <- x$get_inherit()
-    c(x$classname, findClasses(parent))
-  }
-  if(!("mfGeometry" %in% findClasses(inherit))) 
-    stop("'inherit' is not inheriting from mfGeometry.")
-  
-  # set up default public slots
-  public_ <- list(
-    structure = function(y, y0_ = private$.y_, v, ...) {
-      if( missing(y) + missing(v) != 1) 
-        stop("One and only one of y and v have to be supplied.")
-      
-      n <- if(is.null(dim(y0_))) 
-        length(y0_) else
-          nrow(y0_)
-      
-      if(missing(v)) {
-        y <- matrix(y, nrow = n)
-        y <- lapply(seq_len(n), function(i) y[i, ])
-        mapply(super$structure, 
-               y = y,
-               y0_ = y0_, MoreArgs = list(...), 
-               SIMPLIFY = FALSE)
-      } else {
-        v <- matrix(v, nrow = n)
-        v <- lapply(seq_len(n), function(i) v[i, ])
-        mapply(super$structure, 
-               v = v, 
-               y0_ = y0_, MoreArgs = list(...),
-               SIMPLIFY = FALSE)
-      }
-      
-    },
-    unstructure = function(y_, v_, weights_, y0_ = private$.y_, ...) {
-      if(missing(y_) + missing(v_) + missing(weights_) != 2)
-      stop("One and only one of 'y_', 'v_' and 'weights_' has to be provided.") 
-      if(is.null(y0_)) stop("Please specify a reference y0_ or a pole beforehand.")
-      
-      if(!missing(v_)) ret <- unlist(mapply(super$unstructure, v_ = v_, y0_ = y0_, 
-                                     MoreArgs = ...)) else {
-          if(!missing(weights_)) ret <- unlist(mapply(super$unstructure, 
-                                                         weights_ = weights_, 
-                                                         y0_ = y0_, MoreArgs = ...)) else
-                  ret <- unlist(mapply(super$unstructure, y_ = y_, y0_ = y0_, 
-                                                                MoreArgs = ...))
-                                     }
-      n <- length(y0_)
-      ret <- matrix(unlist(ret), nrow = n, byrow = TRUE)
-      c(ret)
-    }, 
-    align = function(y_, y0_, ...) {
-      mapply( super$align, y_ = y_, y0_ = y0_, 
-              MoreArgs = list(...), SIMPLIFY = FALSE ) 
-    }, 
-    distance = function(y0_, y1_, ...) {
-      mapply( super$distance, y0_ = y0_, y1_ = y1_, 
-              MoreArgs = list(...), SIMPLIFY = TRUE )
-    }, 
-    exp = function(v_, y0_, ...) {
-      mapply( super$exp, v_ = v_, y0_ = y0_, 
-              MoreArgs = list(...), SIMPLIFY = FALSE ) 
-    }, 
-    log = function(y_, y0_, ...) {
-      mapply( super$log, y_ = y_, y0_ = y0_, 
-              MoreArgs = list(...), SIMPLIFY = FALSE ) 
-    }, 
-    transport = function(v0_, y0_, y1_, ...) {
-      mapply( super$transport, v0_ = v0_, y0_ = y0_, y1_ = y1_, 
-              MoreArgs = list(...), SIMPLIFY = FALSE )
-    },
-    innerprod = function(v0_, v1_ = v0_) {
-      if(is.null(weights_)) 
-        mapply( super$innerprod, v0_ = v0_, v1_ = v1_, 
-                SIMPLIFY = TRUE ) else
-                  mapply( super$innerprod, v0_ = v0_, v1_ = v1_, 
-                          SIMPLIFY = TRUE )
-    },
-    get_normal = function(y0_ = private$.pole_, ...) {
-      nvecs <- lapply( y0_, super$get_normal ) 
-      matrix(unlist(nvecs), ncol = ncol(nvecs[[1]]))
-    },
-    validate = function(y0_, ...) {
-      stopifnot(is.list(y0_))
-      mapply( super$validate, y0_ = y0_, 
-              MoreArgs = list(...) )
-      if(is.null(attr(y0_, "mf.id"))) {
-        # generate an .id vector for the product
-        prod.id <- paste0(".id.", seq_along(y0_), "_")
-        temy0_ <- y0_
-        names(temy0_) <- prod.id
-        prod.id <- substr(prod.id, 1, nchar(prod.id)-1)
-        get_id <- function(a) regmatches(a, regexpr("^([^_]+)", a))
-        attr(y0_, "mf.id") <- factor(get_id(names(self$unstructure(y_ = temy0_, y0_ = temy0_))),
-                                     levels = prod.id)
-      }
-      y0_
-    }
-    
-  )
-  
-  # modify public slots
-  public_[names(public)] <- public
-  
-  # return new R6 class generator
-  R6Class(classname = classname, 
-          inherit = inherit, 
-          public = public_, private = private, 
-          active = active
-  )
-} # mfGeom_make_powering
-
-# Create Euclidean family for multiple (irreg.) vectors -------------------
-
-# #' @name mfGeomEuclidean_reg
-# #' @rdname mfGeometry-class
+# 
+# # Product geometries regular --------------------------------------------
+# 
 # #' @export
-mfGeomEuclidean_reg <- mfGeom_make_powering(mfGeomEuclidean, 
-                                            "mfGeomEuclidean_reg")
-
-# Create general planar shape family for multiple (irreg.) shapes ---------
-
-# #' @name mfGeomPlanarShapes_reg
-# #' @rdname mfGeometry-class
-# #' @export
-mfGeomPlanarShapes_reg <- mfGeom_make_powering(mfGeomPlanarShape,
-                                               "mfGeomPlanarShapes_reg")
-
-
-
+# #' @rdname mfGeom_make_product
+# mfGeom_make_powering <- function( inherit, classname = paste0(inherit$classname, "_reg"),
+#                                   public = NULL, private = NULL, active = NULL) {
+#   stopifnot(is.R6Class(inherit))
+#   ## check whether is a mfGeometry class generator
+#   # function from wch at https://stackoverflow.com/questions/37303552/r-r6-get-full-class-name-from-r6generator-object
+#   findClasses <- function(x) {
+#     if (is.null(x))
+#       return(NULL)
+#     parent <- x$get_inherit()
+#     c(x$classname, findClasses(parent))
+#   }
+#   if(!("mfGeometry" %in% findClasses(inherit))) 
+#     stop("'inherit' is not inheriting from mfGeometry.")
+#   
+#   # set up default public slots
+#   public_ <- list(
+#     structure = function(y, y0_ = private$.y_, v, ...) {
+#       if( missing(y) + missing(v) != 1) 
+#         stop("One and only one of y and v have to be supplied.")
+#       
+#       n <- if(is.null(dim(y0_))) 
+#         length(y0_) else
+#           nrow(y0_)
+#       
+#       if(missing(v)) {
+#         y <- matrix(y, nrow = n)
+#         y <- lapply(seq_len(n), function(i) y[i, ])
+#         mapply(super$structure, 
+#                y = y,
+#                y0_ = y0_, MoreArgs = list(...), 
+#                SIMPLIFY = FALSE)
+#       } else {
+#         v <- matrix(v, nrow = n)
+#         v <- lapply(seq_len(n), function(i) v[i, ])
+#         mapply(super$structure, 
+#                v = v, 
+#                y0_ = y0_, MoreArgs = list(...),
+#                SIMPLIFY = FALSE)
+#       }
+#       
+#     },
+#     unstructure = function(y_, v_, weights_, y0_ = private$.y_, ...) {
+#       if(missing(y_) + missing(v_) + missing(weights_) != 2)
+#       stop("One and only one of 'y_', 'v_' and 'weights_' has to be provided.") 
+#       if(is.null(y0_)) stop("Please specify a reference y0_ or a pole beforehand.")
+#       
+#       if(!missing(v_)) ret <- unlist(mapply(super$unstructure, v_ = v_, y0_ = y0_, 
+#                                      MoreArgs = ...)) else {
+#           if(!missing(weights_)) ret <- unlist(mapply(super$unstructure, 
+#                                                          weights_ = weights_, 
+#                                                          y0_ = y0_, MoreArgs = ...)) else
+#                   ret <- unlist(mapply(super$unstructure, y_ = y_, y0_ = y0_, 
+#                                                                 MoreArgs = ...))
+#                                      }
+#       n <- length(y0_)
+#       ret <- matrix(unlist(ret), nrow = n, byrow = TRUE)
+#       c(ret)
+#     }, 
+#     align = function(y_, y0_, ...) {
+#       mapply( super$align, y_ = y_, y0_ = y0_, 
+#               MoreArgs = list(...), SIMPLIFY = FALSE ) 
+#     }, 
+#     distance = function(y0_, y1_, ...) {
+#       mapply( super$distance, y0_ = y0_, y1_ = y1_, 
+#               MoreArgs = list(...), SIMPLIFY = TRUE )
+#     }, 
+#     exp = function(v_, y0_, ...) {
+#       mapply( super$exp, v_ = v_, y0_ = y0_, 
+#               MoreArgs = list(...), SIMPLIFY = FALSE ) 
+#     }, 
+#     log = function(y_, y0_, ...) {
+#       mapply( super$log, y_ = y_, y0_ = y0_, 
+#               MoreArgs = list(...), SIMPLIFY = FALSE ) 
+#     }, 
+#     transport = function(v0_, y0_, y1_, ...) {
+#       mapply( super$transport, v0_ = v0_, y0_ = y0_, y1_ = y1_, 
+#               MoreArgs = list(...), SIMPLIFY = FALSE )
+#     },
+#     innerprod = function(v0_, v1_ = v0_) {
+#       if(is.null(weights_)) 
+#         mapply( super$innerprod, v0_ = v0_, v1_ = v1_, 
+#                 SIMPLIFY = TRUE ) else
+#                   mapply( super$innerprod, v0_ = v0_, v1_ = v1_, 
+#                           SIMPLIFY = TRUE )
+#     },
+#     get_normal = function(y0_ = private$.pole_, ...) {
+#       nvecs <- lapply( y0_, super$get_normal ) 
+#       matrix(unlist(nvecs), ncol = ncol(nvecs[[1]]))
+#     },
+#     validate = function(y0_, ...) {
+#       stopifnot(is.list(y0_))
+#       mapply( super$validate, y0_ = y0_, 
+#               MoreArgs = list(...) )
+#       if(is.null(attr(y0_, "mf.id"))) {
+#         # generate an .id vector for the product
+#         prod.id <- paste0(".id.", seq_along(y0_), "_")
+#         temy0_ <- y0_
+#         names(temy0_) <- prod.id
+#         prod.id <- substr(prod.id, 1, nchar(prod.id)-1)
+#         get_id <- function(a) regmatches(a, regexpr("^([^_]+)", a))
+#         attr(y0_, "mf.id") <- factor(get_id(names(self$unstructure(y_ = temy0_, y0_ = temy0_))),
+#                                      levels = prod.id)
+#       }
+#       y0_
+#     }
+#     
+#   )
+#   
+#   # modify public slots
+#   public_[names(public)] <- public
+#   
+#   # return new R6 class generator
+#   R6Class(classname = classname, 
+#           inherit = inherit, 
+#           public = public_, private = private, 
+#           active = active
+#   )
+# } # mfGeom_make_powering
+# 
+# # Create Euclidean family for multiple (irreg.) vectors -------------------
+# 
+# # #' @name mfGeomEuclidean_reg
+# # #' @rdname mfGeometry-class
+# # #' @export
+# mfGeomEuclidean_reg <- mfGeom_make_powering(mfGeomEuclidean, 
+#                                             "mfGeomEuclidean_reg")
+# 
+# # Create general planar shape family for multiple (irreg.) shapes ---------
+# 
+# # #' @name mfGeomPlanarShapes_reg
+# # #' @rdname mfGeometry-class
+# # #' @export
+# mfGeomPlanarShapes_reg <- mfGeom_make_powering(mfGeomPlanarShape,
+#                                                "mfGeomPlanarShapes_reg")

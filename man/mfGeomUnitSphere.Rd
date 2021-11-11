@@ -39,9 +39,7 @@ in case, as a real manifold.
 \if{html}{\out{<a id="method-register"></a>}}
 \if{latex}{\out{\hypertarget{method-register}{}}}
 \subsection{Method \code{register()}}{
-\code{y} vectors are scaled to unit length and \code{v} vectors
-are orthogonalized with respect to \code{y0_} guaranteeing proper tangent
-vectors.
+\code{y} vectors are scaled to unit norm
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomUnitSphere$register(y_)}\if{html}{\out{</div>}}
 }
@@ -58,6 +56,9 @@ vectors.
 \if{html}{\out{<a id="method-register_v"></a>}}
 \if{latex}{\out{\hypertarget{method-register_v}{}}}
 \subsection{Method \code{register_v()}}{
+vectors \code{v}
+are orthogonalized with respect to \code{y0_} guaranteeing proper tangent
+vectors.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomUnitSphere$register_v(v_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
 }
@@ -92,7 +93,7 @@ vectors.
 \item{\code{y0_}}{a numeric/complex vector on the sphere}
 
 \item{\code{method}}{character string, for choosing one of two slightly different
-methods to implement log-method.}
+methods to implement log-method ("simple" or "alternative").}
 }
 \if{html}{\out{</div>}}
 }
@@ -101,6 +102,7 @@ methods to implement log-method.}
 \if{html}{\out{<a id="method-exp"></a>}}
 \if{latex}{\out{\hypertarget{method-exp}{}}}
 \subsection{Method \code{exp()}}{
+moving \code{v_} along an arc on the sphere.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomUnitSphere$exp(v_, y0_)}\if{html}{\out{</div>}}
 }
@@ -124,8 +126,7 @@ methods to implement log-method.}
   v0_,
   y0_,
   y1_,
-  method = c("general", "horizontal", "simple"),
-  tol = 1e-15
+  method = c("general", "horizontal", "simple")
 )}\if{html}{\out{</div>}}
 }
 
@@ -135,6 +136,13 @@ methods to implement log-method.}
 \item{\code{v0_}}{a numeric/complex tangent vector}
 
 \item{\code{y0_}}{a numeric/complex vector on the sphere}
+
+\item{\code{y1_}}{a numeric/complex vector on the sphere}
+
+\item{\code{method}}{expression used for parallel transport: "general" corresponds to the one of
+Cornea et al. 2017, "horizontal" to the one of Dryden & Mardia 2012 p. 76,
+and "simple" to a simplified version of "general" where \code{v0_}
+is horizontal to \code{y0_}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -143,6 +151,7 @@ methods to implement log-method.}
 \if{html}{\out{<a id="method-get_normal"></a>}}
 \if{latex}{\out{\hypertarget{method-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
+normal vector just corresponds to the pole itself
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomUnitSphere$get_normal(y0_ = private$.pole_)}\if{html}{\out{</div>}}
 }

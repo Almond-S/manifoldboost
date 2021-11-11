@@ -4,15 +4,32 @@
 \alias{mfGeometry}
 \title{R6 Class implementing manifold geometries}
 \description{
+R6 Class implementing manifold geometries
+
+R6 Class implementing manifold geometries
+}
+\details{
 An abstract \code{mfGeometry} class implementing a set of methods, including
 e.g. Exp- and Log-mappings, that are needed to define \code{mfboost} families
-in a concise and modular way. Children of this class
-specify the geometry of interest.
+in a concise and modular way.
 The arguments of the methods are vectors, matrices
-or arrays possibly holding additional attributes. Children of this class
-specify the geometry of interest. Besides these methods, objects
+or arrays possibly holding additional attributes. Besides these methods, objects
 of class \code{mfGeometry} offer an active slot for the 'pole' which serves
-as prototype for elements of the manifold.
+as prototype for elements of the manifold. Children of this class
+specify the geometry of interest, such as \code{\link{mfGeomEuclidean}},
+\code{\link{mfGeomSphere}}, \code{\link{mfGeomPlanarShape}}, and
+\code{\link{mfGeomPlanarSizeShape}}.
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{y_}}{slot for a data object in the internal format}
+
+\item{\code{pole_}}{slot for a data object in the internal format}
+
+\item{\code{weights_}}{slot for inner product weights in the internal format}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -36,6 +53,8 @@ as prototype for elements of the manifold.
 \if{html}{\out{<a id="method-structure"></a>}}
 \if{latex}{\out{\hypertarget{method-structure}{}}}
 \subsection{Method \code{structure()}}{
+structure a vector containing the elements of the response
+\code{y} in long format in the internal format of the geometry.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$structure(y)}\if{html}{\out{</div>}}
 }
@@ -43,8 +62,7 @@ as prototype for elements of the manifold.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y}}{a numeric vector representing an element of the manifold in an
-unstructured 'flattened' way}
+\item{\code{y}}{a numeric vector containing the elements of an object y in long format}
 }
 \if{html}{\out{</div>}}
 }
@@ -53,6 +71,7 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-unstructure"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
+inverse operation of \code{structure}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$unstructure(y_)}\if{html}{\out{</div>}}
 }
@@ -60,7 +79,7 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{an object living in the manifold}
+\item{\code{y_}}{an object in the internal format of the geometry}
 }
 \if{html}{\out{</div>}}
 }
@@ -69,25 +88,36 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-unstructure_weights"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure_weights}{}}}
 \subsection{Method \code{unstructure_weights()}}{
+convert internal inner product weights to a weight vector
+matching the un-structered response \code{y} in long format.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$unstructure_weights(weights_)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-align"></a>}}
-\if{latex}{\out{\hypertarget{method-align}{}}}
-\subsection{Method \code{align()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$align(y_, y0_ = private$.pole_, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{an object living in the manifold}
+\item{\code{weights_}}{inner product weights in the internal format}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-align"></a>}}
+\if{latex}{\out{\hypertarget{method-align}{}}}
+\subsection{Method \code{align()}}{
+a function aligning \code{y_} to \code{y0_} primarly intended
+for quotient geometries.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$align(y_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
+}
 
-\item{\code{y0_}}{an object living in the manifold}
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{y_}}{an object in the internal format of the geometry}
+
+\item{\code{y0_}}{an object in the internal format of the geometry}
 }
 \if{html}{\out{</div>}}
 }
@@ -96,6 +126,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-register"></a>}}
 \if{latex}{\out{\hypertarget{method-register}{}}}
 \subsection{Method \code{register()}}{
+a function registering \code{y_} to a proper subset, say to
+a subspace or an embedded submanifold.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$register(y_)}\if{html}{\out{</div>}}
 }
@@ -103,7 +135,7 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{an object living in the manifold}
+\item{\code{y_}}{an object in the internal format of the geometry}
 }
 \if{html}{\out{</div>}}
 }
@@ -112,16 +144,17 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-distance"></a>}}
 \if{latex}{\out{\hypertarget{method-distance}{}}}
 \subsection{Method \code{distance()}}{
+computes the distance or a vector of distances between objects.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$distance(y0_, y1_, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$distance(y0_, y1_)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{an object living in the manifold}
+\item{\code{y0_}}{an object in the internal format of the geometry}
 
-\item{\code{y1_}}{an object living in the manifold}
+\item{\code{y1_}}{an object in the internal format of the geometry}
 }
 \if{html}{\out{</div>}}
 }
@@ -130,6 +163,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-exp"></a>}}
 \if{latex}{\out{\hypertarget{method-exp}{}}}
 \subsection{Method \code{exp()}}{
+the Riemannian Exp map mapping a tangent vector \code{v_}
+at \code{y_} to the manifold.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$exp(v_, y0_ = private$.pole_, ...)}\if{html}{\out{</div>}}
 }
@@ -137,9 +172,11 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v_}}{an object repesenting a tangent vector}
+\item{\code{v_}}{an object repesenting a tangent vector (internal format)}
 
-\item{\code{y0_}}{an object living in the manifold}
+\item{\code{y0_}}{an object in the internal format of the geometry}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -148,6 +185,7 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-log"></a>}}
 \if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
+the inverse of the Riemannian Exp map.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$log(y_, y0_ = private$.pole_, ...)}\if{html}{\out{</div>}}
 }
@@ -155,9 +193,11 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{an object living in the manifold}
+\item{\code{y_}}{an object in the internal format of the geometry}
 
-\item{\code{y0_}}{an object living in the manifold}
+\item{\code{y0_}}{an object in the internal format of the geometry}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -166,6 +206,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-transport"></a>}}
 \if{latex}{\out{\hypertarget{method-transport}{}}}
 \subsection{Method \code{transport()}}{
+parallel transport of a tangent vector \code{v0_}
+at \code{y0_} to the tangent space at \code{y1_}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$transport(v0_, y0_, y1_, ...)}\if{html}{\out{</div>}}
 }
@@ -173,11 +215,13 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v0_}}{an object repesenting a tangent vector}
+\item{\code{v0_}}{an object repesenting a tangent vector (internal format)}
 
-\item{\code{y0_}}{an object living in the manifold}
+\item{\code{y0_}}{an object in the internal format of the geometry}
 
-\item{\code{y1_}}{an object living in the manifold}
+\item{\code{y1_}}{an object in the internal format of the geometry}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -186,6 +230,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-innerprod"></a>}}
 \if{latex}{\out{\hypertarget{method-innerprod}{}}}
 \subsection{Method \code{innerprod()}}{
+computes the inner product or a vector of inner products
+between objects.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$innerprod(v0_, v1_ = v0_, ...)}\if{html}{\out{</div>}}
 }
@@ -193,9 +239,11 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v0_}}{an object repesenting a tangent vector}
+\item{\code{v0_}}{an object repesenting a tangent vector (internal format)}
 
-\item{\code{v1_}}{an object repesenting a tangent vector}
+\item{\code{v1_}}{an object repesenting a tangent vector (internal format)}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -204,6 +252,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-get_normal"></a>}}
 \if{latex}{\out{\hypertarget{method-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
+returns the normal vector (in unstructured format) to the
+tangent space at a point \code{y0_} considered as a linear subspace.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeometry$get_normal(y0_ = private$.pole_, ...)}\if{html}{\out{</div>}}
 }
@@ -211,7 +261,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{an object living in the manifold}
+\item{\code{y0_}}{an object in the internal format of the geometry}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }
@@ -220,14 +272,17 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-validate"></a>}}
 \if{latex}{\out{\hypertarget{method-validate}{}}}
 \subsection{Method \code{validate()}}{
+function for validating structure of internal object \code{y_}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$validate(y0_, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$validate(y_, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{an object living in the manifold}
+\item{\code{y_}}{an object in the internal format of the geometry}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }

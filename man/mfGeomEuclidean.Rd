@@ -4,9 +4,14 @@
 \alias{mfGeomEuclidean}
 \title{Euclidean Geometry Class}
 \description{
+Euclidean Geometry Class
+
+Euclidean Geometry Class
+}
+\details{
 An R6 class defining the Euclidean geometry for a single vector.
 This class is typically not too much of practical interest, as in this case
-\code{Family} object could often by defined without it. However, it serves
+the \code{Family} could typically by defined without it. However, it serves
 as parent for most other geometries.
 }
 \section{Super class}{
@@ -40,6 +45,10 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-structure"></a>}}
 \if{latex}{\out{\hypertarget{method-structure}{}}}
 \subsection{Method \code{structure()}}{
+method for structuring either objects \code{y},
+tangent vectors \code{v}, or weight vectors \code{weights}. Usually the
+identity, except for complex vectors. FOR COMPLEX VECTORS USE WITH CARE:
+STILL ORDER DEPENDEND.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$structure(y, v, weights, y0_ = private$.y_)}\if{html}{\out{</div>}}
 }
@@ -51,6 +60,8 @@ as parent for most other geometries.
 
 \item{\code{v}}{a numeric vector}
 
+\item{\code{weights}}{a numeric vector}
+
 \item{\code{y0_}}{a numeric/complex vector}
 }
 \if{html}{\out{</div>}}
@@ -60,6 +71,8 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-unstructure"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
+inverse of \code{$structure}. FOR COMPLEX VECTORS USE WITH CARE:
+STILL ORDER DEPENDEND.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$unstructure(y_, v_, weights_, y0_ = private$.y_)}\if{html}{\out{</div>}}
 }
@@ -71,6 +84,8 @@ as parent for most other geometries.
 
 \item{\code{v_}}{a (tangent) numeric/complex vector}
 
+\item{\code{weights_}}{a numeric vector of the same length as \code{y_} / \code{pole_}}
+
 \item{\code{y0_}}{a numeric/complex vector}
 }
 \if{html}{\out{</div>}}
@@ -80,6 +95,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-align"></a>}}
 \if{latex}{\out{\hypertarget{method-align}{}}}
 \subsection{Method \code{align()}}{
+The identity.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$align(y_, y0_)}\if{html}{\out{</div>}}
 }
@@ -98,6 +114,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-register"></a>}}
 \if{latex}{\out{\hypertarget{method-register}{}}}
 \subsection{Method \code{register()}}{
+The identity.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$register(y_)}\if{html}{\out{</div>}}
 }
@@ -114,6 +131,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-exp"></a>}}
 \if{latex}{\out{\hypertarget{method-exp}{}}}
 \subsection{Method \code{exp()}}{
+Simple addition.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$exp(v_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
 }
@@ -132,6 +150,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-log"></a>}}
 \if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
+Simple substraction.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$log(y_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
 }
@@ -150,6 +169,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-transport"></a>}}
 \if{latex}{\out{\hypertarget{method-transport}{}}}
 \subsection{Method \code{transport()}}{
+The identity.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$transport(v0_, y0_, y1_)}\if{html}{\out{</div>}}
 }
@@ -170,6 +190,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-innerprod"></a>}}
 \if{latex}{\out{\hypertarget{method-innerprod}{}}}
 \subsection{Method \code{innerprod()}}{
+The weighted scalar product.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$innerprod(v0_, v1_ = v0_, weights_ = private$.weights_)}\if{html}{\out{</div>}}
 }
@@ -180,6 +201,8 @@ as parent for most other geometries.
 \item{\code{v0_}}{a (tangent) numeric/complex vector}
 
 \item{\code{v1_}}{a (tangent) numeric/complex vector}
+
+\item{\code{weights_}}{a numeric vector of the same length as \code{y_} / \code{pole_}}
 }
 \if{html}{\out{</div>}}
 }
@@ -188,6 +211,7 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-get_normal"></a>}}
 \if{latex}{\out{\hypertarget{method-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
+Always returning \code{NULL}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$get_normal(y0_ = private$.pole_)}\if{html}{\out{</div>}}
 }
@@ -204,14 +228,15 @@ as parent for most other geometries.
 \if{html}{\out{<a id="method-validate"></a>}}
 \if{latex}{\out{\hypertarget{method-validate}{}}}
 \subsection{Method \code{validate()}}{
+Check whether numeric or complex.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$validate(y0_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$validate(y_)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{a numeric/complex vector}
+\item{\code{y_}}{a numeric/complex vector}
 }
 \if{html}{\out{</div>}}
 }

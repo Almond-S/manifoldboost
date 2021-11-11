@@ -124,6 +124,8 @@ unstructured 'flattened' way}
 \item{\code{y_}}{a list of objects living in the comp. manifolds}
 
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -140,6 +142,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{y_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -158,6 +162,8 @@ unstructured 'flattened' way}
 \item{\code{v_}}{a list of tangent vectors living in the comp. manifolds}
 
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -176,6 +182,8 @@ unstructured 'flattened' way}
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
 
 \item{\code{y1_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -194,6 +202,8 @@ unstructured 'flattened' way}
 \item{\code{v_}}{a list of tangent vectors living in the comp. manifolds}
 
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -212,6 +222,8 @@ unstructured 'flattened' way}
 \item{\code{y_}}{a list of objects living in the comp. manifolds}
 
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -232,6 +244,8 @@ unstructured 'flattened' way}
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
 
 \item{\code{y1_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -250,6 +264,8 @@ unstructured 'flattened' way}
 \item{\code{v0_}}{a list of tangent vectors living in the comp. manifolds}
 
 \item{\code{v1_}}{a list of tangent vectors living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -268,6 +284,8 @@ unstructured 'flattened' way}
 \item{\code{y_}}{a list of objects living in the comp. manifolds}
 
 \item{\code{y0_}}{a list of objects living in the comp. manifolds}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
