@@ -4,6 +4,11 @@
 \alias{mfGeomProduct}
 \title{A general product geometry}
 \description{
+A general product geometry
+
+A general product geometry
+}
+\details{
 An \code{mfGeometry} class implementing a product geometry in an abstract
 general way. While there might be more efficient implementations using the
 particular structure of your geometry of interest, this should work for
@@ -11,6 +16,29 @@ products of any mfGeometries.
 }
 \section{Super class}{
 \code{\link[manifoldboost:mfGeometry]{manifoldboost::mfGeometry}} -> \code{mfGeomProduct}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{mfGeom_default}}{an \code{mfGeometry} object implementing the default
+geometry of a component of the product space.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{y_}}{return lists of respective elements in the components.
+\code{y_} can be specified as a list of \code{mfGeometry} objects constituting
+the components of the product geometry.}
+
+\item{\code{pole_}}{return lists of respective elements in the components.}
+
+\item{\code{weights_}}{return lists of respective elements in the components.}
+
+\item{\code{mfGeom_classes}}{return a list of the classes of \code{y_} (read only).}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -45,24 +73,56 @@ products of any mfGeometries.
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Initialize product geometry with each
+component the \code{mfGeom_default} based on the
+\code{data} containing the variables for \code{y_}
+specified in the \code{formula}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$new(mfGeom_default, data, formula)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mfGeom_default}}{\code{mfGeometry} object carrying the
+component geometry.}
+
+\item{\code{data}}{containing required variables.}
+
+\item{\code{formula}}{formula containing interpreted
+via \code{mfInterpret_formula}) and indicating, in particular,
+the ID variable for splitting observations in the product
+components.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-slice"></a>}}
 \if{latex}{\out{\hypertarget{method-slice}{}}}
 \subsection{Method \code{slice()}}{
+subset product geometry to specified components.
+Make sure to clone the product geometry first if
+complete geometry should be preserved.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$slice(which)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{which}}{integers or character strings indicating
+which elements of \code{y_} should be selected.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-structure"></a>}}
 \if{latex}{\out{\hypertarget{method-structure}{}}}
 \subsection{Method \code{structure()}}{
+bring \code{y} into the right order to
+split and pass it to the component geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$structure(y)}\if{html}{\out{</div>}}
 }
@@ -80,6 +140,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-unstructure"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
+unstructure \code{y_} in the component geometries
+and arrange it into the right order.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$unstructure(y_)}\if{html}{\out{</div>}}
 }
@@ -87,7 +149,7 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{a list of objects living in the comp. manifolds}
+\item{\code{y_}}{a list of objects living in the component manifolds}
 }
 \if{html}{\out{</div>}}
 }
@@ -96,6 +158,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-unstructure_weights"></a>}}
 \if{latex}{\out{\hypertarget{method-unstructure_weights}{}}}
 \subsection{Method \code{unstructure_weights()}}{
+unstructure \code{weights_} in the component geometries
+and arrange it into the right order.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$unstructure_weights(weights_)}\if{html}{\out{</div>}}
 }
@@ -105,6 +169,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-structure_weights"></a>}}
 \if{latex}{\out{\hypertarget{method-structure_weights}{}}}
 \subsection{Method \code{structure_weights()}}{
+bring \code{weights} into the right order to
+split and pass it to the component geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$structure_weights(weights)}\if{html}{\out{</div>}}
 }
@@ -114,6 +180,7 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-align"></a>}}
 \if{latex}{\out{\hypertarget{method-align}{}}}
 \subsection{Method \code{align()}}{
+component-wise alignment.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$align(y_, y0_, ...)}\if{html}{\out{</div>}}
 }
@@ -121,9 +188,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{a list of objects living in the comp. manifolds}
+\item{\code{y_}}{a list of objects living in the component manifolds}
 
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -134,6 +201,7 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-register"></a>}}
 \if{latex}{\out{\hypertarget{method-register}{}}}
 \subsection{Method \code{register()}}{
+component-wise registration.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$register(y_, ...)}\if{html}{\out{</div>}}
 }
@@ -141,7 +209,7 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{a list of objects living in the comp. manifolds}
+\item{\code{y_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -152,6 +220,7 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-register_v"></a>}}
 \if{latex}{\out{\hypertarget{method-register_v}{}}}
 \subsection{Method \code{register_v()}}{
+component-wise registration.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$register_v(v_, y0_, ...)}\if{html}{\out{</div>}}
 }
@@ -159,9 +228,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v_}}{a list of tangent vectors living in the comp. manifolds}
+\item{\code{v_}}{a list of tangent vectors living in the component manifolds}
 
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -172,6 +241,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-distance"></a>}}
 \if{latex}{\out{\hypertarget{method-distance}{}}}
 \subsection{Method \code{distance()}}{
+compute vector of distances in component
+geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$distance(y0_, y1_, ...)}\if{html}{\out{</div>}}
 }
@@ -179,9 +250,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
-\item{\code{y1_}}{a list of objects living in the comp. manifolds}
+\item{\code{y1_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -192,6 +263,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-exp"></a>}}
 \if{latex}{\out{\hypertarget{method-exp}{}}}
 \subsection{Method \code{exp()}}{
+loop over Exp-maps in the component
+geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$exp(v_, y0_, ...)}\if{html}{\out{</div>}}
 }
@@ -199,9 +272,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v_}}{a list of tangent vectors living in the comp. manifolds}
+\item{\code{v_}}{a list of tangent vectors living in the component manifolds}
 
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -212,6 +285,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-log"></a>}}
 \if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
+loop over Log-maps in the component
+geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$log(y_, y0_, ...)}\if{html}{\out{</div>}}
 }
@@ -219,9 +294,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{a list of objects living in the comp. manifolds}
+\item{\code{y_}}{a list of objects living in the component manifolds}
 
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -232,6 +307,8 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-transport"></a>}}
 \if{latex}{\out{\hypertarget{method-transport}{}}}
 \subsection{Method \code{transport()}}{
+loop over parallel transports in the component
+geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$transport(v0_, y0_, y1_, ...)}\if{html}{\out{</div>}}
 }
@@ -239,11 +316,11 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v0_}}{a list of tangent vectors living in the comp. manifolds}
+\item{\code{v0_}}{a list of tangent vectors living in the component manifolds}
 
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
-\item{\code{y1_}}{a list of objects living in the comp. manifolds}
+\item{\code{y1_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -254,6 +331,10 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-innerprod"></a>}}
 \if{latex}{\out{\hypertarget{method-innerprod}{}}}
 \subsection{Method \code{innerprod()}}{
+compute vector of inner products in the
+component geometries. An inner product on the product
+space can be obtained as a scalar product of the
+returned vector.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$innerprod(v0_, v1_ = v0_, ...)}\if{html}{\out{</div>}}
 }
@@ -261,9 +342,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v0_}}{a list of tangent vectors living in the comp. manifolds}
+\item{\code{v0_}}{a list of tangent vectors living in the component manifolds}
 
-\item{\code{v1_}}{a list of tangent vectors living in the comp. manifolds}
+\item{\code{v1_}}{a list of tangent vectors living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -274,6 +355,7 @@ unstructured 'flattened' way}
 \if{html}{\out{<a id="method-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-plot}{}}}
 \subsection{Method \code{plot()}}{
+loop over individual plots of the components.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$plot(y_ = self$y_, y0_ = self$pole_, main = names(y_), ...)}\if{html}{\out{</div>}}
 }
@@ -281,9 +363,9 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y_}}{a list of objects living in the comp. manifolds}
+\item{\code{y_}}{a list of objects living in the component manifolds}
 
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
@@ -301,7 +383,7 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 }
 \if{html}{\out{</div>}}
 }
@@ -317,7 +399,7 @@ unstructured 'flattened' way}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{a list of objects living in the comp. manifolds}
+\item{\code{y0_}}{a list of objects living in the component manifolds}
 }
 \if{html}{\out{</div>}}
 }

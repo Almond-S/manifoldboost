@@ -340,15 +340,19 @@ mfGeomUnitSphere <- R6Class("mfGeomUnitSphere", inherit = mfGeomEuclidean,
 #' projective space.
 #' 
 #' @param y a numeric vector representing an element of the manifold in an 
-#' unstructured way. If \code{y} is of length \eqn{l}, the first \eqn{l/2} elements
-#' of \code{y} correspond to the real part and the remaining \eqn{l/2} elements to 
-#' imaginary part of the complex vector \code{y_}.
+#' unstructured way. The position of elements and dimensions is obtained from 
+#' the initialization of the geometry.
 #' @param v a numeric vector representing an tangent vector in an 
 #' unstructured way. Complex interpretation as above. 
 #' @param y_ a complex vector on the sphere, orthogonal to the constant.
 #' @param y0_ a complex vector on the sphere, orthogonal to the constant.
+#' @param y1_ a complex vector on the sphere, orthogonal to the constant.
 #' @param v_ a complex tangent vector.
 #' @param v0_ a complex tangent vector.
+#' @param weights_ numeric vector of inner product weights matching the \code{y_}
+#' as a complex vector.
+#' @param weights numeric vector of inner product weights matching the \code{y}
+#' as a numeric vector. \code{weights_} are duplicated for values of both dimensions.
 #'
 #' @export
 mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere, 
@@ -459,6 +463,8 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
      v_ - y0_ * private$.innerprod(y0_, v_) 
    },
    #' @description Apply Log function of the sphere after rotation alignment
+   #' @param method alternatives "simple" and "alternative" for the expression 
+   #' used to compute the sphere Log-map. Passed to parent method.
    log = function(y_, y0_ = self$pole_, method = c("simple", "alternative")) {
     super$log(
       private$.align(y_, y0_)
@@ -466,6 +472,10 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
   },
   #' @description for the parallel transport previous alignment is assumed,
   #' such that the transport of the sphere is directly applied.
+  #' @param method expression used for parallel transport: "general" corresponds to the one of
+  #' Cornea et al. 2017, "horizontal" to the one of Dryden & Mardia 2012 p. 76, 
+  #' and "simple" to a simplified version of "general" where \code{v0_} 
+  #' is horizontal to \code{y0_}. Passed to parent method.
   transport = function(v0_, y0_, y1_, method = c("horizontal", "simple", "general")) {
     method <- match.arg(method)
     super$transport(v0_, y0_, y1_, method = method)
@@ -473,10 +483,10 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
   #' @description default plotting function for planar shapes, plotting \code{y_}
   #' in front of \code{y0_} (after alignment).
   #' @param col,pch,type graphical parameters passed to \code{base::plot} referring to \code{y_}.
-  #' @param ylab,xlab,xlim,ylim,xaxt,yaxt graphical parameters passed to \code{base::plot} 
+  #' @param ylab,xlab,xlim,ylim,xaxt,yaxt,asp graphical parameters passed to \code{base::plot} 
   #' with modified defaults.
   #' @param ... other arguments passed to \code{base::plot}.
-  #' @param y0_param graphical parameters for \code{y0_}.
+  #' @param y0_par graphical parameters for \code{y0_}.
   #' @param seg_par graphical parameters for line segments connecting \code{y_} 
   #' and \code{y0_}.
   plot = function(y_ = self$y_, y0_ = self$pole_, 
@@ -531,10 +541,15 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
       points(x = Re(y_), y = Im(y_), pch = pch, col = col, type = type, ...)
     }
   },
-  validate = function(y0_) {
-    stopifnot(is.complex(y0_))
+  #' @description check whether \code{is.complex(y_)}. 
+  validate = function(y_) {
+    stopifnot(is.complex(y_))
     y0_
   },
+  #' @description Obtain "design matrix" of tangent space normal vectors in 
+  #' unstructured long format.
+  #' @param weighted logical, should inner product weights be pre-multiplied to 
+  #' normal vectors?
   get_normal = function(y0_ = self$pole_, weighted = FALSE) {
     if(is.null(private$unstructure_index)) 
       stop("Please, initialize geometry before using $get_normal.")
@@ -576,37 +591,47 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
 
 #' Planar Size and Shape Space Geometry
 #' 
-#' @description Geometry of the 'classic' size and shape space identifying planar 
+#' @description Geometry of the 'classic' size-and-shape space identifying planar 
 #' configurations with a centered and complex vector and treating them as rotation
 #' invariant.
 #' 
 #' @param y a numeric vector representing an element of the manifold in an 
-#' unstructured way. If \code{y} is of length \eqn{l}, the first \eqn{l/2} elements
-#' of \code{y} correspond to the real part and the remaining \eqn{l/2} elements to 
-#' imaginary part of the complex vector \code{y_}.
+#' unstructured way. The position of elements and dimensions is obtained from 
+#' the initialization of the geometry.
 #' @param v a numeric vector representing an tangent vector in an 
 #' unstructured way. Complex interpretation as above. 
 #' @param y_ a complex vector on the sphere, orthogonal to the constant.
 #' @param y0_ a complex vector on the sphere, orthogonal to the constant.
+#' @param y1_ a complex vector on the sphere, orthogonal to the constant.
 #' @param v_ a complex tangent vector.
 #' @param v0_ a complex tangent vector.
+#' @param weights_ numeric vector of inner product weights matching the \code{y_}
+#' as a complex vector.
+#' @param weights numeric vector of inner product weights matching the \code{y}
+#' as a numeric vector. \code{weights_} are duplicated for values of both dimensions.
 #'
 #' @export
 mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanarShape, 
                              public = list(
+                               #' @description center \code{y_}.
                                register = function(y_) {
                                  ONE <- rep(1, length(y_))
                                  y_ <- y_ - private$.innerprod(ONE, y_) / private$.innerprod(ONE)
                                },
+                               #' @description orthogonally project \code{v_} into the tangent space of \code{y0_}.
                                register_v = function(v_, y0_ = self$pole_) {
                                  v_ - y0_ * complex(im=1) * Im( private$.innerprod(y0_, v_) / private$.innerprod(y0_) )
                                },
+                               #' @description \code{y_-y0_} after aligning \code{y_} to \code{y0_}.
                                log = function(y_, y0_ = self$pole_) {
                                  private$.align(y_, y0_) - y0_
                                },
+                               #' @description \code{y0_+v_} assuming \code{v_} in the tangent space of \code{y0_}.
                                exp = function(v_, y0_ = private$.pole_) y0_ + v_,
-                               
-                               transport = function(v0_, y0_, y1_, method = c("horizontal"), tol = 1e-15) {
+                               #' @description size-and-shape parallel transport
+                               #' @param method currently, only "horizontal" assuming \code{y0_, y1_} aligned
+                               #' and \code{v0_} a proper horizontal tangent vector at \code{y0_}.
+                               transport = function(v0_, y0_, y1_, method = c("horizontal")) {
                                  method <- match.arg(method)
                                  # if( Im(private$.innerprod(y0_, y1_)) > tol & mode(v0_) == "complex") stop("For complex vector methods only work in the horizontal case, yet.")
                                  if( method == "horizontal" & mode(v0_) == "numeric") 
@@ -621,13 +646,24 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
                                                     ( 1 + Mod(private$.innerprod(y0_, y1_)) ) )
                                         })
                                },
-                               #' @param ... arguments passed to \code{base::plot}.
+                               #' @description default plotting function for planar shapes, plotting \code{y_}
+                               #' in front of \code{y0_} (after alignment).
+                               #' @param col,pch,type graphical parameters passed to \code{base::plot} referring to \code{y_}.
+                               #' @param ylab,xlab,xlim,ylim,xaxt,yaxt,asp,bty graphical parameters passed to \code{base::plot} 
+                               #' with modified defaults.
+                               #' @param ... other arguments passed to \code{base::plot}.
+                               #' @param y0_par graphical parameters for \code{y0_}.
+                               #' @param seg_par graphical parameters for line segments connecting \code{y_} 
+                               #' and \code{y0_}.
                                plot = function(y_ = self$y_, y0_ = self$pole_, 
                                                yaxt='s', bty='n', ...) {
                                  super$plot(y_ = y_, y0_ = y0_, 
                                             yaxt=yaxt, bty=bty, ...)
                                },
-                               #' @description 
+                               #' @description Obtain "design matrix" of tangent space normal vectors in 
+                               #' unstructured long format.
+                               #' @param weighted logical, should inner product weights be pre-multiplied to 
+                               #' normal vectors?
                                get_normal = function(y0_ = self$pole_, weighted = FALSE) {
                                  if(is.null(private$unstructure_index)) 
                                    stop("Please, initialize geometry before using $get_normal.")
@@ -675,13 +711,23 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
 #' unstructured 'flattened' way
 #' @param v a list of `v` vectors representing tangent vectors in the component
 #' manifolds in an unstructured 'flattened' way
-#' @param y_ a list of objects living in the comp. manifolds
-#' @param y0_ a list of objects living in the comp. manifolds
-#' @param y1_ a list of objects living in the comp. manifolds
-#' @param v_ a list of tangent vectors living in the comp. manifolds
-#' @param v0_ a list of tangent vectors living in the comp. manifolds
-#' @param v1_ a list of tangent vectors living in the comp. manifolds
+#' @param y_ a list of objects living in the component manifolds
+#' @param y0_ a list of objects living in the component manifolds
+#' @param y1_ a list of objects living in the component manifolds
+#' @param v_ a list of tangent vectors living in the component manifolds
+#' @param v0_ a list of tangent vectors living in the component manifolds
+#' @param v1_ a list of tangent vectors living in the component manifolds
 #' @param ... other arguments passed to underlying \code{mfGeometry}.
+#' 
+#' @field mfGeom_default an \code{mfGeometry} object implementing the default 
+#' geometry of a component of the product space.
+#' 
+#' @field y_ return lists of respective elements in the components.
+#' \code{y_} can be specified as a list of \code{mfGeometry} objects constituting 
+#' the components of the product geometry.
+#' @field pole_ return lists of respective elements in the components.
+#' @field weights_ return lists of respective elements in the components.
+#' @field mfGeom_classes return a list of the classes of \code{y_} (read only).
 #'
 # #' @name mfGeometry
 # #' @rdname mfGeometry
@@ -692,6 +738,18 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
 mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry, 
                       public = list(
                         mfGeom_default = NA,
+                        #' @description Initialize product geometry with each 
+                        #' component the \code{mfGeom_default} based on the 
+                        #' \code{data} containing the variables for \code{y_} 
+                        #' specified in the \code{formula}.
+                        #' @param mfGeom_default \code{mfGeometry} object carrying the
+                        #' component geometry.
+                        #' @param formula formula containing interpreted 
+                        #' via \code{mfInterpret_formula}) and indicating, in particular,
+                        #' the ID variable for splitting observations in the product 
+                        #' components.
+                        #' @param data containing required variables.
+                        #' 
                         initialize = function(mfGeom_default, data, formula) {
                           if(!missing(mfGeom_default)) 
                             self$mfGeom_default <- mfGeom_default
@@ -753,6 +811,12 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           index <- self$structure(1L:length(data[[v$value]]))
                           private$unstructure_index <- order(private$.unstructure(index))
                         },
+                        #' @description subset product geometry to specified components.
+                        #' Make sure to clone the product geometry first if 
+                        #' complete geometry should be preserved.
+                        #' @param which integers or character strings indicating
+                        #' which elements of \code{y_} should be selected. 
+                        #'  
                         slice = function(which) {
                           private$.y_ <- private$.y_[which]
                           y_skeleton <- private$y_skeleton[which]
@@ -763,16 +827,22 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           private$unstructure_index <- order(private$.unstructure(index))
                           invisible(self)
                         },
+                        #' @description bring \code{y} into the right order to
+                        #' split and pass it to the component geometries.
                         structure = function(y) {
                           if(is.null(private$y_skeleton))
                             stop("Please, initialize geometry before using $structure.")
                           private$.structure(y[unlist(private$y_skeleton)])
                         },
+                        #' @description unstructure \code{y_} in the component geometries
+                        #' and arrange it into the right order.
                         unstructure = function(y_) {
                           if(is.null(private$unstructure_index))
                             stop("Please, initialize geometry before using $unstructure.")
                           private$.unstructure(y_)[private$unstructure_index]
                         },
+                        #' @description unstructure \code{weights_} in the component geometries
+                        #' and arrange it into the right order.
                         unstructure_weights = function(weights_) {
                           uw <- Map(function(e, weights_) e$unstructure_weights(weights_), 
                                     private$.y_, weights_)
@@ -782,41 +852,59 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                               c(unlist(uw))[private$unstructure_index]
                             }
                           },
+                        #' @description bring \code{weights} into the right order to
+                        #' split and pass it to the component geometries.
                         structure_weights = function(weights) {
                           self$structure(weights)
                         },
+                        #' @description component-wise alignment.
                         align = function(y_, y0_, ...) {
                           mapply( function(e, y_, y0_) e$align(y_, y0_, ...), 
                                   private$.y_, y_, y0_, SIMPLIFY = FALSE ) 
                         },
+                        #' @description component-wise registration.
                         register = function(y_, ...) {
                           mapply( function(e, y_) e$register(y_, ...), 
                                   private$.y_, y_, SIMPLIFY = FALSE ) 
                         },
+                        #' @description component-wise registration.
                         register_v = function(v_, y0_, ...) {
                           mapply( function(e, v_, y0_) e$register_v(v_, y0_, ...), 
                                   private$.y_, v_, y0_, SIMPLIFY = FALSE ) 
                         },
+                        #' @description compute vector of distances in component
+                        #' geometries.
                         distance = function(y0_, y1_, ...) {
                           mapply( function(e, y0_, y1_) e$distance(y0_, y1_, ...), 
                                   private$.y_, y0_, y1_, SIMPLIFY = TRUE )
                         }, 
+                        #' @description loop over Exp-maps in the component
+                        #' geometries.
                         exp = function(v_, y0_, ...) {
                           mapply( function(e, v_, y0_) e$exp(v_, y0_, ...), 
                                   private$.y_, v_, y0_, SIMPLIFY = FALSE )
                         }, 
+                        #' @description loop over Log-maps in the component
+                        #' geometries.
                         log = function(y_, y0_, ...) {
                           mapply( function(e, y_, y0_) e$log(y_, y0_, ...), 
                                   private$.y_, y_, y0_, SIMPLIFY = FALSE )
-                        }, 
+                        },
+                        #' @description loop over parallel transports in the component
+                        #' geometries.
                         transport = function(v0_, y0_, y1_, ...) {
                           mapply( function(e, v0_, y0_, y1_) e$transport(v0_, y0_, y1_, ...), 
                                   private$.y_, v0_, y0_, y1_, SIMPLIFY = FALSE )
                         },
+                        #' @description compute vector of inner products in the 
+                        #' component geometries. An inner product on the product
+                        #' space can be obtained as a scalar product of the 
+                        #' returned vector.
                         innerprod = function(v0_, v1_ = v0_, ...) {
                           mapply( function(e, v0_, v1_) e$innerprod(v0_, v1_, ...), 
                                   private$.y_, v0_, v1_, SIMPLIFY = FALSE )
                         },
+                        #' @description loop over individual plots of the components.
                         plot = function(y_ = self$y_, y0_ = self$pole_, main = names(y_), ...) {
                           stopifnot(is.list(y0_)|is.null(y0_))
                           stopifnot(is.list(y_))

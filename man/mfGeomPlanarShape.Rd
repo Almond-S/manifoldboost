@@ -81,9 +81,8 @@ indicator) to complex
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{y}}{a numeric vector representing an element of the manifold in an
-unstructured way. If \code{y} is of length \eqn{l}, the first \eqn{l/2} elements
-of \code{y} correspond to the real part and the remaining \eqn{l/2} elements to
-imaginary part of the complex vector \code{y_}.}
+unstructured way. The position of elements and dimensions is obtained from
+the initialization of the geometry.}
 }
 \if{html}{\out{</div>}}
 }
@@ -115,6 +114,14 @@ to appear in both dimensions in numeric long format
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$unstructure_weights(weights_)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{weights_}}{numeric vector of inner product weights matching the \code{y_}
+as a complex vector.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-structure_weights"></a>}}
@@ -126,6 +133,14 @@ inner product weights for complex vectors
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$structure_weights(weights)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{weights}}{numeric vector of inner product weights matching the \code{y}
+as a numeric vector. \code{weights_} are duplicated for values of both dimensions.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-register"></a>}}
@@ -182,6 +197,9 @@ Apply Log function of the sphere after rotation alignment
 \item{\code{y_}}{a complex vector on the sphere, orthogonal to the constant.}
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{method}}{alternatives "simple" and "alternative" for the expression
+used to compute the sphere Log-map. Passed to parent method.}
 }
 \if{html}{\out{</div>}}
 }
@@ -207,6 +225,13 @@ such that the transport of the sphere is directly applied.
 \item{\code{v0_}}{a complex tangent vector.}
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{y1_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{method}}{expression used for parallel transport: "general" corresponds to the one of
+Cornea et al. 2017, "horizontal" to the one of Dryden & Mardia 2012 p. 76,
+and "simple" to a simplified version of "general" where \code{v0_}
+is horizontal to \code{y0_}. Passed to parent method.}
 }
 \if{html}{\out{</div>}}
 }
@@ -244,17 +269,17 @@ in front of \code{y0_} (after alignment).
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
 
-\item{\code{ylab, xlab, xlim, ylim, xaxt, yaxt}}{graphical parameters passed to \code{base::plot}
+\item{\code{ylab, xlab, xlim, ylim, xaxt, yaxt, asp}}{graphical parameters passed to \code{base::plot}
 with modified defaults.}
 
 \item{\code{col, pch, type}}{graphical parameters passed to \code{base::plot} referring to \code{y_}.}
+
+\item{\code{y0_par}}{graphical parameters for \code{y0_}.}
 
 \item{\code{seg_par}}{graphical parameters for line segments connecting \code{y_}
 and \code{y0_}.}
 
 \item{\code{...}}{other arguments passed to \code{base::plot}.}
-
-\item{\code{y0_param}}{graphical parameters for \code{y0_}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -263,14 +288,15 @@ and \code{y0_}.}
 \if{html}{\out{<a id="method-validate"></a>}}
 \if{latex}{\out{\hypertarget{method-validate}{}}}
 \subsection{Method \code{validate()}}{
+check whether \code{is.complex(y_)}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$validate(y0_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$validate(y_)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+\item{\code{y_}}{a complex vector on the sphere, orthogonal to the constant.}
 }
 \if{html}{\out{</div>}}
 }
@@ -279,6 +305,8 @@ and \code{y0_}.}
 \if{html}{\out{<a id="method-get_normal"></a>}}
 \if{latex}{\out{\hypertarget{method-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
+Obtain "design matrix" of tangent space normal vectors in
+unstructured long format.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$get_normal(y0_ = self$pole_, weighted = FALSE)}\if{html}{\out{</div>}}
 }
@@ -287,6 +315,9 @@ and \code{y0_}.}
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{weighted}}{logical, should inner product weights be pre-multiplied to
+normal vectors?}
 }
 \if{html}{\out{</div>}}
 }

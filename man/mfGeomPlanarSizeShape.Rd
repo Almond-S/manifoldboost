@@ -4,7 +4,7 @@
 \alias{mfGeomPlanarSizeShape}
 \title{Planar Size and Shape Space Geometry}
 \description{
-Geometry of the 'classic' size and shape space identifying planar
+Geometry of the 'classic' size-and-shape space identifying planar
 configurations with a centered and complex vector and treating them as rotation
 invariant.
 }
@@ -43,6 +43,7 @@ invariant.
 \if{html}{\out{<a id="method-register"></a>}}
 \if{latex}{\out{\hypertarget{method-register}{}}}
 \subsection{Method \code{register()}}{
+center \code{y_}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$register(y_)}\if{html}{\out{</div>}}
 }
@@ -59,6 +60,7 @@ invariant.
 \if{html}{\out{<a id="method-register_v"></a>}}
 \if{latex}{\out{\hypertarget{method-register_v}{}}}
 \subsection{Method \code{register_v()}}{
+orthogonally project \code{v_} into the tangent space of \code{y0_}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$register_v(v_, y0_ = self$pole_)}\if{html}{\out{</div>}}
 }
@@ -77,6 +79,7 @@ invariant.
 \if{html}{\out{<a id="method-log"></a>}}
 \if{latex}{\out{\hypertarget{method-log}{}}}
 \subsection{Method \code{log()}}{
+\code{y_-y0_} after aligning \code{y_} to \code{y0_}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$log(y_, y0_ = self$pole_)}\if{html}{\out{</div>}}
 }
@@ -95,6 +98,7 @@ invariant.
 \if{html}{\out{<a id="method-exp"></a>}}
 \if{latex}{\out{\hypertarget{method-exp}{}}}
 \subsection{Method \code{exp()}}{
+\code{y0_+v_} assuming \code{v_} in the tangent space of \code{y0_}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$exp(v_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
 }
@@ -113,14 +117,9 @@ invariant.
 \if{html}{\out{<a id="method-transport"></a>}}
 \if{latex}{\out{\hypertarget{method-transport}{}}}
 \subsection{Method \code{transport()}}{
+size-and-shape parallel transport
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$transport(
-  v0_,
-  y0_,
-  y1_,
-  method = c("horizontal"),
-  tol = 1e-15
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$transport(v0_, y0_, y1_, method = c("horizontal"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -129,6 +128,11 @@ invariant.
 \item{\code{v0_}}{a complex tangent vector.}
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{y1_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{method}}{currently, only "horizontal" assuming \code{y0_, y1_} aligned
+and \code{v0_} a proper horizontal tangent vector at \code{y0_}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -137,6 +141,8 @@ invariant.
 \if{html}{\out{<a id="method-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-plot}{}}}
 \subsection{Method \code{plot()}}{
+default plotting function for planar shapes, plotting \code{y_}
+in front of \code{y0_} (after alignment).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$plot(
   y_ = self$y_,
@@ -154,7 +160,17 @@ invariant.
 
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
 
-\item{\code{...}}{arguments passed to \code{base::plot}.}
+\item{\code{...}}{other arguments passed to \code{base::plot}.}
+
+\item{\code{col, pch, type}}{graphical parameters passed to \code{base::plot} referring to \code{y_}.}
+
+\item{\code{ylab, xlab, xlim, ylim, xaxt, yaxt, asp, bty}}{graphical parameters passed to \code{base::plot}
+with modified defaults.}
+
+\item{\code{y0_par}}{graphical parameters for \code{y0_}.}
+
+\item{\code{seg_par}}{graphical parameters for line segments connecting \code{y_}
+and \code{y0_}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -163,6 +179,8 @@ invariant.
 \if{html}{\out{<a id="method-get_normal"></a>}}
 \if{latex}{\out{\hypertarget{method-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
+Obtain "design matrix" of tangent space normal vectors in
+unstructured long format.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarSizeShape$get_normal(y0_ = self$pole_, weighted = FALSE)}\if{html}{\out{</div>}}
 }
@@ -171,6 +189,9 @@ invariant.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{y0_}}{a complex vector on the sphere, orthogonal to the constant.}
+
+\item{\code{weighted}}{logical, should inner product weights be pre-multiplied to
+normal vectors?}
 }
 \if{html}{\out{</div>}}
 }
