@@ -164,6 +164,13 @@ and arrange it into the right order.
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$unstructure_weights(weights_)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{weights_}}{list of numeric vectors of inner product weights.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-structure_weights"></a>}}
@@ -175,6 +182,14 @@ split and pass it to the component geometries.
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$structure_weights(weights)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{weights}}{numeric vector of inner product weights matching the \code{y}
+as a numeric vector.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-align"></a>}}
@@ -367,6 +382,8 @@ loop over individual plots of the components.
 
 \item{\code{y0_}}{a list of objects living in the component manifolds}
 
+\item{\code{main}}{vector of plot titles}
+
 \item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
@@ -376,6 +393,9 @@ loop over individual plots of the components.
 \if{html}{\out{<a id="method-get_normal"></a>}}
 \if{latex}{\out{\hypertarget{method-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
+Obtain "design matrix" of tangent space normal vectors in
+unstructured long format, arranging rows into the right
+order after evaluating it on the components.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$get_normal(y0_ = self$pole_, weighted = FALSE)}\if{html}{\out{</div>}}
 }
@@ -384,6 +404,9 @@ loop over individual plots of the components.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{y0_}}{a list of objects living in the component manifolds}
+
+\item{\code{weighted}}{logical, should inner product weights be pre-multiplied to
+normal vectors?}
 }
 \if{html}{\out{</div>}}
 }
@@ -392,6 +415,7 @@ loop over individual plots of the components.
 \if{html}{\out{<a id="method-validate"></a>}}
 \if{latex}{\out{\hypertarget{method-validate}{}}}
 \subsection{Method \code{validate()}}{
+loop of validation functions of component geometries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$validate(y0_)}\if{html}{\out{</div>}}
 }

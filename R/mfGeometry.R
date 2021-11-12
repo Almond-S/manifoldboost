@@ -718,6 +718,9 @@ mfGeomPlanarSizeShape <- R6Class("mfGeomPlanarSizeShape", inherit = mfGeomPlanar
 #' @param v0_ a list of tangent vectors living in the component manifolds
 #' @param v1_ a list of tangent vectors living in the component manifolds
 #' @param ... other arguments passed to underlying \code{mfGeometry}.
+#' @param weights_ list of numeric vectors of inner product weights.
+#' @param weights numeric vector of inner product weights matching the \code{y}
+#' as a numeric vector. 
 #' 
 #' @field mfGeom_default an \code{mfGeometry} object implementing the default 
 #' geometry of a component of the product space.
@@ -905,6 +908,7 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                                   private$.y_, v0_, v1_, SIMPLIFY = FALSE )
                         },
                         #' @description loop over individual plots of the components.
+                        #' @param main vector of plot titles
                         plot = function(y_ = self$y_, y0_ = self$pole_, main = names(y_), ...) {
                           stopifnot(is.list(y0_)|is.null(y0_))
                           stopifnot(is.list(y_))
@@ -923,6 +927,11 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                             }
                           }
                         },
+                        #' @description Obtain "design matrix" of tangent space normal vectors in 
+                        #' unstructured long format, arranging rows into the right
+                        #' order after evaluating it on the components.
+                        #' @param weighted logical, should inner product weights be pre-multiplied to 
+                        #' normal vectors?
                         get_normal = function(y0_ = self$pole_, weighted = FALSE) {
                           if(private$regular_design) {
                             if(!all(sapply(y0_, identical, y0_[[1]])))
@@ -937,6 +946,7 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           }
                           nvecs 
                         },
+                        #' @description loop of validation functions of component geometries.
                         validate = function(y0_) { 
                           if(is.null(private$.y_)) 
                             is.list(y0_) else 
