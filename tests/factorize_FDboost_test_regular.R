@@ -1,6 +1,5 @@
-library(manifoldboost)
 
-# generate toy data -------------------------------------------------------
+# generate regular toy data --------------------------------------------------
 
 n <- 100
 m <- 40

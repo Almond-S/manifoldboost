@@ -14,7 +14,6 @@
 #' - response: an array (regular case) or vector (irregular case) containing the 
 #' response values
 #'
-# #' @examples
 mfInterpret_cplx_curves <- function(
   formula,
   data,
@@ -131,27 +130,28 @@ mfInterpret_cplx_curves <- function(
 
 
 #' Full Procrustres mean of planar shapes 
+#' 
+#' EXPERIMENTAL. CURRENTLY NOT EXPORTED!
 #'
 #' @param formula a formula in the form `shape ~ value^dim ~ blearner(arg) | id`,
 #' where `blearner` is typically `bbs` if `arg` is continuous and `bols` if discrete.
 #' @param data data containing the shape in a format convertible to `shape_dat`. 
 #' Shape should be contained as `tbl_cube` (`shape_cube`) if data is regular.
-#' @param cyclic 
-#' @param smoothed.cov 
-#' @param cov.k 
-#' @param arg.grid.len 
-#' @param weights 
-#' @param numInt
-#' @param mf
-#' @param mfboost.return 
+#' @param cyclic logical, should cyclic B-splines be used?
+#' @param smoothed.cov logical, should covariance matrix be smoothed?
+#' @param cov.k integer, number of basis elements for each margin in covariance smoothing.
+#' @param arg.grid.len integer, grid length for evaluation of smoothed covariance.
+#' @param weights numeric weight vector.
+#' @param mf \code{mfGeometry} object.
+#' @param mfboost.return logocal, should results be returned in the format needed
+#' for mfboost?
 #'
 #' @return in the default setting, the estimated full procrustres mean in 
 #' shape_frame_long format 
 #' (data.frame with coordinates as real values stored in a single column).
 #' @import mboost
-#' @export
+# #' @export
 #'
-# #' @examples
 planarshape_full_proc <- function(
   formula,
   data,

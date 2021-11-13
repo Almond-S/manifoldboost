@@ -12,6 +12,68 @@ relevant statistics in an easy and transparent way.
 The methods depend on the magrittr \code{\%>\%} operator and \code{dplyr::bind_rows}.
 And, if messaging is desired, on the R-package \code{telegram}.
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{model0}}{the underlying true model object.}
+
+\item{\code{newdata0_FDboost}}{the data used for sampling in FDboost format.}
+
+\item{\code{new_mf0}}{a clone of the mfGeometry of model0 with newdata0.}
+
+\item{\code{new_pred0_}}{predictions of model0 on newdata0.}
+
+\item{\code{sessionInfo}}{the result of sessionInfo() executed at initialization.}
+
+\item{\code{new_effect0}}{effects of model0 evaluated on newdata0.}
+
+\item{\code{new_fac0}}{tensor-product factorization of model0 on newdata0.}
+
+\item{\code{seed}}{the random seed used for the simulation.}
+
+\item{\code{n}}{a vecor of length three of the form c(n_sim = NA, n_obj = NA, n_grid = NA)
+containing the specified (average) sample sizes.}
+
+\item{\code{simdata}}{the simulated dataset.}
+
+\item{\code{cluster}}{the cluster id used for parallel computing.}
+
+\item{\code{family}}{the family object used.}
+
+\item{\code{mfboost_control}}{the list specified for controlling mboost in the model fits.}
+
+\item{\code{models}}{the fitted model objects.}
+
+\item{\code{runtime}}{the runtime of the model fits.}
+
+\item{\code{warnings}}{warnings produced during model fits.}
+
+\item{\code{cvrisk_control}}{a list of argument supplied to control the cross-validation.}
+
+\item{\code{cv_seeds}}{seeds used for cross-validation.}
+
+\item{\code{cvs}}{cross-validation objects.}
+
+\item{\code{runtime_cv}}{runtimes of the cross-validations.}
+
+\item{\code{warnings_cv}}{warnings produced during cross-validations.}
+
+\item{\code{preds_}}{predictions of model fits in internal geometry format.}
+
+\item{\code{poles_}}{poles predicted in internal geometry format.}
+
+\item{\code{effects}}{effects estimated on fitted models.}
+
+\item{\code{facs}}{factorized model fits.}
+
+\item{\code{simsum}}{first simulation summary.}
+
+\item{\code{bot}}{TGbot object of R package telegram used for automized notifications.}
+
+\item{\code{name}}{name of the simulation.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -34,24 +96,49 @@ And, if messaging is desired, on the R-package \code{telegram}.
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize simulation scenario.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$new(model0, newdata0 = NULL, name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{model0}}{the model object with the underlying truth.}
+
+\item{\code{newdata0}}{new data to simulate from. The default
+\code{NULL} will take the data of \code{model0}.}
+
+\item{\code{name}}{character string, a name for the simulation scenario.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-gridsampler"></a>}}
 \if{latex}{\out{\hypertarget{method-gridsampler}{}}}
 \subsection{Method \code{gridsampler()}}{
+function sampling from the evaluations of
+a single response observation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$gridsampler(x, size)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{vector to be subsampled from}
+
+\item{\code{size}}{average sample size}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sample_topdown"></a>}}
 \if{latex}{\out{\hypertarget{method-sample_topdown}{}}}
 \subsection{Method \code{sample_topdown()}}{
+function for sampling observations
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$sample_topdown(
   n_sim = 1,
@@ -63,11 +150,26 @@ And, if messaging is desired, on the R-package \code{telegram}.
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n_sim, n_obj, n_grid}}{sample sizes}
+
+\item{\code{seed}}{random seed}
+
+\item{\code{sample_obj}}{function to sample from objects.}
+
+\item{\code{sample_grid}}{function to sample within objects.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sample_blockwise"></a>}}
 \if{latex}{\out{\hypertarget{method-sample_blockwise}{}}}
 \subsection{Method \code{sample_blockwise()}}{
+function for sampling observations in a blockwise
+strategy to preserve covariate composition.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$sample_blockwise(
   n_sim = 1,
@@ -79,20 +181,46 @@ And, if messaging is desired, on the R-package \code{telegram}.
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n_sim, n_grid}}{sample sizes.}
+
+\item{\code{n_blocks}}{number of blocks in each sample.}
+
+\item{\code{seed}}{random seed. For the defaul \code{NULL}, the seed
+is randomly drawn.}
+
+\item{\code{random_trafo}}{function taking \code{y_} an returning it
+after random transformations.}
+
+\item{\code{sample_grid}}{function to sample within objects.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-parallel_setup"></a>}}
 \if{latex}{\out{\hypertarget{method-parallel_setup}{}}}
 \subsection{Method \code{parallel_setup()}}{
+initialize parallel computing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$parallel_setup(nc = detectCores())}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{nc}}{number of cores.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-parallel_stop"></a>}}
 \if{latex}{\out{\hypertarget{method-parallel_stop}{}}}
 \subsection{Method \code{parallel_stop()}}{
+end parallel computing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$parallel_stop()}\if{html}{\out{</div>}}
 }
@@ -102,15 +230,28 @@ And, if messaging is desired, on the R-package \code{telegram}.
 \if{html}{\out{<a id="method-fit"></a>}}
 \if{latex}{\out{\hypertarget{method-fit}{}}}
 \subsection{Method \code{fit()}}{
+fit simulated datasets
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$fit(family = self$model0$family, ..., verbose = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{family}}{mfFamily object used for fitting.}
+
+\item{\code{...}}{arguments supplied to mboost control argument.}
+
+\item{\code{verbose}}{logical, should live info be printed.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-crossvalidate"></a>}}
 \if{latex}{\out{\hypertarget{method-crossvalidate}{}}}
 \subsection{Method \code{crossvalidate()}}{
+conduct cross-validations of fitted models.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$crossvalidate(
   type = "kfold",
@@ -121,11 +262,28 @@ And, if messaging is desired, on the R-package \code{telegram}.
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{type of resampling (as for mboost).}
+
+\item{\code{B}}{number of resampling folds.}
+
+\item{\code{...}}{other arguments supplied to cvLong.}
+
+\item{\code{verbose}}{logical, should live info be printed?}
+
+\item{\code{seeds}}{vector of random seeds for cross-validation. For the
+default \code{NULL}, seeds are randomly drawn.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-predict"></a>}}
 \if{latex}{\out{\hypertarget{method-predict}{}}}
 \subsection{Method \code{predict()}}{
+predict model0 and models and extract estimated effects.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$predict()}\if{html}{\out{</div>}}
 }
@@ -135,6 +293,7 @@ And, if messaging is desired, on the R-package \code{telegram}.
 \if{html}{\out{<a id="method-summarize"></a>}}
 \if{latex}{\out{\hypertarget{method-summarize}{}}}
 \subsection{Method \code{summarize()}}{
+generate simulation summary
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$summarize()}\if{html}{\out{</div>}}
 }
@@ -144,15 +303,30 @@ And, if messaging is desired, on the R-package \code{telegram}.
 \if{html}{\out{<a id="method-notify"></a>}}
 \if{latex}{\out{\hypertarget{method-notify}{}}}
 \subsection{Method \code{notify()}}{
+send automated notifications via telegram using
+the R package \link{telegram}. For getting started see their
+package vignette.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$notify(token = bot_token("RBot"), id = user_id("me"), name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{token}}{telegram bot token, see \code{?telegram::bot_token}.}
+
+\item{\code{id}}{telegram user id, see \code{?telegram::user_id}.}
+
+\item{\code{name}}{simulation name attached to the notification.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-plot}{}}}
 \subsection{Method \code{plot()}}{
+make first summary for first inspection of results.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RiemannL2sim$plot()}\if{html}{\out{</div>}}
 }

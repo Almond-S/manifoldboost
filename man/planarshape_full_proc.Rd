@@ -24,17 +24,20 @@ where \code{blearner} is typically \code{bbs} if \code{arg} is continuous and \c
 \item{data}{data containing the shape in a format convertible to \code{shape_dat}.
 Shape should be contained as \code{tbl_cube} (\code{shape_cube}) if data is regular.}
 
-\item{cyclic}{}
+\item{cyclic}{logical, should cyclic B-splines be used?}
 
-\item{smoothed.cov}{}
+\item{smoothed.cov}{logical, should covariance matrix be smoothed?}
 
-\item{cov.k}{}
+\item{cov.k}{integer, number of basis elements for each margin in covariance smoothing.}
 
-\item{arg.grid.len}{}
+\item{arg.grid.len}{integer, grid length for evaluation of smoothed covariance.}
 
-\item{weights}{}
+\item{weights}{numeric weight vector.}
 
-\item{mfboost.return}{}
+\item{mf}{\code{mfGeometry} object.}
+
+\item{mfboost.return}{logocal, should results be returned in the format needed
+for mfboost?}
 }
 \value{
 in the default setting, the estimated full procrustres mean in
@@ -42,5 +45,5 @@ shape_frame_long format
 (data.frame with coordinates as real values stored in a single column).
 }
 \description{
-Full Procrustres mean of planar shapes
+EXPERIMENTAL. CURRENTLY NOT EXPORTED!
 }

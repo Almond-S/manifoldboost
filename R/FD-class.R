@@ -36,7 +36,6 @@ NULL
 #' #' @seealso [FDboost(), FD-class]
 #' @export
 #'
-#' @examples
 as_FD <- function(x, ...) {
   UseMethod("as_FD")
 }
@@ -60,7 +59,6 @@ as_FD <- function(x, ...) {
 #' @seealso [FDboost(), FD-class]
 #' @export
 #'
-#' @examples
 as_FD.data.frame <- function(x, obj.formula, ...) {
   v <- mfInterpret_objformula(obj.formula)
   
@@ -86,7 +84,6 @@ as_FD.data.frame <- function(x, obj.formula, ...) {
 #' @seealso [FDboost(), tbl_cube, FD-class]
 #' @export
 #'
-#' @examples
 as_FD.tbl_cube <- function(x, obj.formula, ...) {
   v <- mfInterpret_objformula(obj.formula)
   # arrange array dimensions such that id is first and dim is last 
@@ -126,7 +123,6 @@ as_FD.tbl_cube <- function(x, obj.formula, ...) {
 #' @export
 #' @importFrom formula.tools lhs.vars
 #'
-#' @examples
 as_FD.list <- function(x, formula, ...) {
   
   if(is.null(formula)) {

@@ -149,7 +149,6 @@ setGeneric("clone", function(object, deep = TRUE) {
 #' @export
 #' @importFrom rlang env_clone
 #'
-#' @examples
 setMethod("clone", signature(object = "mfboost_family"), 
           function(object, deep = TRUE) {
   old <- environment(object@ngradient)

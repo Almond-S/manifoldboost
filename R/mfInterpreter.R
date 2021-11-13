@@ -9,7 +9,6 @@
 #' @export
 #' @importFrom formula.tools lhs rhs
 #'
-#' @examples
 mfInterpret_objformula <- function(x, varnames = TRUE, ...) {
   UseMethod("mfInterpret_objformula")
 }
@@ -57,7 +56,6 @@ mfInterpret_objformula <- function(x, varnames = TRUE, ...) {
 #' 
 #' @export
 #'
-#' @examples
 mfFormulae_for_FDboost <- function(x, ...) {
   UseMethod("mfFormulae_for_FDboost")
 }

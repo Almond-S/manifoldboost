@@ -15,8 +15,8 @@
 #' 
 #' @name factorize
 #' @aliases factorize.FDboost
-#'
-#' @examples
+#' 
+#' @example tests/mfboost_cells.R 
 #'
 factorize.mfboost <- function(x, blwise = TRUE, newdata = NULL, newformula = NULL, newobj.formula = NULL, ...) {
   

@@ -8,6 +8,36 @@ setOldClass("RiemannL2sim")
 #' fit models, do cross-validation, predict quantities of interest, and summarize
 #' relevant statistics in an easy and transparent way.
 #' 
+#' @field model0 the underlying true model object.
+#' @field newdata0_FDboost the data used for sampling in FDboost format.
+#' @field new_mf0 a clone of the mfGeometry of model0 with newdata0.
+#' @field new_pred0_ predictions of model0 on newdata0.
+#' @field sessionInfo the result of sessionInfo() executed at initialization.
+#' @field new_effect0 effects of model0 evaluated on newdata0.
+#' @field new_fac0 tensor-product factorization of model0 on newdata0.
+#' @field seed the random seed used for the simulation.
+#' @field n a vecor of length three of the form c(n_sim = NA, n_obj = NA, n_grid = NA)
+#' containing the specified (average) sample sizes.
+#' @field simdata the simulated dataset.
+#' @field cluster the cluster id used for parallel computing.
+#' @field family the family object used.
+#' @field mfboost_control the list specified for controlling mboost in the model fits.
+#' @field models the fitted model objects.
+#' @field runtime the runtime of the model fits.
+#' @field warnings warnings produced during model fits.
+#' @field cvrisk_control a list of argument supplied to control the cross-validation.
+#' @field cv_seeds seeds used for cross-validation.
+#' @field cvs cross-validation objects.
+#' @field runtime_cv runtimes of the cross-validations.
+#' @field warnings_cv warnings produced during cross-validations.
+#' @field preds_ predictions of model fits in internal geometry format.
+#' @field poles_ poles predicted in internal geometry format.
+#' @field effects effects estimated on fitted models.
+#' @field facs factorized model fits.
+#' @field simsum first simulation summary.
+#' @field bot TGbot object of R package telegram used for automized notifications.
+#' @field name name of the simulation.
+#' 
 #' @details 
 #' The methods depend on the magrittr \code{%>%} operator and \code{dplyr::bind_rows}. 
 #' And, if messaging is desired, on the R-package \code{telegram}.
@@ -18,7 +48,11 @@ setOldClass("RiemannL2sim")
 RiemannL2sim <- R6Class("RiemannL2sim",
                   public = list(
                     
-                    # set up simulation scenario
+                    #' @description initialize simulation scenario.
+                    #' @param model0 the model object with the underlying truth.
+                    #' @param newdata0 new data to simulate from. The default 
+                    #' \code{NULL} will take the data of \code{model0}.
+                    #' @param name character string, a name for the simulation scenario.
                     initialize = function(model0, newdata0 = NULL, name = NULL) {
                       
                       # set simulation name
@@ -109,7 +143,10 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                     new_effect0 = NULL, 
                     new_fac0 = NULL,
                     
-                    # sampling-related fields
+                    #' @description function sampling from the evaluations of
+                    #' a single response observation
+                    #' @param x vector to be subsampled from
+                    #' @param size average sample size
                     gridsampler = function(x, size) {
                       stopifnot(size >= 3)
                       idx <- seq_along(x)
@@ -121,6 +158,11 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                       }
                       x[fx]
                     },
+                    #' @description function for sampling observations
+                    #' @param n_sim,n_obj,n_grid sample sizes
+                    #' @param seed random seed
+                    #' @param sample_obj function to sample from objects.
+                    #' @param sample_grid function to sample within objects.
                     sample_topdown = function(n_sim = 1, n_obj = 1, n_grid = 40, 
                                       seed = NULL, 
                                       sample_obj = sample,
@@ -190,6 +232,15 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                       
                       invisible(self)
                     },
+                    #' @description function for sampling observations in a blockwise
+                    #' strategy to preserve covariate composition.
+                    #' @param n_sim,n_grid sample sizes.
+                    #' @param n_blocks number of blocks in each sample.
+                    #' @param seed random seed. For the defaul \code{NULL}, the seed
+                    #' is randomly drawn.
+                    #' @param random_trafo function taking \code{y_} an returning it
+                    #' after random transformations.
+                    #' @param sample_grid function to sample within objects.
                     sample_blockwise = function(n_sim = 1, n_blocks = 1, n_grid = 40, 
                                               seed = NULL,
                                               # function returning a randomized version of mf$y_
@@ -291,7 +342,8 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                     n = c(n_sim = NA, n_obj = NA, n_grid = NA),
                     simdata = NULL,
                     
-                    # prepare parallel computing
+                    #' @description initialize parallel computing
+                    #' @param nc number of cores.
                     parallel_setup = function(nc = detectCores()) {
                       self$cluster <- makePSOCKcluster(1:nc)
                       invisible(
@@ -300,13 +352,16 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                     },
                     cluster = NULL, 
                     
-                    # end parallel computing
+                    #' @description end parallel computing
                     parallel_stop = function() {
                       stopCluster(self$cluster)
                       self$cluster <- NULL
                     },
                     
-                    # model fit-related fields
+                    #' @description fit simulated datasets
+                    #' @param family mfFamily object used for fitting.
+                    #' @param ... arguments supplied to mboost control argument.
+                    #' @param verbose logical, should live info be printed.
                     fit = function(family = self$model0$family,
                       ...,
                       verbose = FALSE) {
@@ -373,7 +428,13 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                     runtime = list(),
                     warnings = list(),
                     
-                    # crossvalidation-related fields
+                    #' @description conduct cross-validations of fitted models.
+                    #' @param type type of resampling (as for mboost).
+                    #' @param B number of resampling folds.
+                    #' @param ... other arguments supplied to cvLong.
+                    #' @param verbose logical, should live info be printed?
+                    #' @param seeds vector of random seeds for cross-validation. For the 
+                    #' default \code{NULL}, seeds are randomly drawn.
                     crossvalidate = function(type = "kfold", B = 5, ..., verbose = FALSE, seeds = NULL) {
                       
                       self$cvrisk_control <- list(type = type, B = B, ...)
@@ -449,7 +510,7 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                     runtime_cv = list(),
                     warnings_cv = list(),
                     
-                    # predict/evaluate effects in model0 and models
+                    #' @description predict model0 and models and extract estimated effects.
                     predict = function() {
                       ## end-points of interest:
                       ## (all evaluated on self$data0_FDboost)
@@ -495,7 +556,7 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                     effects = NULL,
                     facs = NULL,
                     
-                    # summarize
+                    #' @description generate simulation summary
                     summarize = function() {
                       
                       mf <- self$model0$family@mf
@@ -608,7 +669,13 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                       invisible(self)
                     },
                     simsum = NULL,
-                    # for notifications
+                    
+                    #' @description send automated notifications via telegram using
+                    #' the R package \link{telegram}. For getting started see their
+                    #' package vignette.
+                    #' @param token telegram bot token, see \code{?telegram::bot_token}.
+                    #' @param id telegram user id, see \code{?telegram::user_id}.
+                    #' @param name simulation name attached to the notification.
                     notify = function(token = bot_token('RBot'), id = user_id("me"), name = NULL) {
                       require(telegram)
                       ## set up telegram notifications
@@ -627,6 +694,7 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                       },
                     bot = NULL,
                     name = NULL,
+                    #' @description make first summary for first inspection of results.
                     plot = function() {
                       require(ggplot2)
                       require(gridExtra)

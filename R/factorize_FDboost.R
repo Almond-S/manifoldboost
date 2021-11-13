@@ -18,8 +18,9 @@
 #' @importFrom MASS ginv
 #' @importFrom Matrix rankMatrix
 #'
-#' @examples
-#' 
+#' @example tests/factorize_FDboost_test_irregular.R 
+#' @example tests/factorize_FDboost_test_regular.R
+#'
 factorize <- factorise <- function(x, ...) {
   UseMethod("factorize")
 }
@@ -300,7 +301,6 @@ NULL
 #' @name plot.FDboost_fac
 #' @aliases predict.FDboost_fac
 #'
-#' @examples
 predict.FDboost_fac <- function(object, newdata = NULL, which = NULL, ...) {
   w <- object$which(which)
   if(any(is.na(w)))

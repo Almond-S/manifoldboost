@@ -1,5 +1,3 @@
-library(manifoldboost)
-library(Matrix)
 
 # generate irregular toy data -------------------------------------------------------
 
