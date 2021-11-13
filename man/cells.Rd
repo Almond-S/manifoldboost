@@ -19,23 +19,37 @@ data(cells, package = "manifoldboost")
 data(cellr, package = "manifoldboost")
 }
 \description{
+Irregularly (\code{cells}) and regularly sampled (\code{cellr})
 2D cell outlines extracted from cells simulated by
 the Cellular Potts Model (CPM) proposed by Thueroff et al. 2019, a stochastic
 biophysical model, for calibration to real-life cells (Schaffer 2021).
 }
 \details{
-The data is provided as a list with the following entries:
+The datasets contain the following covariate vectors:
 \itemize{
 \item \code{a} substrate adhesion (CPM parameter, numeric)
 \item \code{r} signaling radius (CPM parameter, numeric)
 \item \code{b} bulk stiffness (CPM parameter, numeric)
 \item \code{m} membrane stiffness (CPM parameter, numeric)
+}
+For the irregular dataset \code{cells}:
+\itemize{
 \item \code{response} A tibble with the cell outline data:
 \itemize{
 \item \code{id} cell ID (factor, ordered according to covariate vectors)
 \item \code{arg} parameterization of the curves (numeric, between 0 and 1)
 \item \code{dim} dimension indicator (two-leveled factor)
 \item \code{value} x- and y-values of observed points of the outline (numeric)
+}
+}
+For the regular dataset \code{cellr}:
+\itemize{
+\item \code{response} A \code{\link{tbl_cube}} with the cell outline data:
+\itemize{
+\item Dimensions \code{id},\code{arg},\code{dim}: cell ID (factor, ordered according to covariate vectors),
+parameterization of the curves (integer, 1 to 70),
+dimension indicator (two-leveled factor)
+\item Measures \code{value} x- and y-values of observed points of the outline (numeric)
 }
 }
 }
