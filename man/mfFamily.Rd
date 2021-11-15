@@ -32,14 +32,14 @@ RiemannL2(
 PlanarShapeL2(
   pole.type = "RiemannL2",
   pole.control = boost_control(),
-  weight_fun = NULL,
+  weight_fun = equal_weights,
   arg_range = NULL
 )
 
 PlanarSizeShapeL2(
   pole.type = "RiemannL2",
   pole.control = boost_control(),
-  weight_fun = NULL,
+  weight_fun = equal_weights,
   arg_range = NULL
 )
 

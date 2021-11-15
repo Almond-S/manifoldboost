@@ -417,13 +417,13 @@ normal vectors?}
 \subsection{Method \code{validate()}}{
 loop of validation functions of component geometries.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$validate(y0_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$validate(y_)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{y0_}}{a list of objects living in the component manifolds}
+\item{\code{y_}}{a list of objects living in the component manifolds}
 }
 \if{html}{\out{</div>}}
 }

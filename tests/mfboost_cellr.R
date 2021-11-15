@@ -1,5 +1,8 @@
 
-# load irregular cell data
+
+# modeling the SHAPE of REGULAR curves -------------------
+
+# load regular cell data
 data("cellr", package = "manifoldboost")
 
 # subsample (one for each covariate combination)
@@ -9,9 +12,12 @@ cellsub$myd <- factor(with(cellsub,
 subids <- match(unique(cellsub$myd), cellsub$myd)
 cellsub <- as.list(cellsub[subids, ])
 cellsub$response <- cellr$response
-cellsub$response$id <- cellsub$response$id[subids]
+cellsub$response$dims$id <- ordered(cellsub$response$dims$id[subids], 
+                                    levels = unique(cellsub$response$dims$id[subids]))
+cellsub$response$mets$value <- cellsub$response$mets$value[,,subids]
+class(cellsub$response) <- "tbl_cube" 
 
-# fit model
+# fit SHAPE model
 cell_model <- mfboost(
   formula = response ~ bbsc(a, df = 3, knots = 5) + 
     bbsc(r, df = 3, knots = 5) + 
@@ -19,19 +25,19 @@ cell_model <- mfboost(
     bbsc(m, df = 3, knots = 5),
   obj.formula = value^dim ~ 
     bbs(arg, df = 1, differences = 0, knots = 5, 
-        boundary.knots = c(0,1), cyclic = TRUE) | id, 
-  data = cellr,
+        boundary.knots = c(0,70), cyclic = TRUE) | id, 
+  data = cellsub,
   family = PlanarShapeL2(),
-  control = boost_control(mstop = 300)
+  control = boost_control(mstop = 100)
   )
 
-cross-validation
-set.seed(8768)
-sheep_cv <- cvrisk(sheep_model, 
-                   folds = cvMa(ydim = sheep_model$ydim,
-                                type = "kfold"), 
-                   grid = 0:mstop(sheep_model))
-cell_model[mstop(cell_cv)]
+# # cross-validation
+# set.seed(8768)
+# cell_cv <- cvrisk(cell_model,
+#                    folds = cvMa(ydim = cell_model$ydim,
+#                                 type = "kfold"),
+#                    grid = 0:mstop(cell_model))
+# cell_model[mstop(cell_cv)]
 
 # plot first four predictions
 par(mfrow = c(2,2), mar = rep(2, 4) )
@@ -52,14 +58,21 @@ legend(x = "bottomright", lty = c(1,1, 2),
 
 # predict dense cells on grids
 cellgrid <- cellsub
-cellgrid$response <- with(cellgrid$response, expand.grid(
-  id = unique(id), 
-  arg = seq(0,1, len = 100),
-  dim = unique(dim),
-  value = NA))
-cellgrid$response$value <- predict(cell_model, 
-                                   newdata = cellgrid, type = "response")
+cellgrid$response <- cubelyr::tbl_cube(
+  dimensions = list(
+    id = cellsub$response$dims$id, 
+    arg = seq(0,70, len = 100),
+    dim = unique(cellsub$response$dims$dim)
+  ),
+  measures = list(
+    value = array(NA, dim = c(29, 100, 2))))
 
+cellgrid$response$mets$value <- array(predict(cell_model, 
+                                   newdata = cellgrid, type = "response"), 
+                                   dim = c(29,100,2))
+
+for(i in 1:4) 
+  plot(cellgrid$response$mets$value[i,,], t = "l")
 
 # factorize effects
 cell_fac <- factorize(cell_model)

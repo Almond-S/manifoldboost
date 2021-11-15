@@ -31,6 +31,7 @@ plotted using the plot method of \code{x$family@mf}, the geometry
 \code{mfGeom} class of the response.
 }
 \examples{
+# modeling the FORM/SIZE-AND-SHAPE of IRREGULAR curves -------------------
 
 # load irregular cell data
 data("cells", package = "manifoldboost")
@@ -45,25 +46,27 @@ cellsub$response <- cells$response[as.numeric(cells$response$id) \%in\% subids, 
 
 # fit model
 cell_model <- mfboost(
-  formula = response ~ bbs(a, df = 3, knots = 5) + 
-    bbs(r, df = 3, knots = 5) + 
-    bbs(b, df = 3, knots = 5) + 
-    bbs(m, df = 3, knots = 5),
+  formula = response ~ bbsc(a, df = 3, knots = 5) + 
+    bbsc(r, df = 3, knots = 5) + 
+    bbsc(b, df = 3, knots = 5) + 
+    bbsc(m, df = 3, knots = 5),
   obj.formula = value^dim ~ 
     bbs(arg, df = 1, differences = 0, knots = 5, 
         boundary.knots = c(0,1), cyclic = TRUE) | id, 
   data = cellsub,
-  family = PlanarShapeL2(),
+  family = PlanarSizeShapeL2(
+    weight_fun = trapez_weights,
+    arg_range = c(0,1)),
   control = boost_control(mstop = 300)
   )
 
-# cross-validation
+# # cross-validation
 # set.seed(9382)
-# cell_cv <- cvrisk(cell_model, 
+# cell_cv <- cvrisk(cell_model,
 #                           folds = cvLong(
-#                             id = cell_model$id, 
-#                             weights = cell_model$`(weights)`, 
-#                             type = "kfold"), 
+#                             id = cell_model$id,
+#                             weights = cell_model$`(weights)`,
+#                             type = "kfold"),
 #                           grid = 0:mstop(cell_model))
 # cell_model[mstop(cell_cv)]
 

@@ -37,7 +37,7 @@
 #' corresponding to the tangent space at \eqn{p}.
 #' 
 #' For further details on available covariate effects see 
-#' \code{\link[FDboost]{FDboost}} and the \code{\link[baselearners]{baselearners}}
+#' \code{\link[FDboost]{FDboost}} and the \code{\link[mboost::baselearners]{baselearners}}
 #' help of \code{mboost}.
 #' 
 #' Computationally, it might make a huge difference whether response observations 
@@ -71,7 +71,8 @@
 #'  } 
 #' }
 #' 
-#' @seealso \code{\link{mfFamily}}
+#' @seealso \code{\link{mfFamily}}, 
+#' \code{\link{factorize}}, data example \code{\link{cells}}
 #' 
 #' @return An object of class \code{mfboost} inheriting from \code{FDboost} and
 #' \code{mboost}.
@@ -90,6 +91,7 @@
 #' @importFrom dplyr bind_rows
 #' @import formula.tools 
 #' @example tests/mfboost_cells.R 
+#' @example tests/mfboost_cellr.R 
 
 mfboost <- function(formula,               # response ~ xvars 
                     obj.formula = NULL,    # response.value^dim ~ blearner(arg) | id

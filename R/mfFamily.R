@@ -271,7 +271,7 @@ RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control =
 #' @name PlanarShapeL2
 #' @rdname mfFamily
 PlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(), 
-                          weight_fun = NULL, arg_range = NULL) {
+                          weight_fun = equal_weights, arg_range = NULL) {
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomPlanarShape$new(weight_fun = weight_fun, arg_range = arg_range))
   
@@ -286,7 +286,7 @@ PlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(
 #' @name PlanarSizeShapeL2
 #' @rdname mfFamily
 PlanarSizeShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(), 
-                              weight_fun = NULL, arg_range = NULL) {
+                              weight_fun = equal_weights, arg_range = NULL) {
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomPlanarSizeShape$new(weight_fun = weight_fun, arg_range = arg_range))
   
