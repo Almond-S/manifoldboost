@@ -216,7 +216,7 @@ mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
    #' @description Check whether numeric or complex.
    validate = function(y_) {
      stopifnot(is.numeric(y_) | is.complex(y_))
-     y0_
+     y_
    }
 ), private = list(
   .innerprod = function(v0_, v1_ = v0_, weights_ = private$.weights_) {
@@ -544,7 +544,7 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
   #' @description check whether \code{is.complex(y_)}. 
   validate = function(y_) {
     stopifnot(is.complex(y_))
-    y0_
+    y_
   },
   #' @description Obtain "design matrix" of tangent space normal vectors in 
   #' unstructured long format.
@@ -947,12 +947,12 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           nvecs 
                         },
                         #' @description loop of validation functions of component geometries.
-                        validate = function(y0_) { 
+                        validate = function(y_) { 
                           if(is.null(private$.y_)) 
-                            is.list(y0_) else 
-                          mapply(function(e, y0_) e$validate(y0_),
-                                 private$.y_, y0_)
-                        y0_
+                            is.list(y_) else 
+                          mapply(function(e, y_) e$validate(y_),
+                                 private$.y_, y_)
+                        y_
                         }
                       ),
                       private = list(
