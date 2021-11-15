@@ -2,7 +2,7 @@
 % Please edit documentation in R/mfInterpreter.R
 \name{mfInterpret_objformula}
 \alias{mfInterpret_objformula}
-\title{Extract relevant parts from obj.formula}
+\title{Extract structural info from obj.formula}
 \usage{
 mfInterpret_objformula(x, varnames = TRUE, ...)
 }
@@ -17,5 +17,5 @@ a named list containing the \code{value}, \code{dim}, \code{arg} and \code{id}
 extracted from the formula.
 }
 \description{
-Extract relevant parts from obj.formula
+Extract info from obj.formula relevant for the basic structure of the (response) object.
 }

@@ -1,4 +1,6 @@
-#' Extract relevant parts from obj.formula
+#' Extract structural info from obj.formula
+#' 
+#' Extract info from obj.formula relevant for the basic structure of the (response) object.
 #'
 #' @param x a formula.
 #' @param varnames logcial, should character variable names be returned (default).
