@@ -862,6 +862,11 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                         },
                         #' @description component-wise alignment.
                         align = function(y_, y0_, ...) {
+                          if(missing(y_))
+                            return(
+                              mapply( function(e, y0_) e$align(y0_ = y0_, ...),
+                                      private$.y_, y0_, SIMPLIFY = FALSE )
+                            )
                           mapply( function(e, y_, y0_) e$align(y_, y0_, ...), 
                                   private$.y_, y_, y0_, SIMPLIFY = FALSE ) 
                         },
@@ -878,6 +883,11 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                         #' @description compute vector of distances in component
                         #' geometries.
                         distance = function(y0_, y1_, ...) {
+                          if(missing(y1_))
+                            return(
+                              mapply( function(e, y0_) e$distance(y0_ = y0_, ...),
+                                      private$.y_, y0_, SIMPLIFY = FALSE )
+                            )
                           mapply( function(e, y0_, y1_) e$distance(y0_, y1_, ...), 
                                   private$.y_, y0_, y1_, SIMPLIFY = TRUE )
                         }, 
@@ -890,6 +900,11 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                         #' @description loop over Log-maps in the component
                         #' geometries.
                         log = function(y_, y0_, ...) {
+                          if(missing(y_))
+                            return(
+                              mapply( function(e, y0_) e$log(y0_ = y0_, ...),
+                                      private$.y_, y0_, SIMPLIFY = FALSE )
+                            )
                           mapply( function(e, y_, y0_) e$log(y_, y0_, ...), 
                                   private$.y_, y_, y0_, SIMPLIFY = FALSE )
                         },

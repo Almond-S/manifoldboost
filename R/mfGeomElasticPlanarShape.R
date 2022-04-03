@@ -110,13 +110,38 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                      
                                      if(missy_) {
                                        attr(private$.y_, "arg") <- warp$y_arg_opt
-                                       private$.y_ <- self$register(private$.y_)
+                                       # private$.y_ <- self$register(private$.y_)
                                      }
                                      
                                      y_ <- warp$new_y_
                                      attr(y_, "arg") <- warp$new_y_arg
                                      
                                      self$register(y_)
+                                   },
+                                   #' @description Apply Log function of the sphere after rotation alignment
+                                   #' @param method alternatives "simple" and "alternative" for the expression 
+                                   #' used to compute the sphere Log-map. Passed to parent method.
+                                   log = function(y_, y0_ = self$pole_, method = c("simple", "alternative")) {
+                                     if(missing(y_))
+                                       return(super$log(self$align(y0_ = y0_), 
+                                                        y0_, method))
+                                     super$log(
+                                       private$.align(y_ = y_, y0_ = y0_)
+                                       , y0_, method)
+                                   },
+                                   distance = function(y0_, y1_, squared = FALSE) {
+                                     if(missing(y1_)) {
+                                       y1_ <- self$align(y0_ = y0_)
+                                     } else {
+                                       y1_ <- self$align(y_ = y1_, y0_ = y0_)
+                                     }
+                                     ip <- private$.innerprod(y0_, y1_)
+                                     if(Mod(ip-1) < 1e-15) return(0)
+                                     if(Mod(ip+1) < 1e-15) return(pi)
+                                     ret <- acos( Mod(ip) ) 
+                                     if(squared)
+                                       return(ret^2)
+                                     ret
                                    }
                                  ),
                              private = list(
@@ -147,16 +172,6 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                    y_arg_opt = w$data_curve2_aligned$t_optim,
                                    new_y_arg = w$data_curve1$t
                                  )
-                               },
-                               .distance = function(y0_, y1_, squared = FALSE) {
-                                 y1_ <- self$align(y1_, y0_)
-                                 ip <- private$.innerprod(y0_, y1_)
-                                 if(Mod(ip-1) < 1e-15) return(0)
-                                 if(Mod(ip+1) < 1e-15) return(pi)
-                                 ret <- acos( Mod(ip) ) 
-                                 if(squared)
-                                   return(ret^2)
-                                 ret
                                }
                              ))
 

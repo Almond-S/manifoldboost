@@ -44,6 +44,13 @@ s$pole_ <- s2$y_
 y_aligned <- w$align(y0_ = w$pole_)
 plot(c(0,1), c(0,1), t = "l", asp = 1, col = "cornflowerblue")
 lines(arg0, attr(w$y_, "arg"), t = "l", asp = 1)
+# check log
+franz <- s$y_
+attr(franz, "arg") <- arg0
+identical(attr(w2$y_, "arg"), arg0)
+y_v <- w2$log(y0_ = franz)
+identical(attr(w2$y_, "arg"), arg0)
+lines(arg0, attr(w2$y_, "arg"), col = "darkred")
 
 par(mfrow = c(1,2))
 s$plot(t = "l", main = "without warping alignment")
@@ -60,15 +67,20 @@ bcube <- tbl_cube(
 
 bdat <- list(shape = bcube, type = factor(bot[["fac"]]$type, labels = c("whisky", "beer")))
 
-fam <- WarpPlanarShapeL2()
+fam <- manifoldboost:::WarpPlanarShapeL2()
 
-m <- mfboost(shape ~ bols(type, df = Inf), 
+system.time(
+  m <- mfboost(shape ~ bols(type, df = Inf), 
              obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id, 
              data = bdat, 
-             family = fam)
+             family = fam, 
+             control = boost_control(mstop = 3, nu = .25))
+  )
 pdf("First_PlanarShapeBoost_withWarping.pdf")
 par(mfrow = c(1,2), mar = c(0,2,2,0))
 plot(m, ids = which(names(b) %in% c("franziskaner", "ballantines")), t = "l", main = c("beer", "whisky"))
-par(mfrow = c(1,1))
+warnpar(mfrow = c(1,1))
 panel(bot, names = TRUE, fac = "type")
 dev.off()
+
+plot(t0, attr(fam@mf$y_$ballantines, "arg"), t = "l")

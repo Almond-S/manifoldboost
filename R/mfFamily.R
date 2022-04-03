@@ -209,7 +209,7 @@ RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control =
   ngradient <- function(y, f, w = 1) {
     f_resp <- response_(f)
     # Tangent vector in tangent space of respective y[i,]
-    eps_ <- mf$log(mf$y_, f_resp)
+    eps_ <- mf$log(y0_ = f_resp)
     # Parallel transport tangent vectors to TpM
     eps_ <- mf$transport(eps_, f_resp, mf$pole_)
     # Return eps
