@@ -78,6 +78,11 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                      # store argument and add as attribute
                                      attr(private$.y_, "arg") <- private$.arg_ <-
                                        data[[v$arg]][private$structure_index$real]
+                                     # store also data.frame version of y for warping
+                                     private$.y_dat <- data.frame(
+                                       x = Re(private$.y_),
+                                       y = Im(private$.y_),
+                                       t = attr(private$.y_, "arg"))
                                      
                                      # set up index for $unstructure
                                      index <- self$structure(seq_along(data[[v$value]]))
@@ -97,26 +102,22 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                      
                                      invisible(self)
                                    },
-                                   align = function(y_, y0_) {
-                                     missy_ <- missing(y_)
-                                     missy0_ <- missing(y0_)
-                                     
-                                     if(missy_) y_ <- private$.y_
-                                     if(missy0_) y0_ <- private$.y_
-                                     
-                                     rot <- private$.innerprod(y_, y0_)
-                                     y_ <- rot * y_ / Mod(rot)
-                                     warp <- private$.warp(y_, y0_)
-                                     
-                                     if(missy_) {
-                                       attr(private$.y_, "arg") <- warp$y_arg_opt
-                                       # private$.y_ <- self$register(private$.y_)
+                                   align = function(y_, y0_, closed = FALSE, eps = 0.01) {
+                                     if(missing(y_)) {
+                                       y_ <- self$register(
+                                         private$.warp(y0_ = y0_, 
+                                                       closed = closed, 
+                                                       eps = eps))
+                                       rot <- private$.innerprod(y_, y0_)
+                                       return( rot * y_ / Mod(rot) )
                                      }
                                      
-                                     y_ <- warp$new_y_
-                                     attr(y_, "arg") <- warp$new_y_arg
-                                     
-                                     self$register(y_)
+                                     self$register(
+                                       private$.warp(y_, y0_, 
+                                                     closed = closed, 
+                                                     eps = eps))
+                                     rot <- private$.innerprod(y_, y0_)
+                                     y_ <- rot * y_ / Mod(rot)
                                    },
                                    #' @description Apply Log function of the sphere after rotation alignment
                                    #' @param method alternatives "simple" and "alternative" for the expression 
@@ -145,23 +146,39 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                    }
                                  ),
                              private = list(
+                               .y_dat = NULL,
                                .arg_ = NULL,
                                .warp = function(y_, y0_, closed = FALSE, eps = .01) {
-                                 d_ <- data.frame(x = Re(y0_), y = Im(y0_))
-                                 if(!is.null(attr(d_, "arg")))
-                                   d_$t <- attr(d_, "arg")
-                                 d0_ <- data.frame(x = Re(y_), y = Im(y_))
-                                 if(!is.null(attr(d0_, "arg")))
-                                   d0_$t <- attr(d0_, "arg")
+                                 d0_ <- data.frame(
+                                   x = Re(y0_), 
+                                   y = Im(y0_),
+                                   t = if(is.null(d0_, "arg")) private$.arg_ else
+                                     is.null(d0_, "arg") )
                                  
-                                 w <- elasdics::align_curves(
-                                   d_,d0_,
-                                   eps = eps,
-                                   closed = closed
-                                 )
-                                 
-                                 list(
-                                   new_y_ = complex(
+                                 if(missing(y_)) {
+                                   w <- elasdics::align_curves(
+                                     d0_, private$.y_dat,
+                                     eps = eps,
+                                     closed = closed
+                                   )
+                                   # update internal parameterization
+                                   private$.y_dat$t <- w$data_curve2_aligned$t_optim
+                                 } else {
+                                   d_ <- data.frame(
+                                     x = Re(y_), 
+                                     y = Im(y_),
+                                     t = if(is.null(d_, "arg")) private$.arg_ else
+                                       is.null(d_, "arg") )
+                                   
+                                   w <- elasdics::align_curves(
+                                     d0_,d_,
+                                     eps = eps,
+                                     closed = closed
+                                   )
+                                 }
+                                   
+                                 structure(
+                                   complex(
                                      re = approx(w$data_curve2_aligned$t_optim, 
                                                  Re(y_), 
                                                  xout = w$data_curve1$t)$y,
@@ -169,10 +186,8 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                                  Im(y_), 
                                                  xout = w$data_curve1$t)$y
                                    ),
-                                   y_arg_opt = w$data_curve2_aligned$t_optim,
-                                   new_y_arg = w$data_curve1$t
-                                 )
-                               }
+                                   arg = w$data_curve1$t
+                                 )}
                              ))
 
 # warping aligned planar shape regression family -------------------------------
