@@ -10,7 +10,7 @@ b <- lapply(names(b), function(x) {
   })
 names(b) <- names(bot[["coo"]])
 # regularize
-t0 <- seq(0,1, len = 100)
+t0 <- seq(0,1, len = 101)[-101]
 b <- lapply(b, function(x) {
   data.frame(
     V1 = approx(x$t, x$V1, t0)$y[c(length(t0), 2:length(t0))],
@@ -30,9 +30,9 @@ b <- lapply(b, function(x) {
 
 # check single geometry ---------------------------------------------------
 
-w <- mfGeomWarpPlanarShape$new(b$franziskaner, value^dim ~ t|id)
+w <- mfGeomWarpPlanarShape$new(b$franziskaner, value^dim ~ t|id, closed = TRUE)
 w$plot(t = "l")
-w2 <- mfGeomWarpPlanarShape$new(b$ballantines, value^dim ~ t|id)
+w2 <- mfGeomWarpPlanarShape$new(b$ballantines, value^dim ~ t|id, closed = TRUE)
 w$pole_ <- w2$y_
 arg0 <- attr(w$y_, "arg")
 
@@ -43,19 +43,33 @@ s$pole_ <- s2$y_
 # check align 
 y_aligned <- w$align(y0_ = w$pole_)
 plot(c(0,1), c(0,1), t = "l", asp = 1, col = "cornflowerblue")
-lines(arg0, attr(w$y_, "arg"), t = "l", asp = 1)
+lines(arg0, w$.__enclos_env__$private$.y_dat$t[-1], t = "l", asp = 1)
 # check log
 franz <- s$y_
 attr(franz, "arg") <- arg0
-identical(attr(w2$y_, "arg"), arg0)
+identical(w2$.__enclos_env__$private$.y_dat$t, arg0)
 y_v <- w2$log(y0_ = franz)
-identical(attr(w2$y_, "arg"), arg0)
-lines(arg0, attr(w2$y_, "arg"), col = "darkred")
+identical(w$.__enclos_env__$private$.y_dat$t, arg0)
+lines(arg0, w$.__enclos_env__$private$.y_dat$t[-1], col = "darkred")
 
 par(mfrow = c(1,2))
 s$plot(t = "l", main = "without warping alignment")
 w$plot(t = "l", main = "with warping alignment")
 
+
+# check product geometry --------------------------------------------------
+
+mf <- mfGeomProduct$new(
+  mfGeom_default = mfGeomWarpPlanarShape$new(), 
+  data = dplyr::bind_rows(b), formula = value^dim ~ t|id, closed = TRUE)
+mf$.__enclos_env__$private$.y_$amrut$closed
+
+par(mfrow = c(5,5), mar = c(0,0,2,0))
+mf$slice(which = 1:25)
+mf$pole_ <- mf$y_[rep("ballantines", length(mf$pole_))]
+system.time(
+  mf$plot(t = "l")
+)
 
 # check model fit ---------------------------------------------------------
 
@@ -67,20 +81,18 @@ bcube <- tbl_cube(
 
 bdat <- list(shape = bcube, type = factor(bot[["fac"]]$type, labels = c("whisky", "beer")))
 
-fam <- manifoldboost:::WarpPlanarShapeL2()
-
 system.time(
-  m <- mfboost(shape ~ bols(type, df = Inf), 
-             obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id, 
-             data = bdat, 
-             family = fam, 
-             control = boost_control(mstop = 3, nu = .25))
-  )
+  m <- mfboost(shape ~ bols(type, df = Inf),
+               obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id,
+               data = bdat,
+               family = WarpPlanarShapeL2Simple(
+                 pole.control = boost_control(mstop = 1, 1)),
+               control = boost_control(mstop = 5, nu = .2))
+)
+
 pdf("First_PlanarShapeBoost_withWarping.pdf")
 par(mfrow = c(1,2), mar = c(0,2,2,0))
 plot(m, ids = which(names(b) %in% c("franziskaner", "ballantines")), t = "l", main = c("beer", "whisky"))
-warnpar(mfrow = c(1,1))
+par(mfrow = c(1,1))
 panel(bot, names = TRUE, fac = "type")
 dev.off()
-
-plot(t0, attr(fam@mf$y_$ballantines, "arg"), t = "l")

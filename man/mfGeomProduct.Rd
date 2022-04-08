@@ -78,7 +78,7 @@ component the \code{mfGeom_default} based on the
 \code{data} containing the variables for \code{y_}
 specified in the \code{formula}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$new(mfGeom_default, data, formula)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$new(mfGeom_default, data, formula, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -93,6 +93,8 @@ component geometry.}
 via \code{mfInterpret_formula}) and indicating, in particular,
 the ID variable for splitting observations in the product
 components.}
+
+\item{\code{...}}{other arguments passed to underlying \code{mfGeometry}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -372,7 +374,7 @@ returned vector.
 \subsection{Method \code{plot()}}{
 loop over individual plots of the components.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$plot(y_ = self$y_, y0_ = self$pole_, main = names(y_), ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomProduct$plot(y_, y0_ = self$pole_, main, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

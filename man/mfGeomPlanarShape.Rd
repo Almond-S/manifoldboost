@@ -244,7 +244,7 @@ default plotting function for planar shapes, plotting \code{y_}
 in front of \code{y0_} (after alignment).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomPlanarShape$plot(
-  y_ = self$y_,
+  y_,
   y0_ = self$pole_,
   ylab = NA,
   xlab = NA,

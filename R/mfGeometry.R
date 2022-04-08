@@ -489,7 +489,7 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
   #' @param y0_par graphical parameters for \code{y0_}.
   #' @param seg_par graphical parameters for line segments connecting \code{y_} 
   #' and \code{y0_}.
-  plot = function(y_ = self$y_, y0_ = self$pole_, 
+  plot = function(y_, y0_ = self$pole_, 
                   ylab = NA, xlab = NA, 
                   col = "black",
                   ylim = range(Im(c(y_, y0_))), 
@@ -503,7 +503,9 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
     if(!is.null(y0_)) {
       
       # align y_
-      y_ <- self$align(y_, y0_)
+      y_ <- if(missing(y_)) 
+        self$align(y0_ = y0_) else 
+          self$align(y_, y0_)
       
       if(is.null(y0_par)) 
         y0_par <- list()
@@ -530,7 +532,7 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
           stop("seg_par has to be supplied as a list (or NULL).")
         }
       }
-    }
+    } else y_ <- private$.y_
     plot(x = Re(y_), y = Im(y_), ylab = ylab, xlab = xlab, 
          yaxt = yaxt, xaxt = xaxt, type = type,
          pch = pch, col = if(is.null(y0_)) col,
@@ -575,6 +577,10 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
     ret
   },
   .align = function(y_, y0_) {
+    if(missing(y_)) {
+      rot <- private$.innerprod(private$.y_, y0_)
+      return( rot * private$.y_ / Mod(rot) )
+    }
     rot <- private$.innerprod(y_, y0_)
     return( rot * y_ / Mod(rot) )
   },
@@ -924,11 +930,12 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                         },
                         #' @description loop over individual plots of the components.
                         #' @param main vector of plot titles
-                        plot = function(y_ = self$y_, y0_ = self$pole_, main = names(y_), ...) {
+                        plot = function(y_, y0_ = self$pole_, main, ...) {
                           stopifnot(is.list(y0_)|is.null(y0_))
-                          stopifnot(is.list(y_))
                           if(is.null(y0_))
                             y0_ <- list(NULL)[rep(1, length(y_))]
+                          if(missing(y_)) y_ <- self$y_ 
+                          if(missing(main)) main <- names(y_)
                           warn <- TRUE
                           for(i in seq_along(y_)) {
                             if(is.null(private$.y_[[i]]$plot)) {
@@ -937,8 +944,12 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                                 warn <- FALSE
                               }
                             } else {
-                              private$.y_[[i]]$plot(y_ = y_[[i]], 
-                                                    y0_ = y0_[[i]], main = main[i], ...)
+                              if(missing(y_)) 
+                                private$.y_[[i]]$plot(y0_ = y0_[[i]], 
+                                                      main = main[i], ...) else
+                                private$.y_[[i]]$plot(y_ = y_[[i]], 
+                                                    y0_ = y0_[[i]], 
+                                                    main = main[i], ...)
                             }
                           }
                         },

@@ -198,7 +198,7 @@ RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control =
   
   loss <- function(y, f, w = 1) {
     mu_ <- response_(f)
-    eps_ <- mf$log(mf$y_,mu_)
+    eps_ <- mf$log(y0_ = mu_)
     w * mf$unstructure(eps_)^2
   }
   
