@@ -467,7 +467,7 @@ mfGeomPlanarShape <- R6Class("mfGeomPlanarShape", inherit = mfGeomUnitSphere,
    #' used to compute the sphere Log-map. Passed to parent method.
    log = function(y_, y0_ = self$pole_, method = c("simple", "alternative")) {
     super$log(
-      private$.align(y_, y0_)
+      if(missing(y_)) self$align(y0_ = y0_) else self$align(y_, y0_)
       , y0_, method)
   },
   #' @description for the parallel transport previous alignment is assumed,

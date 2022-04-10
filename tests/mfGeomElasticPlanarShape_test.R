@@ -60,9 +60,9 @@ w$plot(t = "l", main = "with warping alignment")
 # check product geometry --------------------------------------------------
 
 mf <- mfGeomProduct$new(
-  mfGeom_default = mfGeomWarpPlanarShape$new(), 
-  data = dplyr::bind_rows(b), formula = value^dim ~ t|id, closed = TRUE)
-mf$.__enclos_env__$private$.y_$amrut$closed
+  mfGeom_default = mfGeomWarpPlanarShape$new(closed = TRUE), 
+  data = dplyr::bind_rows(b), formula = value^dim ~ t|id)
+mf$.__enclos_env__$private$.y_$amrut$.__enclos_env__$private$closed
 
 par(mfrow = c(5,5), mar = c(0,0,2,0))
 mf$slice(which = 1:25)
@@ -85,14 +85,14 @@ system.time(
   m <- mfboost(shape ~ bols(type, df = Inf),
                obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id,
                data = bdat,
-               family = WarpPlanarShapeL2Simple(
+               family = WarpPlanarShapeL2(closed = TRUE,
                  pole.control = boost_control(mstop = 1, 1)),
                control = boost_control(mstop = 5, nu = .2))
 )
 
-pdf("First_PlanarShapeBoost_withWarping.pdf")
+# pdf("First_PlanarShapeBoost_withWarping.pdf")
 par(mfrow = c(1,2), mar = c(0,2,2,0))
 plot(m, ids = which(names(b) %in% c("franziskaner", "ballantines")), t = "l", main = c("beer", "whisky"))
 par(mfrow = c(1,1))
 panel(bot, names = TRUE, fac = "type")
-dev.off()
+# dev.off()
