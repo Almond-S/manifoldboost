@@ -180,7 +180,10 @@ setMethod("clone", signature(object = "mfboost_family"),
 #' @export
 #' @name RiemannL2
 #' @rdname mfFamily
-RiemannL2 <- function(mf, pole.type = c("RiemannL2", "Gaussian"), pole.control = boost_control()) {
+RiemannL2 <- function(mf, align = TRUE, 
+                      pole.type = c("RiemannL2", "Gaussian"), 
+                      pole.control = boost_control(),
+                      pole.align = align) {
   stopifnot(inherits(mf, "mfGeometry"))
   pole.type <- match.arg(pole.type)
 

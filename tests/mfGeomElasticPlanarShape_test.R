@@ -30,7 +30,8 @@ b <- lapply(b, function(x) {
 
 # check single geometry ---------------------------------------------------
 
-w <- mfGeomWarpPlanarShape$new(b$franziskaner, value^dim ~ t|id, closed = TRUE)
+w <- mfGeomWarpPlanarShape$new(b$franziskaner, value^dim ~ t|id, 
+                               closed = TRUE, warp_update = function(warp, ...) !warp)
 w$plot(t = "l")
 w2 <- mfGeomWarpPlanarShape$new(b$ballantines, value^dim ~ t|id, closed = TRUE)
 w$pole_ <- w2$y_
@@ -43,14 +44,14 @@ s$pole_ <- s2$y_
 # check align 
 y_aligned <- w$align(y0_ = w$pole_)
 plot(c(0,1), c(0,1), t = "l", asp = 1, col = "cornflowerblue")
-lines(arg0, w$.__enclos_env__$private$.y_dat$t[-1], t = "l", asp = 1)
+lines(arg0, w$.__enclos_env__$private$.y_dat$t, t = "l", asp = 1)
 # check log
 franz <- s$y_
 attr(franz, "arg") <- arg0
 identical(w2$.__enclos_env__$private$.y_dat$t, arg0)
 y_v <- w2$log(y0_ = franz)
 identical(w$.__enclos_env__$private$.y_dat$t, arg0)
-lines(arg0, w$.__enclos_env__$private$.y_dat$t[-1], col = "darkred")
+lines(arg0, w$.__enclos_env__$private$.y_dat$t, col = "darkred")
 
 par(mfrow = c(1,2))
 s$plot(t = "l", main = "without warping alignment")

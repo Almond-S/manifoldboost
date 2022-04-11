@@ -138,7 +138,7 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                    initialize = function(data, formula, 
                                                          weight_fun = NULL, 
                                                          arg_range = NULL,
-                                                         closed) {
+                                                         closed, warp_update) {
                                      # dataless initializations
                                      if(!is.null(weight_fun)) {
                                        stopifnot(is.function(weight_fun))
@@ -151,6 +151,11 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                      
                                      if(!missing(closed))
                                        private$closed <- closed
+                                     
+                                     if(!missing(warp_update)) {
+                                       stopifnot(is.function(warp_update))
+                                       private$warp_update <- warp_update
+                                     }
                                      
                                      # with no data stop here !!!!!!!!!!!!!!!!!!
                                      if(missing(data)) {
@@ -203,17 +208,26 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                      
                                      invisible(self)
                                    },
-                                   align = function(y_, y0_, closed = private$closed, eps = 0.01) {
-                                       y_ <- self$register(
+                                   align = function(y_, y0_, 
+                                                    closed = private$closed, 
+                                                    warp = self$warp, 
+                                                    eps = 0.01) {
+                                     y_ <- self$register(
                                          if(missing(y_)) {
                                            private$.warp(y0_ = y0_, 
                                                        closed = closed, 
+                                                       optimize = warp,
                                                        eps = eps) } else {
                                                            private$.warp(y_, y0_, 
-                                                                         closed = closed, 
+                                                                         closed = closed,
+                                                                         optimize = warp,
                                                                          eps = eps)
                                                        })
-                                       super$align(y_, y0_)
+                                     if(!is.null(private$warp_update)) 
+                                       self$warp <- private$warp_update(
+                                       warp_memory = warp_memory, warp = warp)
+                                     self$warp_memory <- self$warp_memory + warp
+                                     super$align(y_, y0_)
                                    },
                                    distance = function(y0_, y1_, squared = FALSE) {
                                      super$distance(y0_ = y0_, 
@@ -221,64 +235,68 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
                                                       self$align(y0_ = y0_) else 
                                                         self$align(y_ = y1_, y0_ = y0_),
                                                     squared = squared)
-                                   }
+                                   },
+                                   warp = TRUE,
+                                   warp_memory = 0
                                  ),
                              private = list(
                                .y_dat = NULL,
                                .arg_ = NULL,
                                closed = FALSE,
-                               .warp = function(y_, y0_, closed = FALSE, eps = .01) {
+                               warp_update = NULL,
+                               .warp = function(y_, y0_, closed = FALSE, optimize = TRUE, eps = .01) {
                                  d0_ <- data.frame(
                                    x = Re(y0_), 
                                    y = Im(y0_),
                                    t = if(is.null(attr(y0_, "arg"))) 
                                      private$.arg_ else
                                      attr(y0_, "arg") )
-                                 this <- seq_len(nrow(d0_))
                                  
-                                 if(missing(y_)) {
-                                   w <- elasdics::align_curves(
-                                     d0_, private$.y_dat,
-                                     eps = eps,
-                                     closed = closed
-                                   )
-                                   # update internal parameterization
-                                   # and prepare for re-alignment
-                                   private$.y_dat <- w$data_curve2_aligned[
-                                     which(names(w$data_curve2_aligned) != "t")]
-                                   names(private$.y_dat)[names(private$.y_dat)=="t_optim"] <- "t"
-                                   # # TODO: after elasdics fix use this:
-                                   # private$.y_dat$t <- w$data_curve2_aligned$t_optim[this]
-                                   private$.y_dat <- private$.y_dat[order(private$.y_dat$t), ]
-                                   private$.y_dat$t <- private$.y_dat$t - private$.y_dat$t[1]
-                                 } else {
-                                   d_ <- data.frame(
+                                 # set up output structure
+                                 d_ <- if(missing(y_)) private$.y_dat else 
+                                   data.frame(
                                      x = Re(y_), 
                                      y = Im(y_),
                                      t = if(is.null(attr(y_, "arg"))) 
                                        private$.arg_ else
-                                       attr(y_, "arg") )
-                                   
-                                   w <- elasdics::align_curves(
-                                     d0_,d_,
+                                         attr(y_, "arg") )
+                                 
+                                 if(optimize) {
+                                   d_$t[1] <- 0
+                                   d_$t <- elasdics::align_curves(
+                                     d0_, d_,
                                      eps = eps,
                                      closed = closed
-                                   )
+                                   )$data_curve2_aligned$t_optim[seq_along(d_$t)]
+                                   
+                                   if(closed) {
+                                     # sort if necessary
+                                     new_order <- if(any(diff(d_$t) < 0)) 
+                                       order(d_$t) else NA
+                                     if(!is.na(new_order[1])) 
+                                       d_ <- d_[new_order, ]
+                                   }
+                                   
+                                   if(missing(y_)) {
+                                     # update internal parameterization
+                                     if(is.na(new_order)[1]) {
+                                       private$.y_dat <- d_$t
+                                     } else {
+                                       private$.y_dat <- d_
+                                       private$.y_ <- private$.y_[new_order]
+                                     }
+                                     attr(private$.y_, "arg") <- d_$t
+                                   } 
                                  }
                                  
-                                 thist <- which(
-                                   names(w$data_curve2_aligned)%in%
-                                     c("t", "t_optim"))
                                  structure(
                                    complex(
-                                     re = private$approx(w$data_curve2_aligned$t_optim, 
-                                                 w$data_curve2_aligned[-thist][[1]], 
-                                                 xout = d0_$t, closed = closed)$y,
-                                     im = private$approx(w$data_curve2_aligned$t_optim, 
-                                                 w$data_curve2_aligned[-thist][[2]], 
-                                                 xout = d0_$t, closed = closed)$y
-                                   )[this],
-                                   arg = w$data_curve1$t[this]
+                                     re = private$approx(d_$t, d_$x, xout = d0_$t, 
+                                                         closed = closed)$y,
+                                     im = private$approx(d_$t, d_$y, xout = d0_$t, 
+                                                         closed = closed)$y
+                                   ),
+                                   arg = d0_$t
                                  )},
                                approx = function(x, y = NULL, xout, closed = FALSE, xleft = 0, xright = 1, ...) {
                                  if(closed) {
@@ -311,10 +329,10 @@ mfGeomWarpPlanarShape <- R6Class("mfGeomWarpPlanarShape", inherit = mfGeomPlanar
 #' @name WarpPlanarShapeL2
 #' @rdname mfFamily
 WarpPlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(), 
-                          weight_fun = equal_weights, closed = FALSE) {
+                          weight_fun = equal_weights, closed = FALSE, warp_update = function(warp_memory, warp) TRUE) {
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomWarpPlanarShape$new(weight_fun = weight_fun, 
-                                               arg_range = c(0,1), closed = closed))
+                                               arg_range = c(0,1), closed = closed, warp_update = warp_update))
   
   RiemannL2(mf = mf, pole.type = pole.type, pole.control = pole.control)
 }
