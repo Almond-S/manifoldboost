@@ -364,7 +364,7 @@ WarpPlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_cont
 #'
 #' @import elasdics
 #' @export
-mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeomPlanarShape, 
+mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inherit = mfGeomPlanarShape, 
                                  public = list(
                                    #' @description Initialize planar shape geometry with warping 
                                    #' for data given in (long) FDboost format. 
@@ -381,8 +381,7 @@ mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeom
                                    #' 
                                    initialize = function(data, formula, 
                                                          weight_fun = NULL, 
-                                                         arg_range = NULL,
-                                                         closed, warp_update) {
+                                                         arg_range = NULL,warp_update) {
                                      # dataless initializations
                                      if(!is.null(weight_fun)) {
                                        stopifnot(is.function(weight_fun))
@@ -392,9 +391,6 @@ mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeom
                                      if(!is.null(arg_range)) {
                                        private$arg_range <- arg_range
                                      }
-                                     
-                                     if(!missing(closed))
-                                       private$closed <- closed
                                      
                                      if(!missing(warp_update)) {
                                        stopifnot(is.function(warp_update))
@@ -424,13 +420,15 @@ mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeom
                                                                      imaginary = tail(structure_index, n/2)) 
                                      
                                      # structure y (internally using $structure_index just defined above)
-                                     private$.y_ <- self$structure(data[[v$value]])
+                                     private$.curve_ <- private$close(
+                                       self$structure(data[[v$value]]))
                                      # store argument and add as attribute
-                                     attr(private$.y_, "arg") <- private$.arg_ <-
-                                       data[[v$arg]][private$structure_index$real]
+                                     private$.arg_ <- data[[v$arg]][private$structure_index$real]
+                                     attr(private$.curve_, "arg") <- c(private$.arg_, 
+                                                                       1-private$.arg_[1])
                                      
-                                     # store SRV trafo of y 
-                                     private$.q_dat <- self$srv_trafo(private$.y_)
+                                     # store SRV trafo of curve 
+                                     private$.y_ <- self$srv_trafo(private$.curve_)
                                      
                                      # set up index for $unstructure
                                      index <- self$structure(seq_along(data[[v$value]]))
@@ -445,26 +443,17 @@ mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeom
                                      
                                      # registration already depends on weights
                                      self$y_ <- self$register(self$y_)
-                                     stopifnot(length(private$.weights_) == length(private$.y_) | 
+                                     stopifnot(length(private$.weights_) == length(private$.y_) |
                                                  is.null(private$.weights_))
-                                     
+
                                      invisible(self)
                                    },
                                    #' @description scale \code{y_} to unit length or
                                    #' an SRV-trnasform \code{q_} to unit norm, respectively.
                                    register = function(y_) {
-                                     q_ <- if(missing(y_))
-                                       self$srv_trafo(private$.y_) else self$srv_trafo(y_)
-                                      
-                                     L <- self$innerprod(q_)
-                                     
-                                     if(missing(y_)) {
-                                       private$.y_ <- private$.y_ / L
-                                       return(private$.y_)
-                                     } else return(y_ / L)
+                                     y_ / sqrt(self$innerprod(y_))
                                    },
                                    align = function(y_, y0_, 
-                                                    closed = private$closed, 
                                                     warp = self$warp, 
                                                     eps = 0.01) {
                                      y_ <- self$register(
@@ -498,16 +487,19 @@ mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeom
                                      if(inverse & center) 
                                        warning("Sorry, centering not implemented, yet.")
                                      if(inverse) {
-                                       elasdics::get_points_from_srv(data.frame(
+                                       ret <- elasdics::get_points_from_srv(data.frame(
                                          t = attr(y_, "arg"),
                                          x = Re(y_), 
                                          y = Im(y_)))
                                      } else {
-                                       elasdics::get_srv_from_points(data.frame(
+                                       ret <- elasdics::get_srv_from_points(data.frame(
                                          t = attr(y_, "arg"),
                                          x = Re(y_), 
                                          y = Im(y_)))
                                      }
+                                     structure(complex(
+                                       re = ret$x, im = ret$y
+                                     ), arg = attr(y_, "arg"))
                                    },
                                    warp = TRUE,
                                    warp_memory = 0
@@ -515,62 +507,62 @@ mfGeomElasticPlanarShape <- R6Class("mfGeomElasticPlanarShape", inherit = mfGeom
                                  private = list(
                                    .y_dat = NULL,
                                    .arg_ = NULL,
-                                   closed = FALSE,
+                                   close = function(x) x[c(seq_len(length(x)), 1)],
                                    warp_update = NULL,
-                                   .warp = function(y_, y0_, closed = FALSE, optimize = TRUE, eps = .01) {
-                                     d0_ <- data.frame(
+                                   .warp = function(y_, y0_, closed = TRUE, optimize = TRUE, eps = .01) {
+                                     find_t_args <- list()
+                                     # align to
+                                     find_t_args$p <- rbind(
                                        x = Re(y0_), 
-                                       y = Im(y0_),
-                                       t = if(is.null(attr(y0_, "arg"))) 
+                                       y = Im(y0_))
+                                     # at time points
+                                     find_t_args$r = if(is.null(attr(y0_, "arg"))) 
                                          private$.arg_ else
-                                           attr(y0_, "arg") )
+                                           attr(y0_, "arg")
                                      
-                                     # set up output structure
-                                     d_ <- if(missing(y_)) private$.y_dat else 
-                                       data.frame(
+                                     # align this
+                                     find_t_args$q <- if(missing(y_)) rbind(
+                                       x = Re(private$.y_),
+                                       y = Im(private$.y_)
+                                     ) else 
+                                       rbind(
                                          x = Re(y_), 
-                                         y = Im(y_),
-                                         t = if(is.null(attr(y_, "arg"))) 
-                                           private$.arg_ else
-                                             attr(y_, "arg") )
+                                         y = Im(y_) )
+                                     # at time points
+                                     find_t_args$s <- find_t_args$initial_t <- 
+                                       if(is.null(attr(y_, "arg"))) 
+                                       private$.arg_ else
+                                         attr(y_, "arg")
                                      
                                      if(optimize) {
-                                       d_$t[1] <- 0
-                                       d_$t <- elasdics::align_curves(
-                                         d0_, d_,
-                                         eps = eps,
-                                         closed = closed
-                                       )$data_curve2_aligned$t_optim[seq_along(d_$t)]
-                                       
-                                       if(closed) {
-                                         # sort if necessary
-                                         new_order <- if(any(diff(d_$t) < 0)) 
-                                           order(d_$t) else NA
-                                         if(!is.na(new_order[1])) 
-                                           d_ <- d_[new_order, ]
-                                       }
+                                       find_t_args$eps <- eps
+                                       t_optim <- do.call(
+                                         if(closed) 
+                                           elasdics:::find_optimal_t_discrete_closed else
+                                             elasdics:::find_optimal_t_discrete,
+                                           find_t_args
+                                         )
                                        
                                        if(missing(y_)) {
-                                         # update internal parameterization
-                                         if(is.na(new_order)[1]) {
-                                           private$.y_dat$t <- d_$t
-                                         } else {
-                                           private$.y_dat <- d_
-                                           private$.y_ <- private$.y_[new_order]
+                                         attr(private$.y_, "arg") <- t_optim
                                          }
-                                         attr(private$.y_, "arg") <- d_$t
-                                       } 
+                                     } else {
+                                       t_optim <- find_t_args$s
                                      }
                                      
-                                     structure(
+                                     if(missing(y_))
+                                       curve_ <- private$curve_ else
+                                         curve_ <- self$srv_transform(y0_)
+                                     
+                                     curve_ <- structure(
                                        complex(
-                                         re = private$approx(d_$t, d_$x, xout = d0_$t, 
-                                                             closed = closed)$y,
-                                         im = private$approx(d_$t, d_$y, xout = d0_$t, 
-                                                             closed = closed)$y
+                                         re = approx(t_optim, Re(curve_), xout = find_t_args$r)$y,
+                                         im = approx(t_optim, Im(curve_), xout = find_t_args$r)$y
                                        ),
-                                       arg = d0_$t
-                                     )},
+                                       arg = find_t_args$r
+                                     )
+                                     self$srv_trafo(curve_)
+                                     },
                                    approx = function(x, y = NULL, xout, closed = FALSE, xleft = 0, xright = 1, ...) {
                                      if(closed) {
                                        rx <- range(x)
