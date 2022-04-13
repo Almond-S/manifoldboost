@@ -380,8 +380,8 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                    #' @param arg_range the \code{range} supplied to the \code{weight_fun}.
                                    #' 
                                    initialize = function(data, formula, 
-                                                         weight_fun = NULL, 
-                                                         arg_range = NULL,warp_update) {
+                                                         weight_fun = trapez_weights, 
+                                                         arg_range = c(0,1), warp_update) {
                                      # dataless initializations
                                      if(!is.null(weight_fun)) {
                                        stopifnot(is.function(weight_fun))
@@ -442,7 +442,7 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                      }
                                      
                                      # registration already depends on weights
-                                     self$y_ <- self$register(self$y_)
+                                     self$register()
                                      stopifnot(length(private$.weights_) == length(private$.y_) |
                                                  is.null(private$.weights_))
 
@@ -451,6 +451,11 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                    #' @description scale \code{y_} to unit length or
                                    #' an SRV-trnasform \code{q_} to unit norm, respectively.
                                    register = function(y_) {
+                                     if(missing(y_)) {
+                                       L <- self$innerprod(private$.y_)
+                                       private$.curve_ <- private$.curve_ / L
+                                       return((private$.y_ <- private$.y_ / sqrt(L)))
+                                     }
                                      y_ / sqrt(self$innerprod(y_))
                                    },
                                    align = function(y_, y0_, 
@@ -458,12 +463,10 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                                     eps = 0.01) {
                                      y_ <- self$register(
                                        if(missing(y_)) {
-                                         private$.warp(y0_ = y0_, 
-                                                       closed = closed, 
+                                         private$.warp(y0_ = y0_,
                                                        optimize = warp,
                                                        eps = eps) } else {
-                                                         private$.warp(y_, y0_, 
-                                                                       closed = closed,
+                                                         private$.warp(y_, y0_,
                                                                        optimize = warp,
                                                                        eps = eps)
                                                        })
@@ -484,31 +487,154 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                    #' @param inverse logical, should the inverse SRV-transform be conducted.
                                    #' @param center logical, if \code{inverse = TRUE}, should the output be centered.
                                    srv_trafo = function(y_, inverse = FALSE, center = FALSE) {
-                                     if(inverse & center) 
-                                       warning("Sorry, centering not implemented, yet.")
+                                     # if(inverse & center) 
+                                     #   warning("Sorry, centering not implemented, yet.")
+                                     arg <- attr(y_, "arg")
+                                     long_arg <- length(arg) == length(y_) + 1 & 
+                                       arg[1] %% 1 == tail(arg, 1) %% 1
                                      if(inverse) {
                                        ret <- elasdics::get_points_from_srv(data.frame(
-                                         t = attr(y_, "arg"),
+                                         t = if(long_arg) arg[-length(arg)] else 
+                                                  arg,
                                          x = Re(y_), 
                                          y = Im(y_)))
                                      } else {
                                        ret <- elasdics::get_srv_from_points(data.frame(
-                                         t = attr(y_, "arg"),
-                                         x = Re(y_), 
-                                         y = Im(y_)))
+                                         t = arg,
+                                         x = if(long_arg) 
+                                           private$close(Re(y_)) else Re(y_), 
+                                         y = if(long_arg) 
+                                           private$close(Im(y_)) else Im(y_)))
                                      }
-                                     structure(complex(
+                                     ret <- structure(complex(
                                        re = ret$x, im = ret$y
                                      ), arg = attr(y_, "arg"))
+                                     
+                                     if(inverse & center) 
+                                       ret <- private$center(ret)
+                                     
+                                     ret
+                                   },
+                                   #' @description default plotting function for shapes of plane curves, plotting \code{y_}
+                                   #' in front of \code{y0_} (after alignment).
+                                   #' @param level one of 'curve' (default) and 'SRV' indicating
+                                   #' whether curves are to be plotted or their SRV-transforms
+                                   #' @param closed logical, should the plotted functions be closed?
+                                   #' @param center logical, if \code{level='curve'}, should curves be centered?
+                                   #' @param add_original logical, should original curve y_ be displayed besides its aligned version. 
+                                   #' @param col,pch,type graphical parameters passed to \code{base::plot} referring to \code{y_}.
+                                   #' @param ylab,xlab,xlim,ylim,xaxt,yaxt,asp graphical parameters passed to \code{base::plot} 
+                                   #' with modified defaults.
+                                   #' @param ... other arguments passed to \code{base::plot}.
+                                   #' @param y0_par graphical parameters for \code{y0_}.
+                                   #' @param seg_par graphical parameters for line segments connecting \code{y_} 
+                                   #' and \code{y0_}.
+                                   plot = function(y_, y0_ = self$pole_, 
+                                                   level = c("curve", "SRV"), 
+                                                   closed = TRUE,
+                                                   center = TRUE,
+                                                   add_original = FALSE,
+                                                   ylab = NA, xlab = NA, 
+                                                   col = "black",
+                                                   pch = 19, asp = 1,
+                                                   xlim, ylim,
+                                                   yaxt='n',
+                                                   xaxt='n',
+                                                   type = "l",
+                                                   y0_par = list(col = "darkgrey", type = type), 
+                                                   seg_par = list(col = "grey"), ...) {
+                                     level <- match.arg(level)
+                                     stopifnot(is.logical(closed))
+                                     
+                                     missy_ <- missing(y_)
+                                     
+                                     if(!is.null(y0_)) {
+                                       # align y_
+                                       y_original <- if(missy_) 
+                                         private$.y_ else y_
+                                       y_ <- self$align(y_original, y0_)
+                                       
+                                       if(level == "curve") {
+                                         y_ <- self$srv_trafo(y_, inverse = TRUE, center = center)
+                                         y0_ <- self$srv_trafo(y0_, inverse = TRUE, center = center)
+                                       }
+                                       
+                                       if(is.null(y0_par)) 
+                                         y0_par <- list()
+                                       if(is.list(y0_par)) {
+                                         .y0_par <- c(private$.y0_par, type = type)
+                                         nm <- setdiff(names(.y0_par), names(y0_par))
+                                         y0_par[nm] <- .y0_par[nm]
+                                         y0_par$x <- Re(y0_)
+                                         y0_par$y <- Im(y0_)
+                                       } else {
+                                         stop("y0_par has to be supplied as a list (or NULL).")
+                                       }
+                                       
+                                       if(!is.na(seg_par)) {
+                                         if(is.null(seg_par)) 
+                                           seg_par <- list()
+                                         if(is.list(seg_par)) {
+                                           nm <- setdiff(names(private$.seg_par), names(seg_par))
+                                           seg_par[nm] <- private$.seg_par[nm]
+                                           seg_par[c("x0", "y0", "x1", "y1")] <- 
+                                             list(x0 = Re(y0_), y0 = Im(y0_), 
+                                                  x1 = Re(y_), y1 = Im(y_))
+                                         } else {
+                                           stop("seg_par has to be supplied as a list (or NULL).")
+                                         }
+                                       } 
+                                     } else {
+                                       if(level == "curve") {
+                                         y_ <- if(missy_) 
+                                           private$.curve_ else 
+                                             self$srv_trafo(y_, inverse = TRUE, center = center)
+                                       } else {
+                                         if(missy_) y_ <- private$.y_
+                                       }
+                                     }
+                                     
+                                     if(closed) {
+                                       y_ <- private$close(y_)
+                                       y0_ <- private$close(y0_)
+                                     } 
+                                     
+                                     if(missing(xlim))  
+                                       xlim <- range(Re(c(y_, y0_)))
+                                     if(missing(ylim))
+                                       ylim <- range(Im(c(y_, y0_)))
+                                     
+                                     plot(x = Re(y_), y = Im(y_), ylab = ylab, xlab = xlab, 
+                                          yaxt = yaxt, xaxt = xaxt, type = type,
+                                          pch = pch, col = if(is.null(y0_)) col,
+                                          xlim = xlim, ylim = ylim, asp = asp, ...)
+                                     
+                                     if(!is.null(y0_)) {
+                                       if(add_original) {
+                                         if(level == "curve") 
+                                           y_original <- if(missy_) private$center(private$.curve_) else 
+                                             self$srv_trafo(y_original, inverse = TRUE, center = center)
+                                         if(closed)
+                                           y_original <- private$close(y_original)
+                                         points(x = Re(y_original), y = Im(y_original), pch = pch, col = col, type = type, ...)
+                                       }
+                                       do.call(segments, seg_par)
+                                       do.call(points, y0_par)
+                                       points(x = Re(y_), y = Im(y_), pch = pch, col = col, type = type, ...)
+                                     }
                                    },
                                    warp = TRUE,
                                    warp_memory = 0
                                  ),
                                  private = list(
-                                   .y_dat = NULL,
+                                   .curve_ = NULL,
                                    .arg_ = NULL,
                                    close = function(x) x[c(seq_len(length(x)), 1)],
                                    warp_update = NULL,
+                                   center = function(curve_) {
+                                    ONE <- rep(1, length(curve_) -1)
+                                    curve_ <- curve_ - self$innerprod(ONE, head(curve_, -1)) / self$innerprod(ONE)
+                                   },
                                    .warp = function(y_, y0_, closed = TRUE, optimize = TRUE, eps = .01) {
                                      find_t_args <- list()
                                      # align to
@@ -520,19 +646,30 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                          private$.arg_ else
                                            attr(y0_, "arg")
                                      
-                                     # align this
-                                     find_t_args$q <- if(missing(y_)) rbind(
-                                       x = Re(private$.y_),
-                                       y = Im(private$.y_)
-                                     ) else 
-                                       rbind(
+                                     if(missing(y_)) {
+                                       # align this
+                                       find_t_args$q <- rbind(
+                                         x = Re(private$.y_),
+                                         y = Im(private$.y_)
+                                       )
+                                       # at time points
+                                       find_t_args$s <- 
+                                         if(is.null(attr(private$.y_, "arg"))) 
+                                           private$.arg_ else
+                                             attr(private$.y_, "arg")
+                                       find_t_args$initial_t <- if(is.null(attr(private$.y_, "arg_optim"))) 
+                                         find_t_args$s else attr(private$.y_, "arg_optim")
+                                     } else {
+                                       find_t_args$q <- rbind(
                                          x = Re(y_), 
                                          y = Im(y_) )
-                                     # at time points
-                                     find_t_args$s <- find_t_args$initial_t <- 
-                                       if(is.null(attr(y_, "arg"))) 
-                                       private$.arg_ else
-                                         attr(y_, "arg")
+                                       # at time points
+                                       find_t_args$s <- if(is.null(attr(y_, "arg"))) 
+                                           private$.arg_ else
+                                             attr(y_, "arg")
+                                       find_t_args$initial_t <- if(is.null(attr(y_, "arg_optim"))) 
+                                         find_t_args$s else attr(y_, "arg_optim")
+                                     }
                                      
                                      if(optimize) {
                                        find_t_args$eps <- eps
@@ -544,37 +681,41 @@ mfGeomElasticClosedPlanarShape <- R6Class("mfGeomElasticClosedPlanarShape", inhe
                                          )
                                        
                                        if(missing(y_)) {
-                                         attr(private$.y_, "arg") <- t_optim
+                                         attr(private$.y_, "arg_optim") <- t_optim
                                          }
                                      } else {
                                        t_optim <- find_t_args$s
                                      }
                                      
                                      if(missing(y_))
-                                       curve_ <- private$curve_ else
-                                         curve_ <- self$srv_transform(y0_)
+                                       curve_ <- private$.curve_ else
+                                         curve_ <- self$srv_trafo(y_, inverse = TRUE, center = FALSE)
                                      
                                      curve_ <- structure(
                                        complex(
-                                         re = approx(t_optim, Re(curve_), xout = find_t_args$r)$y,
-                                         im = approx(t_optim, Im(curve_), xout = find_t_args$r)$y
+                                         re = private$approx(t_optim, Re(curve_), xout = find_t_args$r)$y,
+                                         im = private$approx(t_optim, Im(curve_), xout = find_t_args$r)$y
                                        ),
                                        arg = find_t_args$r
                                      )
                                      self$srv_trafo(curve_)
                                      },
-                                   approx = function(x, y = NULL, xout, closed = FALSE, xleft = 0, xright = 1, ...) {
+                                   approx = function(x, y = NULL, xout, closed = TRUE, xleft = 0, xright = 1, ...) {
                                      if(closed) {
-                                       rx <- range(x)
-                                       where <- range(findInterval(xout, rx))
+                                       x <- (x - xleft) %% (xright - xleft) + xleft
+                                       xout <- (xout - xleft) %% (xright - xleft) + xleft
+                                       xorder <- order(x)
+                                       x <- x[xorder]
+                                       y <- y[xorder]
+                                       xrange <- c(x[1], x[length(x)])
+                                       where <- range(findInterval(xout, xrange))
                                        if(any(where != 1)) {
-                                         if(!is.null(y))
-                                           y <- c(if(0 %in% where) y[which.max(x)], 
-                                                  y, 
-                                                  if(2 %in% where) y[which.min(x)])
-                                         x <- c(if(0 %in% where) xleft + rx[2]-xright, 
-                                                x, 
-                                                if(2 %in% where) xright + rx[1]-xleft)
+                                         y <- c(if(0 %in% where) tail(y, 1),
+                                                  y,
+                                                  if(2 %in% where) head(y, 1))
+                                         x <- c(if(0 %in% where) xleft + tail(x, 1) -xright,
+                                                x,
+                                                if(2 %in% where) xright + head(x, 1)-xleft)
                                        }
                                      }
                                      approx(x = x, y = y, xout = xout, ...)
