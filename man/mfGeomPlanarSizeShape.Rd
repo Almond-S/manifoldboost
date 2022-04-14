@@ -27,8 +27,8 @@ invariant.
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-align}{\code{manifoldboost::mfGeomEuclidean$align()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="distance">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-distance}{\code{manifoldboost::mfGeomEuclidean$distance()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-innerprod}{\code{manifoldboost::mfGeomEuclidean$innerprod()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="initialize">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-initialize}{\code{manifoldboost::mfGeomPlanarShape$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-structure}{\code{manifoldboost::mfGeomPlanarShape$structure()}}\out{</span>}

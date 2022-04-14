@@ -32,8 +32,8 @@ projective space.
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-align}{\code{manifoldboost::mfGeomEuclidean$align()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="distance">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-distance}{\code{manifoldboost::mfGeomEuclidean$distance()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-innerprod}{\code{manifoldboost::mfGeomEuclidean$innerprod()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomUnitSphere" data-id="exp">}\href{../../manifoldboost/html/mfGeomUnitSphere.html#method-exp}{\code{manifoldboost::mfGeomUnitSphere$exp()}}\out{</span>}
 }

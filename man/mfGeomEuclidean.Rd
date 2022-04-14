@@ -23,6 +23,7 @@ as parent for most other geometries.
 \item \href{#method-structure}{\code{mfGeomEuclidean$structure()}}
 \item \href{#method-unstructure}{\code{mfGeomEuclidean$unstructure()}}
 \item \href{#method-align}{\code{mfGeomEuclidean$align()}}
+\item \href{#method-distance}{\code{mfGeomEuclidean$distance()}}
 \item \href{#method-register}{\code{mfGeomEuclidean$register()}}
 \item \href{#method-exp}{\code{mfGeomEuclidean$exp()}}
 \item \href{#method-log}{\code{mfGeomEuclidean$log()}}
@@ -36,7 +37,6 @@ as parent for most other geometries.
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="unstructure_weights">}\href{../../manifoldboost/html/mfGeometry.html#method-unstructure_weights}{\code{manifoldboost::mfGeometry$unstructure_weights()}}\out{</span>}
 }
 \out{</details>}
@@ -106,6 +106,27 @@ The identity.
 \item{\code{y_}}{a numeric/complex vector}
 
 \item{\code{y0_}}{a numeric/complex vector}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-distance"></a>}}
+\if{latex}{\out{\hypertarget{method-distance}{}}}
+\subsection{Method \code{distance()}}{
+Compute the L2 distance.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$distance(y_, y0_, squared = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{y_}}{a numeric/complex vector}
+
+\item{\code{y0_}}{a numeric/complex vector}
+
+\item{\code{squared}}{logical, should squared distance be returned?}
 }
 \if{html}{\out{</div>}}
 }

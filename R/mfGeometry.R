@@ -199,20 +199,33 @@ mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
        }
    },
    #' @description The identity.
-   align = function(y_, y0_) private$.align(y_, y0_),
+   align = function(y_, y0_) private$.align(if(missing(y_)) private$.y_ else y_, y0_),
+   #' @description Compute the L2 distance.
+   #' @param squared logical, should squared distance be returned?
+   distance = function(y_, y0_, squared = FALSE) {
+     if(missing(y_))
+       y_ <- private$.y_
+     d2 <- private$.innerprod(y_-y0_)
+     if(squared) d2 else sqrt(d2)
+   },
    #' @description The identity.
-   register = function(y_) y_,
+   register = function(y_) {
+     if(missing(y_)) private$.y_ else y_ },
+   #' @description The identity.
+   register_v = function(v_, y0_ = self$pole_) {
+     v_ 
+   },
    #' @description Simple addition.
-   exp = function(v_, y0_ = private$.pole_) y0_ + v_,
+   exp = function(v_, y0_ = self$pole_) y0_ + v_,
    #' @description Simple substraction.
-   log = function(y_, y0_ = private$.pole_) y_ - y0_,
+   log = function(y_, y0_ = self$pole_) (if(missing(y_)) private$.y_ else y_) - y0_,
    #' @description The identity.
    transport = function(v0_, y0_, y1_) v0_,
    #' @description The weighted scalar product.
    innerprod = function(v0_, v1_ = v0_, weights_ = private$.weights_)
      private$.innerprod(v0_, v1_, weights_),
    #' @description Always returning \code{NULL}.
-   get_normal = function(y0_ = private$.pole_) NULL,
+   get_normal = function(y0_ = self$pole_, weighted = NULL) NULL,
    #' @description Check whether numeric or complex.
    validate = function(y_) {
      stopifnot(is.numeric(y_) | is.complex(y_))
@@ -224,10 +237,6 @@ mfGeomEuclidean <- R6Class("mfGeomEuclidean", inherit = mfGeometry,
     if(is.null(weights_)) return(as.complex(sum(Conj(v0_)*v1_)))
     if(is.null(dim(weights_)))  return(as.complex(sum(weights_*Conj(v0_)*v1_)))
     return( as.complex(crossprod(Conj(v0_), weights_)%*%v1_) )
-  },
-  .distance = function(y0_, y1_, squared = FALSE) {
-    d2 <- private$.innerprod(y1_-y0_)
-    if(squared) d2 else sqrt(d2)
   },
   .align = function(y_, y0_) y_
 ))
@@ -773,26 +782,21 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           
                           if(is.matrix(data[[v$value]])) {
                             ## regular FDboost data format
-                            # take first data point as template
-                            dat1 <- data[names(data) != v$value]
-                            dat1[[v$value]] <- data[[v$value]][1, ]
-                            self$mfGeom_default$initialize(data = dat1, 
-                                                           formula = formula)
-                            # multiplicate first to set structure
                             n <- nrow(data[[v$value]])
+                            # create data list
+                            datalist <- lapply(seq_len(n),
+                                               function(i) {
+                                                 d <- data[setdiff(unlist(v), c(v$value, v$id))]
+                                                 d[[v$value]] <- data[[v$value]][i, ]
+                                                 d[[v$id]] <- data[[v$id]][i]
+                                                 d
+                                               })
                             
-                            # fill in true values
-                            private$.y_ <- lapply(1L:n, function(i) {
-                              e <- self$mfGeom_default$clone()
-                              e$y_ <- self$mfGeom_default$register(
-                                self$mfGeom_default$structure(data[[v$value]][i, ]))
-                              e
-                            })
                             # prepare skeleton for reconstruction
                             private$y_skeleton <- asplit(
                               matrix(1L:length(data[[v$value]]), nrow = n), 1)
                             
-                            names(private$.y_) <- data[[v$id]]
+                            y_names <- data[[v$id]]
                             
                             # only for $get_normal() and $unstructure_weights()
                             private$regular_design <- TRUE
@@ -802,20 +806,22 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                               sapply(data, length) == length(data[[v$id]])])
                             
                             datalist <- split(data, data[[v$id]])
-                            
-                            private$.y_ <- lapply(
-                              datalist,
-                              function(data) {
-                                e <- self$mfGeom_default$clone()
-                                e$initialize(data = data, formula = formula)
-                                e
-                              })
         
                             # prepare skeleton for reconstruction
                             private$y_skeleton <- split(1L:length(data[[v$value]]), data[[v$id]])
                             
-                            names(private$.y_) <- sort(unique(data[[v$id]]))
+                            y_names <- sort(unique(data[[v$id]]))
                           }
+                          
+                          private$.y_ <- lapply(
+                            datalist,
+                            function(data) {
+                              e <- self$mfGeom_default$clone()
+                              e$initialize(data = data, formula = formula)
+                              e
+                            })
+                          names(private$.y_) <- y_names
+                          
                           # make sure order is preserved
                           index <- self$structure(1L:length(data[[v$value]]))
                           private$unstructure_index <- order(private$.unstructure(index))
@@ -934,7 +940,8 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           stopifnot(is.list(y0_)|is.null(y0_))
                           if(is.null(y0_))
                             y0_ <- list(NULL)[rep(1, length(y_))]
-                          if(missing(y_)) y_ <- self$y_ 
+                          missy_ <- missing(y_)
+                          if(missy_) y_ <- self$y_ 
                           if(missing(main)) main <- names(y_)
                           warn <- TRUE
                           for(i in seq_along(y_)) {
@@ -944,7 +951,7 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                                 warn <- FALSE
                               }
                             } else {
-                              if(missing(y_)) 
+                              if(missy_) 
                                 private$.y_[[i]]$plot(y0_ = y0_[[i]], 
                                                       main = main[i], ...) else
                                 private$.y_[[i]]$plot(y_ = y_[[i]], 

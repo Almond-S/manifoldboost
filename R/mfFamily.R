@@ -181,7 +181,7 @@ setMethod("clone", signature(object = "mfboost_family"),
 #' @name RiemannL2
 #' @rdname mfFamily
 RiemannL2 <- function(mf, align = TRUE, 
-                      pole.type = c("RiemannL2", "Gaussian"), 
+                      pole.type = c("RiemannL2", "Gaussian", "zero"), 
                       pole.control = boost_control(),
                       pole.align = align) {
   stopifnot(inherits(mf, "mfGeometry"))
@@ -219,7 +219,21 @@ RiemannL2 <- function(mf, align = TRUE,
     mf$unstructure( eps_ )
   }
   
-  pole <- R6Class("mfPoleRecursive", inherit = mfPole,
+  if(pole.type == "zero") {
+    
+    pole <- R6Class("mfPoleZero", inherit = mfPole, 
+                    public = list(
+                      fit = function(obj.formula, data) {
+                        invisible(self)
+                      },
+                      predict = function(newdata = NULL) {
+                        if(is.null(newdata)) 
+                          rep(0, length(mf$unstructure(mf$y_))) else
+                            rep(0, nrow(newdata))
+                      }
+                    ))$new()
+    
+  } else pole <- R6Class("mfPoleRecursive", inherit = mfPole,
                   public = list(
                     fit = function(obj.formula, data) {
                       new_fam <- switch(pole.type, 
@@ -228,6 +242,7 @@ RiemannL2 <- function(mf, align = TRUE,
                                         )
                       self$model <- mfboost( formula = ~ 1, obj.formula = obj.formula, 
                                        data = data, family = new_fam, control = pole.control )
+                      invisible(self)
                     },
                     predict = function(newdata = NULL) 
                         predict(self$model, type = "response", newdata = newdata)

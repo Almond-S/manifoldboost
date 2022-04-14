@@ -30,10 +30,10 @@ b <- lapply(b, function(x) {
 
 # check single geometry ---------------------------------------------------
 
-w <- mfGeomElasticClosedPlanarShape$new(b$franziskaner, value^dim ~ t|id #,warp_update = function(warp, ...) !warp
+w <- mfGeomElasticPlanarShape_closed$new(b$franziskaner, value^dim ~ t|id #,warp_update = function(warp, ...) !warp
                                         )
 w$plot()
-w2 <- mfGeomElasticClosedPlanarShape$new()
+w2 <- mfGeomElasticPlanarShape_closed$new()
 w2$initialize(b$ballantines, value^dim ~ t|id)
 
 w$pole_ <- w2$y_
@@ -54,30 +54,23 @@ lines(arg0, attr(w$y_, "arg_optim"), t = "l", asp = 1)
 franz <- s$y_
 attr(franz, "arg") <- arg0
 identical(attr(w2$y_, "arg")[1:length(arg0)], arg0)
-y_v <- w2$log(y0_ = franz)
+y_v <- w2$log(y0_ = w2$srv_trafo(franz))
 identical(attr(w2$y_, "arg_optim")[1:length(arg0)], arg0)
 lines(arg0, attr(w2$y_, "arg_optim"), col = "darkred")
 
-par(mfrow = c(1,2))
+par(mfrow = c(1,3))
 s$plot(t = "l", main = "without warping alignment")
 w$plot(t = "l", main = "with warping alignment")
+w2$plot(y0_ = w2$srv_trafo(franz), t = "l", main = "with warping alignment")
 
 
 # check product geometry --------------------------------------------------
 
 mf <- mfGeomProduct$new(
-  mfGeom_default = mfGeomElasticClosedPlanarShape$new(), 
+  mfGeom_default = mfGeomElasticPlanarShape_closed$new(), 
   data = dplyr::bind_rows(b), formula = value^dim ~ t|id)
 
 par(mfrow = c(5,5), mar = c(0,0,2,0))
-mf$slice(which = 1:25)
-mf$pole_ <- mf$y_[rep("ballantines", length(mf$pole_))]
-system.time(
-  mf$plot(t = "l")
-)
-
-all_y_aligned <- mf$align(y0_ = mf$pole_)
-
 mf$slice(which = 1:25)
 mf$pole_ <- mf$y_[rep("ballantines", length(mf$pole_))]
 system.time(
@@ -94,12 +87,14 @@ bcube <- tbl_cube(
 
 bdat <- list(shape = bcube, type = factor(bot[["fac"]]$type, labels = c("whisky", "beer")))
 
+fam <- ElasticPlanarShapeL2( pole.type = "Gaussian",
+                             pole.control = boost_control(mstop = 20, .25))
+
 system.time(
   m <- mfboost(shape ~ bols(type, df = Inf),
                obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id,
                data = bdat,
-               family = WarpPlanarShapeL2(closed = TRUE,
-                 pole.control = boost_control(mstop = 1, 1)),
+               family = fam,
                control = boost_control(mstop = 5, nu = .2))
 )
 
