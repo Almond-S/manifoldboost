@@ -25,6 +25,7 @@ as parent for most other geometries.
 \item \href{#method-align}{\code{mfGeomEuclidean$align()}}
 \item \href{#method-distance}{\code{mfGeomEuclidean$distance()}}
 \item \href{#method-register}{\code{mfGeomEuclidean$register()}}
+\item \href{#method-register_v}{\code{mfGeomEuclidean$register_v()}}
 \item \href{#method-exp}{\code{mfGeomEuclidean$exp()}}
 \item \href{#method-log}{\code{mfGeomEuclidean$log()}}
 \item \href{#method-transport}{\code{mfGeomEuclidean$transport()}}
@@ -149,12 +150,31 @@ The identity.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-register_v"></a>}}
+\if{latex}{\out{\hypertarget{method-register_v}{}}}
+\subsection{Method \code{register_v()}}{
+The identity.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$register_v(v_, y0_ = self$pole_)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v_}}{a (tangent) numeric/complex vector}
+
+\item{\code{y0_}}{a numeric/complex vector}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-exp"></a>}}
 \if{latex}{\out{\hypertarget{method-exp}{}}}
 \subsection{Method \code{exp()}}{
 Simple addition.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$exp(v_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$exp(v_, y0_ = self$pole_)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -173,7 +193,7 @@ Simple addition.
 \subsection{Method \code{log()}}{
 Simple substraction.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$log(y_, y0_ = private$.pole_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$log(y_, y0_ = self$pole_)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -234,7 +254,7 @@ The weighted scalar product.
 \subsection{Method \code{get_normal()}}{
 Always returning \code{NULL}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$get_normal(y0_ = private$.pole_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomEuclidean$get_normal(y0_ = self$pole_, weighted = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

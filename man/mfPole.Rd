@@ -2,6 +2,10 @@
 % Please edit documentation in R/mfFamily.R
 \name{mfPole}
 \alias{mfPole}
+\alias{mfPoleZero}
+\alias{mfPolemfboost}
+\alias{mfPoleRiemannianL2}
+\alias{mfPoleRiemannL2}
 \title{R6 Class for mfboost pole model object for use in \code{mfboost_family}}
 \description{
 R6 Class for mfboost pole model object for use in \code{mfboost_family}
@@ -27,9 +31,33 @@ the basic structure needed to provide a pole for mfboost.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{mfPole$new()}}
 \item \href{#method-fit}{\code{mfPole$fit()}}
 \item \href{#method-predict}{\code{mfPole$predict()}}
 \item \href{#method-clone}{\code{mfPole$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Initialize the pole by specifying the
+manifold geometry and - if needed - the pole of the pole
+and other pole details.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPole$new(mfGeom, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mfGeom}}{an object of class \code{mfGeometry}.}
+
+\item{\code{...}}{other arguments controling the pole.}
+
+\item{\code{mfPole}}{an object of class \code{mfPole} if needed.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -78,6 +106,209 @@ specifies the original data.}
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfPole$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+\section{Super class}{
+\code{\link[manifoldboost:mfPole]{manifoldboost::mfPole}} -> \code{mfPoleZero}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-fit}{\code{mfPoleZero$fit()}}
+\item \href{#method-predict}{\code{mfPoleZero$predict()}}
+\item \href{#method-clone}{\code{mfPoleZero$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfPole" data-id="initialize">}\href{../../manifoldboost/html/mfPole.html#method-initialize}{\code{manifoldboost::mfPole$initialize()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-fit}{}}}
+\subsection{Method \code{fit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPoleZero$fit(obj.formula, data)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-predict"></a>}}
+\if{latex}{\out{\hypertarget{method-predict}{}}}
+\subsection{Method \code{predict()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPoleZero$predict(newdata = NULL)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPoleZero$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+\section{Super class}{
+\code{\link[manifoldboost:mfPole]{manifoldboost::mfPole}} -> \code{mfPolemfboost}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{mfPolemfboost$new()}}
+\item \href{#method-fit}{\code{mfPolemfboost$fit()}}
+\item \href{#method-predict}{\code{mfPolemfboost$predict()}}
+\item \href{#method-clone}{\code{mfPolemfboost$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Initialize the pole by specifying the
+manifold geometry and - if needed - the pole of the pole
+and other pole details.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPolemfboost$new(mfGeom, family, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mfGeom}}{an object of class \code{mfGeometry}.}
+
+\item{\code{family}}{an mboost family object for fitting the pole.
+Defaults to \code{Gaussian()}.}
+
+\item{\code{...}}{other arguments controling the pole.}
+
+\item{\code{mfPole}}{an object of class \code{mfPole} if needed.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-fit}{}}}
+\subsection{Method \code{fit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPolemfboost$fit(obj.formula, data)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-predict"></a>}}
+\if{latex}{\out{\hypertarget{method-predict}{}}}
+\subsection{Method \code{predict()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPolemfboost$predict(newdata = NULL)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPolemfboost$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+\section{Super classes}{
+\code{\link[manifoldboost:mfPole]{manifoldboost::mfPole}} -> \code{\link[manifoldboost:mfPolemfboost]{manifoldboost::mfPolemfboost}} -> \code{mfPoleRiemannL2}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{mfPoleRiemannL2$new()}}
+\item \href{#method-fit}{\code{mfPoleRiemannL2$fit()}}
+\item \href{#method-clone}{\code{mfPoleRiemannL2$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfPolemfboost" data-id="predict">}\href{../../manifoldboost/html/mfPolemfboost.html#method-predict}{\code{manifoldboost::mfPolemfboost$predict()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Initialize the pole by specifying the
+manifold geometry and - if needed - the pole of the pole
+and other pole details.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPoleRiemannL2$new(mfGeom, mfPole, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mfGeom}}{an object of class \code{mfGeometry}.}
+
+\item{\code{mfPole}}{an object of class \code{mfPole} if needed.
+Defaults to \code{Gaussian()}.}
+
+\item{\code{...}}{other arguments controlling the pole.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-fit}{}}}
+\subsection{Method \code{fit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPoleRiemannL2$fit(obj.formula, data)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfPoleRiemannL2$clone(deep = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

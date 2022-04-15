@@ -28,13 +28,7 @@ mfFamily(
   fW = NULL
 )
 
-RiemannL2(
-  mf,
-  align = TRUE,
-  pole.type = c("RiemannL2", "Gaussian"),
-  pole.control = boost_control(),
-  pole.align = align
-)
+RiemannL2(mf, pole = mfPolemfboost$new())
 
 PlanarShapeL2(
   pole.type = "RiemannL2",

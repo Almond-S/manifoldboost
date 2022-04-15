@@ -31,9 +31,9 @@ mfPole <- R6Class("mfPole",
                     #' @param ... other arguments controling the pole.
                     initialize = function(mfGeom, ...) {
                       if(!missing(mfGeom)) private$mf <- mfGeom
-                      if(!missing(mfPole)) private$pole <- mfPole
                       theargs <- list(...)
                       private$args[names(theargs)] <- theargs
+                      invisible(self)
                     },
                     #' @description An initialization function determining the pole from the 
                     #' data. The function takes two arguments.
@@ -70,7 +70,7 @@ mfPoleZero <- R6Class("mfPoleZero", inherit = mfPole,
           },
           predict = function(newdata = NULL) {
             if(is.null(newdata)) 
-              rep(0, length(mf$unstructure(mf$y_))) else
+              rep(0, length(private$mf$unstructure(private$mf$y_))) else
                 rep(0, nrow(newdata))
           }
         ))
@@ -90,13 +90,13 @@ mfPolemfboost <- R6Class("mfPolemfboost", inherit = mfPole,
                             #' @param ... other arguments controling the pole.
                             initialize = function(mfGeom, family, ...) {
                               if(!missing(mfGeom)) private$mf <- mfGeom
-                              if(!missing(mfPole)) private$pole <- mfPole
                               theargs <- list(...)
                               private$args[names(theargs)] <- theargs
                               if(!missing(family)) {
                                 stopifnot(is.function(family))
                                 private$family <- family
                               }
+                              invisible(self)
                             },
                             fit = function(obj.formula, data) {
                               self$model <- mfboost( formula = ~ 1, obj.formula = obj.formula, 
@@ -106,7 +106,7 @@ mfPolemfboost <- R6Class("mfPolemfboost", inherit = mfPole,
                             predict = function(newdata = NULL) 
                               predict(self$model, type = "response", newdata = newdata)
                           ), private = list(
-                            family = Gaussian
+                            family = mboost::Gaussian
                           ))
 
 #' @name mfPoleRiemannianL2
@@ -120,21 +120,22 @@ mfPoleRiemannL2 <- R6Class("mfPoleRiemannL2", inherit = mfPolemfboost,
                   #' @param mfGeom an object of class \code{mfGeometry}.
                   #' @param mfPole an object of class \code{mfPole} if needed.
                   #' Defaults to \code{Gaussian()}.
-                  #' @param ... other arguments controling the pole.
+                  #' @param ... other arguments controlling the pole.
                   initialize = function(mfGeom, mfPole, ...) {
                     if(!missing(mfGeom)) private$mf <- mfGeom
                     if(!missing(mfPole)) private$pole <- mfPole
                     theargs <- list(...)
                     private$args[names(theargs)] <- theargs
+                    invisible(self)
                   },
                   fit = function(obj.formula, data) {
                     new_fam <- RiemannL2(mf = private$mf, pole = private$pole)
                     self$model <- mfboost( formula = ~ 1, obj.formula = obj.formula, 
                                            data = data, family = new_fam, control = pole.control )
                     invisible(self)
-                  }, private = list(
+                  }), private = list(
                   pole = mfPolemfboost$new()
-                )))
+                ))
 
 # mfboost_family class  ---------------------------------------------------------
 
