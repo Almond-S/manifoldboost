@@ -78,8 +78,8 @@ mf3$plot(level = "SRV")
 fam <- SquareRootVelocityL2()
 
 system.time(
-  m <- mfboost(shape ~ bols(type, df = Inf),
-               obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id,
+  m <- mfboost(shape ~ bols(type, df = 1),
+               obj.formula = value^dim ~ bbs(arg, df = 50, knots = 70, cyclic = TRUE) | id,
                data = bdat,
                family = fam)
 )

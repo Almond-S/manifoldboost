@@ -263,6 +263,13 @@ mfGeomSRV_closed <- R6Class("mfGeomSRV", inherit = mfGeomEuclidean,
                                                  points(x = Re(y_), y = Im(y_), pch = pch, col = col, type = type, ...)
                                                }
                                              }
+                                           ), active = list(
+                                             y_ = function(value) {
+                                               if(missing(value))
+                                                 private$.y_ else {
+                                                   private$.y_ <- self$validate(value)
+                                                   private$.curve_ <- self$srv_trafo(value, inverse = TRUE)
+                                                 } }
                                            ),
                                            private = list(
                                              .curve_ = NULL,
@@ -450,6 +457,16 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                                
                                                invisible(self)
                                              },
+                                             #' @description convert 2D vectors (given in long format with dimension 
+                                             #' indicator) to complex
+                                             structure = function(y) {
+                                               if(is.null(private$structure_index)) 
+                                                 stop("Please, initialize geometry before using $structure.")
+                                               structure( complex(
+                                                 real = y[private$structure_index$real], 
+                                                 imag = y[private$structure_index$imaginary]),
+                                                 arg = private$.arg_ )
+                                             },
                                              #' @description scale \code{y_} to unit length or
                                              #' an SRV-trnasform \code{q_} to unit norm, respectively.
                                              register = function(y_) {
@@ -553,7 +570,7 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                                if(!is.null(y0_)) {
                                                  # align y_
                                                  y_ <- if(missy_) self$align(y0_ = y0_) else 
-                                                   self$alifn(y_, y0_)
+                                                   self$align(y_, y0_)
                                                  
                                                  if(level == "curve") {
                                                    y_ <- self$srv_trafo(y_, inverse = TRUE, center = center)
@@ -631,6 +648,13 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                              },
                                              warp = TRUE,
                                              warp_memory = 0
+                                           ), active = list(
+                                             y_ = function(value) {
+                                               if(missing(value))
+                                                 private$.y_ else {
+                                                   private$.y_ <- self$validate(value)
+                                                   private$.curve_ <- self$srv_trafo(value, inverse = TRUE)
+                                                 } }
                                            ),
                                            private = list(
                                              .curve_ = NULL,
@@ -648,8 +672,10 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                                  x = Re(y0_), 
                                                  y = Im(y0_))
                                                # at time points
-                                               find_t_args$r = if(is.null(attr(y0_, "arg"))) 
-                                                 private$.arg_ else
+                                               find_t_args$r = if(is.null(attr(y0_, "arg"))) {
+                                                 if(closed) c(private$.arg_, 1+private$.arg_[1])  else 
+                                                   private$.arg_
+                                               } else
                                                    attr(y0_, "arg")
                                                
                                                if(missing(y_)) {
@@ -740,12 +766,16 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
 #' @export
 #' @name ElasticPlanarShapeL2
 #' @rdname mfFamily
-ElasticPlanarShapeL2 <- function(pole.type = "RiemannL2", pole.control = boost_control(), 
-                                 weight_fun = equal_weights, closed = TRUE, warp_update = function(warp_memory, warp) TRUE) {
+ElasticPlanarShapeL2 <- function(weight_fun = equal_weights, closed = TRUE, warp_update = function(warp_memory, warp) TRUE) {
   if(!closed) stop("Sorry, only closed case implemented so far.")
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomElasticPlanarShape_closed$new(weight_fun = weight_fun, 
                                                          arg_range = c(0,1), warp_update = warp_update))
+  pole <- mfPoleRiemannL2$new(
+    mfGeom = mfGeomProduct$new(
+      mfGeom_default = mfGeomSRV_closed$new(weight_fun = weight_fun, 
+                                            arg_range = c(0,1))),
+    mfPole = mfPoleZero$new(mfGeom = mf))
   
-  RiemannL2(mf = mf, pole.type = pole.type, pole.control = pole.control)
+  RiemannL2(mf = mf, pole = pole)
 }

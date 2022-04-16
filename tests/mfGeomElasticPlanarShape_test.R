@@ -87,8 +87,7 @@ bcube <- tbl_cube(
 
 bdat <- list(shape = bcube, type = factor(bot[["fac"]]$type, labels = c("whisky", "beer")))
 
-fam <- ElasticPlanarShapeL2( pole.type = "Gaussian",
-                             pole.control = boost_control(mstop = 20, .25))
+fam <- ElasticPlanarShapeL2( )
 
 system.time(
   m <- mfboost(shape ~ bols(type, df = Inf),
@@ -100,7 +99,17 @@ system.time(
 
 # pdf("First_PlanarShapeBoost_withWarping.pdf")
 par(mfrow = c(1,2), mar = c(0,2,2,0))
-plot(m, ids = which(names(b) %in% c("franziskaner", "ballantines")), t = "l", main = c("beer", "whisky"))
+plot(m, ids = which(names(b) %in% c("franziskaner", "ballantines")), 
+     t = "l", main = c("beer", "whisky"))
 par(mfrow = c(1,1))
 panel(bot, names = TRUE, fac = "type")
 # dev.off()
+
+p <- predict(m, type = "response")
+p <- fam@mf$structure(p)
+for(i in seq_along(p))
+  attr(p[[i]], "arg") <- c(t0, 1) 
+p <- lapply(p, fam@mf$mfGeom_default$srv_trafo, inverse = T, center = T)
+
+plot(p$franziskaner, t = "l", asp = 1)
+plot(p$jackdaniels, t = "l", asp = 1)
