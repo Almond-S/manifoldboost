@@ -759,14 +759,12 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
 #' @param weight_fun a function producing inner product weights 
 #' taking the arguments \code{arg} (vector of arguments of the function) and 
 #' \code{range} (range of the arguments). Passed to \code{mf$initialize}.
-#' @param arg_range vector of length 2 specifying the \code{range} argument of 
-#' the \code{weight_fun}. The default \code{NULL} will take the minimum and maximum 
-#' of the supplied \code{arg}.
+#' @param ... further arguments passed to \code{mfboost} in the pole fit.
 #' 
 #' @export
 #' @name ElasticPlanarShapeL2
 #' @rdname mfFamily
-ElasticPlanarShapeL2 <- function(weight_fun = equal_weights, closed = TRUE, warp_update = function(warp_memory, warp) TRUE) {
+ElasticPlanarShapeL2 <- function(weight_fun = trapez_weights, closed = TRUE, warp_update = function(warp_memory, warp) TRUE, ...) {
   if(!closed) stop("Sorry, only closed case implemented so far.")
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomElasticPlanarShape_closed$new(weight_fun = weight_fun, 
@@ -775,7 +773,7 @@ ElasticPlanarShapeL2 <- function(weight_fun = equal_weights, closed = TRUE, warp
     mfGeom = mfGeomProduct$new(
       mfGeom_default = mfGeomSRV_closed$new(weight_fun = weight_fun, 
                                             arg_range = c(0,1))),
-    mfPole = mfPoleZero$new(mfGeom = mf))
+    mfPole = mfPoleZero$new(mfGeom = mf), ...)
   
   RiemannL2(mf = mf, pole = pole)
 }
