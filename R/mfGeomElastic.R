@@ -433,8 +433,8 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                                  self$structure(data[[v$value]]))
                                                # store argument and add as attribute
                                                private$.arg_ <- data[[v$arg]][private$structure_index$real]
-                                               attr(private$.curve_, "arg") <- c(private$.arg_, 
-                                                                                 1-private$.arg_[1])
+                                               attr(private$.curve_, "arg") <- 
+                                                 private$.arg_ <- c(private$.arg_, 1-private$.arg_[1])
                                                
                                                # store SRV trafo of curve 
                                                private$.y_ <- self$srv_trafo(private$.curve_)

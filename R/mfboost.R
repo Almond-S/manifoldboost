@@ -204,8 +204,8 @@ plot.mfboost <- function(x, which = NULL, ids = 1:6, multiplier = 1, ...) {
   } else {
     e <- environment(x$family@response)
     mf <- x$family@mf$clone(deep = TRUE)
-    mf$y_ <- e$response_(
-      multiplier * predict.mboost(x, which = which, type = "link"))
+    mf$y_ <- mf$structure(e$response(
+      multiplier * predict.mboost(x, which = which, type = "link")))
     mf$slice(ids)$plot(...)
   }
 }

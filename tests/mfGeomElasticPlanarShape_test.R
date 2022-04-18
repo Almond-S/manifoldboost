@@ -91,7 +91,8 @@ fam <- ElasticPlanarShapeL2( )
 
 system.time(
   m <- mfboost(shape ~ bols(type, df = Inf),
-               obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, cyclic = TRUE) | id,
+               obj.formula = value^dim ~ bbs(arg, df = Inf, knots = 50, 
+                                             boundary.knots = c(0,1), cyclic = TRUE) | id,
                data = bdat,
                family = fam,
                control = boost_control(mstop = 5, nu = .2))
