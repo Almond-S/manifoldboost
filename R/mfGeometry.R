@@ -24,6 +24,7 @@ setOldClass("mfGeometry")
 #' @param weights_ inner product weights in the internal format
 #' @param ... other arguments.
 #'
+#' @field formula a formula 
 #' @field y_ slot for a data object in the internal format
 #' @field pole_ slot for a data object in the internal format
 #' @field weights_ slot for inner product weights in the internal format 
@@ -102,6 +103,7 @@ mfGeometry <- R6Class("mfGeometry",
     .pole_ = NULL,
     .y_ = NULL,
     .weights_ = NULL,
+    .formula = NULL,
     .undefined = function(fun) {
       stop(paste0("The method '", fun, "' is not defined in this geometry.
           To define it, create a new one as a subclass of the current mfGeometry (subclass)."))},
@@ -124,7 +126,13 @@ mfGeometry <- R6Class("mfGeometry",
       if(missing(value))
         private$.y_ else {
           private$.y_ <- self$validate(value)
-        } }, 
+        } },
+    formula = function(value) {
+      if(missing(value))
+        private$.formula else {
+          stopifnot(inherits(value, "formula"))
+          private$.formula <- value
+        } },
     weights_ = function(value) {
           if(missing(value))
             private$.weights_ else {
@@ -777,6 +785,13 @@ mfGeomProduct <- R6Class("mfGeomProduct", inherit = mfGeometry,
                           if(!inherits(self$mfGeom_default, "mfGeometry"))
                             stop("Default geometry $mfGeom_default has to be set 
                                    before initliaizing data.")
+                          
+                          if(missing(formula)) {
+                            formula <- private$.formula
+                          } else {
+                            stopifnot(inherits(formula, "formula"))
+                            private$.formula <- formula
+                          }
                           
                           v <- mfInterpret_objformula(formula)
                           

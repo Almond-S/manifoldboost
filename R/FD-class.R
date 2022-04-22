@@ -161,4 +161,6 @@ as_FD.list <- function(x, formula, ...) {
 }
 
 
-
+#' @export
+#'
+as_FD.FD <- function(x, ...) x 

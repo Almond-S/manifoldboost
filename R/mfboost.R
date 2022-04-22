@@ -118,7 +118,9 @@ mfboost <- function(formula,               # response ~ xvars
     
     # initialize response AND inner weights of geometry
       # load response
-      family@mf$initialize(data = data_FDboost, formula = obj.formula)
+      if(is.null(family@mf$formula)) 
+        family@mf$initialize(data = data_FDboost, formula = obj.formula) else 
+          family@mf$initialize(data = data_FDboost)
     
     # if(all(sapply(pole_, is.null))) {
       ### create offset from response and obj.formula

@@ -24,7 +24,9 @@ the basic structure needed to provide a pole for mfboost.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{model}}{A fitted model object.}
+\item{\code{model}}{a fitted model object.}
+
+\item{\code{mf}}{an \code{mfGeometry} object.}
 }
 \if{html}{\out{</div>}}
 }

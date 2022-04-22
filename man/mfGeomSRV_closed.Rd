@@ -58,7 +58,9 @@ Initialize plane SRV geometry.
 
 \item{\code{formula}}{formula describing the internal structure of the data,
 intended for the \code{obj.formula} of \code{mfboost}
-(interpreted by \code{mfInterpret_objformula}).}
+(interpreted by \code{mfInterpret_objformula}).
+If a \code{formula} is already stored in the \code{mfGeometry} object,
+this is taken as default.}
 
 \item{\code{weight_fun}}{a function computing inner product weights for the geometry
 taking two arguments: \code{arg}, the argument of the functional data

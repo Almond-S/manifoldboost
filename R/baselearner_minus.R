@@ -205,3 +205,14 @@ btrafo <- function (bl1, Z)
   ret$dpp <- mboost_intern(ret, Xfun = Xfun, args = args, fun = "bl_lin")
   return(ret)
 }
+
+
+# alias for %+% -----------------------------------------------------------
+
+#' Combine two baselearners to one
+#'
+#' An alias for \code{mboost::`%+%`}.
+#'
+#' @export
+
+`%bind%` <- `%+%`

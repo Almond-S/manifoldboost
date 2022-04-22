@@ -23,7 +23,9 @@ mfGeomSRV_closed <- R6Class("mfGeomSRV", inherit = mfGeomEuclidean,
                                              #' @param data data in the format used in \code{\link{FDboost}}.
                                              #' @param formula formula describing the internal structure of the data, 
                                              #' intended for the \code{obj.formula} of \code{mfboost} 
-                                             #' (interpreted by \code{mfInterpret_objformula}).
+                                             #' (interpreted by \code{mfInterpret_objformula}). 
+                                             #' If a \code{formula} is already stored in the \code{mfGeometry} object,
+                                             #' this is taken as default.
                                              #' @param weight_fun a function computing inner product weights for the geometry
                                              #' taking two arguments: \code{arg}, the argument of the functional data 
                                              #' specified in \code{formula}, \code{range} the range of \code{arg}.
@@ -40,6 +42,13 @@ mfGeomSRV_closed <- R6Class("mfGeomSRV", inherit = mfGeomEuclidean,
                                                
                                                if(!is.null(arg_range)) {
                                                  private$arg_range <- arg_range
+                                               }
+                                               
+                                               if(missing(formula)) {
+                                                 formula <- private$.formula
+                                               } else {
+                                                 stopifnot(inherits(formula, "formula"))
+                                                 private$.formula <- formula
                                                }
                                                
                                                # with no data stop here !!!!!!!!!!!!!!!!!!
@@ -382,7 +391,9 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                              #' @param data data in the format used in \code{\link{FDboost}}.
                                              #' @param formula formula describing the internal structure of the data, 
                                              #' intended for the \code{obj.formula} of \code{mfboost} 
-                                             #' (interpreted by \code{mfInterpret_objformula}).
+                                             #' (interpreted by \code{mfInterpret_objformula}). 
+                                             #' If a \code{formula} is already stored in the \code{mfGeometry} object,
+                                             #' this is taken as default.
                                              #' @param weight_fun a function computing inner product weights for the geometry
                                              #' taking two arguments: \code{arg}, the argument of the functional data 
                                              #' specified in \code{formula}, \code{range} the range of \code{arg}.
@@ -404,6 +415,13 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                                if(!missing(warp_update)) {
                                                  stopifnot(is.function(warp_update))
                                                  private$warp_update <- warp_update
+                                               }
+                                               
+                                               if(missing(formula)) {
+                                                 formula <- private$.formula
+                                               } else {
+                                                 stopifnot(inherits(formula, "formula"))
+                                                 private$.formula <- formula
                                                }
                                                
                                                # with no data stop here !!!!!!!!!!!!!!!!!!
@@ -705,12 +723,12 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
                                                
                                                if(optimize) {
                                                  find_t_args$eps <- eps
-                                                 t_optim <- do.call(
+                                                 t_optim <- suppressMessages(do.call(
                                                    if(closed) 
                                                      elasdics:::find_optimal_t_discrete_closed else
                                                        elasdics:::find_optimal_t_discrete,
                                                    find_t_args
-                                                 )
+                                                 ))
                                                  
                                                  if(missing(y_)) {
                                                    attr(private$.y_, "arg_optim") <- t_optim
@@ -764,16 +782,21 @@ mfGeomElasticPlanarShape_closed <- R6Class("mfGeomElasticPlanarShape_closed", in
 #' @export
 #' @name ElasticPlanarShapeL2
 #' @rdname mfFamily
-ElasticPlanarShapeL2 <- function(weight_fun = trapez_weights, closed = TRUE, warp_update = function(warp_memory, warp) TRUE, ...) {
+ElasticPlanarShapeL2 <- function(weight_fun = trapez_weights, closed = TRUE, formula, warp_update = function(warp_memory, warp) TRUE, ...) {
   if(!closed) stop("Sorry, only closed case implemented so far.")
   mf <- mfGeomProduct$new(
     mfGeom_default = mfGeomElasticPlanarShape_closed$new(weight_fun = weight_fun, 
                                                          arg_range = c(0,1), warp_update = warp_update))
+  
   pole <- mfPoleRiemannL2$new(
     mfGeom = mfGeomProduct$new(
       mfGeom_default = mfGeomSRV_closed$new(weight_fun = weight_fun, 
                                             arg_range = c(0,1))),
     mfPole = mfPoleZero$new(mfGeom = mf), ...)
+  
+  if(!missing(formula)) {
+    mf$formula <- pole$mf$formula <- formula
+  }
   
   RiemannL2(mf = mf, pole = pole)
 }

@@ -23,6 +23,8 @@ specify the geometry of interest, such as \code{\link{mfGeomEuclidean}},
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{formula}}{a formula}
+
 \item{\code{y_}}{slot for a data object in the internal format}
 
 \item{\code{pole_}}{slot for a data object in the internal format}

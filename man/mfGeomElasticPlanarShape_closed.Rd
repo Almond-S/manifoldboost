@@ -15,6 +15,7 @@ projective space.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{mfGeomElasticPlanarShape_closed$new()}}
+\item \href{#method-structure}{\code{mfGeomElasticPlanarShape_closed$structure()}}
 \item \href{#method-register}{\code{mfGeomElasticPlanarShape_closed$register()}}
 \item \href{#method-align}{\code{mfGeomElasticPlanarShape_closed$align()}}
 \item \href{#method-distance}{\code{mfGeomElasticPlanarShape_closed$distance()}}
@@ -31,7 +32,6 @@ projective space.
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="get_normal">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-get_normal}{\code{manifoldboost::mfGeomPlanarShape$get_normal()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="log">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-log}{\code{manifoldboost::mfGeomPlanarShape$log()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="register_v">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-register_v}{\code{manifoldboost::mfGeomPlanarShape$register_v()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-structure}{\code{manifoldboost::mfGeomPlanarShape$structure()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure_weights">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-structure_weights}{\code{manifoldboost::mfGeomPlanarShape$structure_weights()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="transport">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-transport}{\code{manifoldboost::mfGeomPlanarShape$transport()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="unstructure">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-unstructure}{\code{manifoldboost::mfGeomPlanarShape$unstructure()}}\out{</span>}
@@ -64,13 +64,35 @@ Same as in mfGeomPlanarShape but storing also function arguments.
 
 \item{\code{formula}}{formula describing the internal structure of the data,
 intended for the \code{obj.formula} of \code{mfboost}
-(interpreted by \code{mfInterpret_objformula}).}
+(interpreted by \code{mfInterpret_objformula}).
+If a \code{formula} is already stored in the \code{mfGeometry} object,
+this is taken as default.}
 
 \item{\code{weight_fun}}{a function computing inner product weights for the geometry
 taking two arguments: \code{arg}, the argument of the functional data
 specified in \code{formula}, \code{range} the range of \code{arg}.}
 
 \item{\code{arg_range}}{the \code{range} supplied to the \code{weight_fun}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-structure"></a>}}
+\if{latex}{\out{\hypertarget{method-structure}{}}}
+\subsection{Method \code{structure()}}{
+convert 2D vectors (given in long format with dimension
+indicator) to complex
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{mfGeomElasticPlanarShape_closed$structure(y)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{y}}{a numeric vector representing an element of the manifold in an
+unstructured way. The position of elements and dimensions is obtained from
+the initialization of the geometry.}
 }
 \if{html}{\out{</div>}}
 }

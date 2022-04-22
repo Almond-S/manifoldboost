@@ -60,11 +60,11 @@ SquareRootVelocityL2(
 )
 
 ElasticPlanarShapeL2(
-  pole.type = "RiemannL2",
-  pole.control = boost_control(),
-  weight_fun = equal_weights,
+  weight_fun = trapez_weights,
   closed = TRUE,
-  warp_update = function(warp_memory, warp) TRUE
+  formula,
+  warp_update = function(warp_memory, warp) TRUE,
+  ...
 )
 
 WarpPlanarShapeL2Simple(
@@ -85,8 +85,7 @@ WarpPlanarShapeL2(
 \arguments{
 \item{mf}{The response geometry supplied as an \code{mfGeometry} object.}
 
-\item{pole}{a function with arguments \code{formula} and \code{data}
-(in a format used by FDboost) returning the pole in the format required by \code{mf}.}
+\item{pole}{an object of class \code{mfPole}.}
 
 \item{ngradient, loss, risk, response, nuisance}{functions defining the
 \code{mboost::boost_family} object.}
@@ -101,11 +100,6 @@ allowed and the name of the loss function.}
 \item{offset, fW, rclass, check_y, type}{other slots of \code{boost_family} objects
 that typically do not play a role in \code{mfboost_family} objects.}
 
-\item{pole.type}{one of "RiemannL2"(default) and "Gaussian"}
-
-\item{pole.control}{a list of parameters controlling the \code{mboost} algorithm.
-For more details see \code{\link{boost_control}}.}
-
 \item{weight_fun}{a function producing inner product weights
 taking the arguments \code{arg} (vector of arguments of the function) and
 \code{range} (range of the arguments). Passed to \code{mf$initialize}.}
@@ -113,6 +107,8 @@ taking the arguments \code{arg} (vector of arguments of the function) and
 \item{arg_range}{vector of length 2 specifying the \code{range} argument of
 the \code{weight_fun}. The default \code{NULL} will take the minimum and maximum
 of the supplied \code{arg}.}
+
+\item{...}{further arguments passed to \code{mfboost} in the pole fit.}
 
 \item{initialize}{a function with arguments \code{formula} (in obj.formula
 format) and \code{data} (in a format used by FDboost) initializing \code{mf}

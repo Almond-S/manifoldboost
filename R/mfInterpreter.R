@@ -25,7 +25,7 @@ mfInterpret_objformula <- function(x, varnames = TRUE, ...) {
   # interpret lhs
   if(length(lf) == 1) {
     v$value <- lf
-    v$dim <- ".dim_"
+    # v$dim <- ".dim_"
   } else if(length(lf) == 3) {
     if(lf[[1]] == "^") {
       v$value <- lf[[2]]
