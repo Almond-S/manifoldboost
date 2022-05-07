@@ -71,8 +71,11 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                                             obj.formula = obj.formula)
                       
                       self$new_mf0 <- mf <- model0$family@mf$clone(deep = TRUE)
-                      mf$initialize(data = data_FDboost, formula = obj.formula)
-                      
+                      # load response
+                      if(is.null(mf$formula)) 
+                        mf$initialize(data = data_FDboost, formula = obj.formula) else 
+                          mf$initialize(data = data_FDboost)
+          browser()               
                       # get predictions for newdata0
                       suppressWarnings(
                         pred0 <- predict(model0, 
@@ -80,7 +83,7 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                                        type = "response")
                         )
                       self$new_pred0_ <- pred0 %>% mf$structure() %>% mf$register()
-                      
+                 
                       # ... and the pole of the regression model
                       suppressWarnings(
                       mf$pole_ <- predict(model0, newdata = newdata0, 
@@ -107,12 +110,16 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                                              "update_formula_vars"))
                       B <- e$newX(newdata = data_FDboost, prediction = TRUE)
                       K <- B$K
-                      B <- B$X
+                      B <- as.matrix(B$X)
                       
-                      ## break down to single design matrices per curve
-                      ids <- split(1:length(data_FDboost[[v$id]]), 
-                                   data_FDboost[[v$id]])
-                      private$new_B <- B <- lapply(ids, function(i) B[i, , drop = FALSE])
+                      if(is.matrix(data_FDboost[[v$value]])) {
+                        private$new_B <- B <- lapply(data_FDboost[[v$id]], function(x) B)
+                      } else {
+                        ## break down to single design matrices per curve
+                        ids <- split(1:length(data_FDboost[[v$id]]), 
+                                     data_FDboost[[v$id]])
+                        private$new_B <- B <- lapply(ids, function(i) B[i, , drop = FALSE])
+                      }
                       
                       ## compute basis representations
                       ## (with slight penalty against singularity problems)

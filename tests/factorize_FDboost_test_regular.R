@@ -61,7 +61,6 @@ par(opar)
 
 # factorize model ---------------------------------------------------------
 
-# fac <- shapeboost:::factorize.FDboost(m)
 fac <- manifoldboost:::factorize.FDboost(m)
 
 vi <- as.data.frame(varimp(fac$cov))
@@ -106,4 +105,12 @@ a <- predict(fac$resp, newdata = newdata_resp, which = 1:5)
 plot(newdata_resp$t, a[, 1])
 # coef method
 cf <- coef(fac$resp, which = 1)
+
+
+# factorize on new data ---------------------------------------------------
+
+fac2 <- manifoldboost:::factorize.FDboost(m, newdata = dat)
+
+
+
 

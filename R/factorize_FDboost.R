@@ -51,6 +51,10 @@ factorize.FDboost <- function(x, newdata = NULL, newweights = 1, blwise = TRUE, 
   formulae$cov <- as.formula(x$formulaFDboost)
   formulae$resp <- as.formula(paste(x$yname, x$timeformula))
   
+  ydim <- if(nd) 
+    c(length(dat$cov[[x$yname]]), length(dat$resp[[x$yname]])) else 
+    x$ydim
+  
   # set up component models
   mod <- list() 
   # standard mboost model for covariates
@@ -71,7 +75,7 @@ factorize.FDboost <- function(x, newdata = NULL, newweights = 1, blwise = TRUE, 
                   "formulaMboost", "family", "(weights)", "id")
   cls <- class(mod$resp)
   mod$resp[which_vars] <- unclass(x)[which_vars]
-  if(FDboost_regular) mod$resp$ydim <- c(1, x$ydim[2])
+  if(FDboost_regular) mod$resp$ydim <- c(1, ydim[2])
   mod$resp$yind <- range(x$yind)
   attr(mod$resp$yind, "nameyind") <- attr(x$yind, "nameyind")
   if(FDboost_regular)
@@ -79,12 +83,16 @@ factorize.FDboost <- function(x, newdata = NULL, newweights = 1, blwise = TRUE, 
       class(mod$resp) <- class(x)
   
   if(nd) {
-    if(length(newweights)==1) 
-      mod$resp[["(weights)"]] <- rep(newweights, length(dat$resp[[x$yname]])) else {
+    if(length(newweights)==1) {
+      mod$resp[["(weights)"]] <- if(FDboost_regular) 
+        rep(newweights, prod(ydim)) else 
+        rep(newweights, length(dat$resp[[x$yname]]))
+    } else {
       stopifnot(length(newweights) == length(dat$resp[[x$yname]]))
       mod$resp[["(weights)"]] <- newweights
       }
-    mod$resp$id <- newdata[[attr(mod$resp$id, "nameid")]]
+    if(!FDboost_regular) 
+      mod$resp$id <- newdata[[attr(mod$resp$id, "nameid")]]
   }
   
   # set to FDboost_fac class
@@ -112,8 +120,9 @@ factorize.FDboost <- function(x, newdata = NULL, newweights = 1, blwise = TRUE, 
     wghts <- list(cov = 1, resp = 1)
   } else {    
     if(FDboost_regular) {
-      
-        dim(wghts) <- x$ydim
+      if(length(wghts) == ydim[2])
+        dim(wghts) <- c(1, ydim[2]) else 
+          dim(wghts) <- ydim
         wghts <- list(
           cov = rowMeans(wghts),
           resp = wghts[1, ]

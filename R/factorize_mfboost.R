@@ -24,17 +24,17 @@ factorize.mfboost <- function(x, blwise = TRUE, newdata = NULL, newformula = NUL
   if(!is.null(newdata)) {
     # get new weights from new geometry 
     newformula <- if(is.null(newformula)) x$formula
-    newobj.formula <- if(is.null(newobj.formula)) x$obj.formula
+    # newobj.formula <- if(is.null(newobj.formula)) x$obj.formula
     
     newdata <- as_FD(newdata, 
           formula = newformula, 
           obj.formula = newobj.formula)
     
     mf <- x$family@mf$clone(deep = TRUE)
-    mf$initialize(
-      data = newdata,
-      formula = newobj.formula
-    )
+    if(is.null(mf$formula) | !is.null(newobj.formula)) 
+      mf$initialize(data = newdata, formula = newobj.formula) else 
+        mf$initialize(data = newdata)
+    
     wghts <- mf$unstructure_weights(mf$weights_)
     # predict new pole
     mf$pole_ <- mf$structure(x$family@pole$predict(newdata = newdata))

@@ -71,8 +71,10 @@ mfPoleZero <- R6Class("mfPoleZero", inherit = mfPole,
           },
           predict = function(newdata = NULL) {
             if(is.null(newdata)) 
-              rep(0, length(self$mf$unstructure(self$mf$y_))) else
-                rep(0, nrow(newdata))
+              rep(0, length(self$mf$unstructure(self$mf$y_))) else {
+                v <- mfInterpret_objformula(self$mf$formula)
+                rep(0, length(newdata[[v$value]]))
+              }
           }
         ))
 

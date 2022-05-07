@@ -264,7 +264,9 @@ predict.mfboost <- function(object, newdata = NULL, which = NULL,
       family <- clone(family)
       
       # initialize response AND inner weights of geometry
-      family@mf$initialize(data = data_FDboost, formula = obj.formula)
+      if(is.null(family@mf$formula)) 
+        family@mf$initialize(data = data_FDboost, formula = obj.formula) else 
+          family@mf$initialize(data = data_FDboost)
       mf <- family@mf
       
       ### create offset from response and obj.formula 
@@ -299,14 +301,14 @@ predict.mfboost <- function(object, newdata = NULL, which = NULL,
     class(object) <- setdiff(class(object), "mfboost")
     
     if(identical(which, 0)) {
-      pred <- rep(0, length(data_FDboost[[attr(object$yind, "nameyind")]]))
+      pred <- rep(0, length(data_FDboost[[object$yname]]))
     } else {
       # arrange variable order as needed for FDboost
       nms <- names(object$yind)
       onms <- setdiff(names(data_FDboost), nms)
       data_FDboost <- data_FDboost[c(onms, nms)]
       
-      pred <- predict(object, newdata = data_FDboost, to_FDboost = FALSE,
+      pred <- predict(object, newdata = data_FDboost, toFDboost = FALSE,
                       which = if(!is.null(which)) object$which(which), 
                       type = "link", ...)
     }
