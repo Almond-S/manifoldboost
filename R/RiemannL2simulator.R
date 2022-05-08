@@ -75,7 +75,7 @@ RiemannL2sim <- R6Class("RiemannL2sim",
                       if(is.null(mf$formula)) 
                         mf$initialize(data = data_FDboost, formula = obj.formula) else 
                           mf$initialize(data = data_FDboost)
-          browser()               
+                         
                       # get predictions for newdata0
                       suppressWarnings(
                         pred0 <- predict(model0, 
