@@ -77,24 +77,24 @@ containing the specified (average) sample sizes.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{RiemannL2sim$new()}}
-\item \href{#method-gridsampler}{\code{RiemannL2sim$gridsampler()}}
-\item \href{#method-sample_topdown}{\code{RiemannL2sim$sample_topdown()}}
-\item \href{#method-sample_blockwise}{\code{RiemannL2sim$sample_blockwise()}}
-\item \href{#method-parallel_setup}{\code{RiemannL2sim$parallel_setup()}}
-\item \href{#method-parallel_stop}{\code{RiemannL2sim$parallel_stop()}}
-\item \href{#method-fit}{\code{RiemannL2sim$fit()}}
-\item \href{#method-crossvalidate}{\code{RiemannL2sim$crossvalidate()}}
-\item \href{#method-predict}{\code{RiemannL2sim$predict()}}
-\item \href{#method-summarize}{\code{RiemannL2sim$summarize()}}
-\item \href{#method-notify}{\code{RiemannL2sim$notify()}}
-\item \href{#method-plot}{\code{RiemannL2sim$plot()}}
-\item \href{#method-clone}{\code{RiemannL2sim$clone()}}
+\item \href{#method-RiemannL2sim-new}{\code{RiemannL2sim$new()}}
+\item \href{#method-RiemannL2sim-gridsampler}{\code{RiemannL2sim$gridsampler()}}
+\item \href{#method-RiemannL2sim-sample_topdown}{\code{RiemannL2sim$sample_topdown()}}
+\item \href{#method-RiemannL2sim-sample_blockwise}{\code{RiemannL2sim$sample_blockwise()}}
+\item \href{#method-RiemannL2sim-parallel_setup}{\code{RiemannL2sim$parallel_setup()}}
+\item \href{#method-RiemannL2sim-parallel_stop}{\code{RiemannL2sim$parallel_stop()}}
+\item \href{#method-RiemannL2sim-fit}{\code{RiemannL2sim$fit()}}
+\item \href{#method-RiemannL2sim-crossvalidate}{\code{RiemannL2sim$crossvalidate()}}
+\item \href{#method-RiemannL2sim-predict}{\code{RiemannL2sim$predict()}}
+\item \href{#method-RiemannL2sim-summarize}{\code{RiemannL2sim$summarize()}}
+\item \href{#method-RiemannL2sim-notify}{\code{RiemannL2sim$notify()}}
+\item \href{#method-RiemannL2sim-plot}{\code{RiemannL2sim$plot()}}
+\item \href{#method-RiemannL2sim-clone}{\code{RiemannL2sim$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-new"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-new}{}}}
 \subsection{Method \code{new()}}{
 initialize simulation scenario.
 \subsection{Usage}{
@@ -115,8 +115,8 @@ initialize simulation scenario.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-gridsampler"></a>}}
-\if{latex}{\out{\hypertarget{method-gridsampler}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-gridsampler"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-gridsampler}{}}}
 \subsection{Method \code{gridsampler()}}{
 function sampling from the evaluations of
 a single response observation
@@ -135,8 +135,8 @@ a single response observation
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sample_topdown"></a>}}
-\if{latex}{\out{\hypertarget{method-sample_topdown}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-sample_topdown"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-sample_topdown}{}}}
 \subsection{Method \code{sample_topdown()}}{
 function for sampling observations
 \subsection{Usage}{
@@ -165,8 +165,8 @@ function for sampling observations
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sample_blockwise"></a>}}
-\if{latex}{\out{\hypertarget{method-sample_blockwise}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-sample_blockwise"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-sample_blockwise}{}}}
 \subsection{Method \code{sample_blockwise()}}{
 function for sampling observations in a blockwise
 strategy to preserve covariate composition.
@@ -200,8 +200,8 @@ after random transformations.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-parallel_setup"></a>}}
-\if{latex}{\out{\hypertarget{method-parallel_setup}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-parallel_setup"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-parallel_setup}{}}}
 \subsection{Method \code{parallel_setup()}}{
 initialize parallel computing
 \subsection{Usage}{
@@ -217,8 +217,8 @@ initialize parallel computing
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-parallel_stop"></a>}}
-\if{latex}{\out{\hypertarget{method-parallel_stop}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-parallel_stop"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-parallel_stop}{}}}
 \subsection{Method \code{parallel_stop()}}{
 end parallel computing
 \subsection{Usage}{
@@ -227,8 +227,8 @@ end parallel computing
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fit"></a>}}
-\if{latex}{\out{\hypertarget{method-fit}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-fit}{}}}
 \subsection{Method \code{fit()}}{
 fit simulated datasets
 \subsection{Usage}{
@@ -248,8 +248,8 @@ fit simulated datasets
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-crossvalidate"></a>}}
-\if{latex}{\out{\hypertarget{method-crossvalidate}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-crossvalidate"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-crossvalidate}{}}}
 \subsection{Method \code{crossvalidate()}}{
 conduct cross-validations of fitted models.
 \subsection{Usage}{
@@ -280,8 +280,8 @@ default \code{NULL}, seeds are randomly drawn.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-predict"></a>}}
-\if{latex}{\out{\hypertarget{method-predict}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-predict"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-predict}{}}}
 \subsection{Method \code{predict()}}{
 predict model0 and models and extract estimated effects.
 \subsection{Usage}{
@@ -290,8 +290,8 @@ predict model0 and models and extract estimated effects.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-summarize"></a>}}
-\if{latex}{\out{\hypertarget{method-summarize}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-summarize"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-summarize}{}}}
 \subsection{Method \code{summarize()}}{
 generate simulation summary
 \subsection{Usage}{
@@ -300,8 +300,8 @@ generate simulation summary
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-notify"></a>}}
-\if{latex}{\out{\hypertarget{method-notify}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-notify"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-notify}{}}}
 \subsection{Method \code{notify()}}{
 send automated notifications via telegram using
 the R package \link{telegram}. For getting started see their
@@ -323,8 +323,8 @@ package vignette.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-plot}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-plot}{}}}
 \subsection{Method \code{plot()}}{
 make first summary for first inspection of results.
 \subsection{Usage}{
@@ -333,8 +333,8 @@ make first summary for first inspection of results.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-RiemannL2sim-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-RiemannL2sim-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -27,14 +27,14 @@ the basic structure needed to provide a pole for mfboost.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-fit}{\code{mfPole$fit()}}
-\item \href{#method-predict}{\code{mfPole$predict()}}
-\item \href{#method-clone}{\code{mfPole$clone()}}
+\item \href{#method-mfPole-fit}{\code{mfPole$fit()}}
+\item \href{#method-mfPole-predict}{\code{mfPole$predict()}}
+\item \href{#method-mfPole-clone}{\code{mfPole$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fit"></a>}}
-\if{latex}{\out{\hypertarget{method-fit}{}}}
+\if{html}{\out{<a id="method-mfPole-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-mfPole-fit}{}}}
 \subsection{Method \code{fit()}}{
 An initialization function determining the pole from the
 data. The function takes two arguments.
@@ -53,8 +53,8 @@ data. The function takes two arguments.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-predict"></a>}}
-\if{latex}{\out{\hypertarget{method-predict}{}}}
+\if{html}{\out{<a id="method-mfPole-predict"></a>}}
+\if{latex}{\out{\hypertarget{method-mfPole-predict}{}}}
 \subsection{Method \code{predict()}}{
 A function taking \code{newdata} in the same format as \code{data}
 and generating a prediction as a simple vector fitting to the data.
@@ -72,8 +72,8 @@ specifies the original data.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfPole-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfPole-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

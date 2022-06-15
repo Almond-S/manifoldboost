@@ -14,34 +14,34 @@ projective space.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{mfGeomPlanarShape$new()}}
-\item \href{#method-structure}{\code{mfGeomPlanarShape$structure()}}
-\item \href{#method-unstructure}{\code{mfGeomPlanarShape$unstructure()}}
-\item \href{#method-unstructure_weights}{\code{mfGeomPlanarShape$unstructure_weights()}}
-\item \href{#method-structure_weights}{\code{mfGeomPlanarShape$structure_weights()}}
-\item \href{#method-register}{\code{mfGeomPlanarShape$register()}}
-\item \href{#method-register_v}{\code{mfGeomPlanarShape$register_v()}}
-\item \href{#method-log}{\code{mfGeomPlanarShape$log()}}
-\item \href{#method-transport}{\code{mfGeomPlanarShape$transport()}}
-\item \href{#method-plot}{\code{mfGeomPlanarShape$plot()}}
-\item \href{#method-validate}{\code{mfGeomPlanarShape$validate()}}
-\item \href{#method-get_normal}{\code{mfGeomPlanarShape$get_normal()}}
-\item \href{#method-clone}{\code{mfGeomPlanarShape$clone()}}
+\item \href{#method-mfGeomPlanarShape-new}{\code{mfGeomPlanarShape$new()}}
+\item \href{#method-mfGeomPlanarShape-structure}{\code{mfGeomPlanarShape$structure()}}
+\item \href{#method-mfGeomPlanarShape-unstructure}{\code{mfGeomPlanarShape$unstructure()}}
+\item \href{#method-mfGeomPlanarShape-unstructure_weights}{\code{mfGeomPlanarShape$unstructure_weights()}}
+\item \href{#method-mfGeomPlanarShape-structure_weights}{\code{mfGeomPlanarShape$structure_weights()}}
+\item \href{#method-mfGeomPlanarShape-register}{\code{mfGeomPlanarShape$register()}}
+\item \href{#method-mfGeomPlanarShape-register_v}{\code{mfGeomPlanarShape$register_v()}}
+\item \href{#method-mfGeomPlanarShape-log}{\code{mfGeomPlanarShape$log()}}
+\item \href{#method-mfGeomPlanarShape-transport}{\code{mfGeomPlanarShape$transport()}}
+\item \href{#method-mfGeomPlanarShape-plot}{\code{mfGeomPlanarShape$plot()}}
+\item \href{#method-mfGeomPlanarShape-validate}{\code{mfGeomPlanarShape$validate()}}
+\item \href{#method-mfGeomPlanarShape-get_normal}{\code{mfGeomPlanarShape$get_normal()}}
+\item \href{#method-mfGeomPlanarShape-clone}{\code{mfGeomPlanarShape$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-align}{\code{manifoldboost::mfGeomEuclidean$align()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-innerprod}{\code{manifoldboost::mfGeomEuclidean$innerprod()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomUnitSphere" data-id="exp">}\href{../../manifoldboost/html/mfGeomUnitSphere.html#method-exp}{\code{manifoldboost::mfGeomUnitSphere$exp()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance"><a href='../../manifoldboost/html/mfGeometry.html#method-mfGeometry-distance'><code>manifoldboost::mfGeometry$distance()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-align'><code>manifoldboost::mfGeomEuclidean$align()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-innerprod'><code>manifoldboost::mfGeomEuclidean$innerprod()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomUnitSphere" data-id="exp"><a href='../../manifoldboost/html/mfGeomUnitSphere.html#method-mfGeomUnitSphere-exp'><code>manifoldboost::mfGeomUnitSphere$exp()</code></a></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-new"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize planar shape geometry for data given
 in (long) FDboost format.
@@ -68,8 +68,8 @@ specified in \code{formula}, \code{range} the range of \code{arg}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-structure"></a>}}
-\if{latex}{\out{\hypertarget{method-structure}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-structure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-structure}{}}}
 \subsection{Method \code{structure()}}{
 convert 2D vectors (given in long format with dimension
 indicator) to complex
@@ -88,8 +88,8 @@ the initialization of the geometry.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-unstructure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
 convert complex back to long format numeric
 \subsection{Usage}{
@@ -105,8 +105,8 @@ convert complex back to long format numeric
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure_weights"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure_weights}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-unstructure_weights"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-unstructure_weights}{}}}
 \subsection{Method \code{unstructure_weights()}}{
 double inner product weights for complex vectors
 to appear in both dimensions in numeric long format
@@ -124,8 +124,8 @@ as a complex vector.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-structure_weights"></a>}}
-\if{latex}{\out{\hypertarget{method-structure_weights}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-structure_weights"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-structure_weights}{}}}
 \subsection{Method \code{structure_weights()}}{
 remove double weights to obtain
 inner product weights for complex vectors
@@ -143,8 +143,8 @@ as a numeric vector. \code{weights_} are duplicated for values of both dimension
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register"></a>}}
-\if{latex}{\out{\hypertarget{method-register}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-register"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-register}{}}}
 \subsection{Method \code{register()}}{
 center \code{y_} and scale it to unit norm.
 \subsection{Usage}{
@@ -160,8 +160,8 @@ center \code{y_} and scale it to unit norm.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register_v"></a>}}
-\if{latex}{\out{\hypertarget{method-register_v}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-register_v"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-register_v}{}}}
 \subsection{Method \code{register_v()}}{
 orthogonally project \code{v_} into the tangent space of \code{y0_}.
 \subsection{Usage}{
@@ -179,8 +179,8 @@ orthogonally project \code{v_} into the tangent space of \code{y0_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-log"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-log}{}}}
 \subsection{Method \code{log()}}{
 Apply Log function of the sphere after rotation alignment
 \subsection{Usage}{
@@ -205,8 +205,8 @@ used to compute the sphere Log-map. Passed to parent method.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-transport"></a>}}
-\if{latex}{\out{\hypertarget{method-transport}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-transport"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-transport}{}}}
 \subsection{Method \code{transport()}}{
 for the parallel transport previous alignment is assumed,
 such that the transport of the sphere is directly applied.
@@ -237,8 +237,8 @@ is horizontal to \code{y0_}. Passed to parent method.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-plot}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-plot}{}}}
 \subsection{Method \code{plot()}}{
 default plotting function for planar shapes, plotting \code{y_}
 in front of \code{y0_} (after alignment).
@@ -285,8 +285,8 @@ and \code{y0_}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-validate"></a>}}
-\if{latex}{\out{\hypertarget{method-validate}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-validate"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-validate}{}}}
 \subsection{Method \code{validate()}}{
 check whether \code{is.complex(y_)}.
 \subsection{Usage}{
@@ -302,8 +302,8 @@ check whether \code{is.complex(y_)}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_normal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_normal}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-get_normal"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
 Obtain "design matrix" of tangent space normal vectors in
 unstructured long format.
@@ -323,8 +323,8 @@ normal vectors?}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarShape-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarShape-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

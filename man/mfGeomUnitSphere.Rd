@@ -13,31 +13,31 @@ in case, as a real manifold.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-register}{\code{mfGeomUnitSphere$register()}}
-\item \href{#method-register_v}{\code{mfGeomUnitSphere$register_v()}}
-\item \href{#method-log}{\code{mfGeomUnitSphere$log()}}
-\item \href{#method-exp}{\code{mfGeomUnitSphere$exp()}}
-\item \href{#method-transport}{\code{mfGeomUnitSphere$transport()}}
-\item \href{#method-get_normal}{\code{mfGeomUnitSphere$get_normal()}}
-\item \href{#method-clone}{\code{mfGeomUnitSphere$clone()}}
+\item \href{#method-mfGeomUnitSphere-register}{\code{mfGeomUnitSphere$register()}}
+\item \href{#method-mfGeomUnitSphere-register_v}{\code{mfGeomUnitSphere$register_v()}}
+\item \href{#method-mfGeomUnitSphere-log}{\code{mfGeomUnitSphere$log()}}
+\item \href{#method-mfGeomUnitSphere-exp}{\code{mfGeomUnitSphere$exp()}}
+\item \href{#method-mfGeomUnitSphere-transport}{\code{mfGeomUnitSphere$transport()}}
+\item \href{#method-mfGeomUnitSphere-get_normal}{\code{mfGeomUnitSphere$get_normal()}}
+\item \href{#method-mfGeomUnitSphere-clone}{\code{mfGeomUnitSphere$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="unstructure_weights">}\href{../../manifoldboost/html/mfGeometry.html#method-unstructure_weights}{\code{manifoldboost::mfGeometry$unstructure_weights()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-align}{\code{manifoldboost::mfGeomEuclidean$align()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-innerprod}{\code{manifoldboost::mfGeomEuclidean$innerprod()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="structure">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-structure}{\code{manifoldboost::mfGeomEuclidean$structure()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="unstructure">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-unstructure}{\code{manifoldboost::mfGeomEuclidean$unstructure()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="validate">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-validate}{\code{manifoldboost::mfGeomEuclidean$validate()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance"><a href='../../manifoldboost/html/mfGeometry.html#method-mfGeometry-distance'><code>manifoldboost::mfGeometry$distance()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="unstructure_weights"><a href='../../manifoldboost/html/mfGeometry.html#method-mfGeometry-unstructure_weights'><code>manifoldboost::mfGeometry$unstructure_weights()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-align'><code>manifoldboost::mfGeomEuclidean$align()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-innerprod'><code>manifoldboost::mfGeomEuclidean$innerprod()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="structure"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-structure'><code>manifoldboost::mfGeomEuclidean$structure()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="unstructure"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-unstructure'><code>manifoldboost::mfGeomEuclidean$unstructure()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="validate"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-validate'><code>manifoldboost::mfGeomEuclidean$validate()</code></a></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register"></a>}}
-\if{latex}{\out{\hypertarget{method-register}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-register"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-register}{}}}
 \subsection{Method \code{register()}}{
 \code{y} vectors are scaled to unit norm
 \subsection{Usage}{
@@ -53,8 +53,8 @@ in case, as a real manifold.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register_v"></a>}}
-\if{latex}{\out{\hypertarget{method-register_v}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-register_v"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-register_v}{}}}
 \subsection{Method \code{register_v()}}{
 vectors \code{v}
 are orthogonalized with respect to \code{y0_} guaranteeing proper tangent
@@ -74,8 +74,8 @@ vectors.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-log"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-log}{}}}
 \subsection{Method \code{log()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomUnitSphere$log(
@@ -99,8 +99,8 @@ methods to implement log-method ("simple" or "alternative").}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-exp"></a>}}
-\if{latex}{\out{\hypertarget{method-exp}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-exp"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-exp}{}}}
 \subsection{Method \code{exp()}}{
 moving \code{v_} along an arc on the sphere.
 \subsection{Usage}{
@@ -118,8 +118,8 @@ moving \code{v_} along an arc on the sphere.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-transport"></a>}}
-\if{latex}{\out{\hypertarget{method-transport}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-transport"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-transport}{}}}
 \subsection{Method \code{transport()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{mfGeomUnitSphere$transport(
@@ -148,8 +148,8 @@ is horizontal to \code{y0_}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_normal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_normal}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-get_normal"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
 normal vector just corresponds to the pole itself
 \subsection{Usage}{
@@ -165,8 +165,8 @@ normal vector just corresponds to the pole itself
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfGeomUnitSphere-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomUnitSphere-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

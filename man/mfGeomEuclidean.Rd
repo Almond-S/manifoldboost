@@ -20,30 +20,30 @@ as parent for most other geometries.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-structure}{\code{mfGeomEuclidean$structure()}}
-\item \href{#method-unstructure}{\code{mfGeomEuclidean$unstructure()}}
-\item \href{#method-align}{\code{mfGeomEuclidean$align()}}
-\item \href{#method-register}{\code{mfGeomEuclidean$register()}}
-\item \href{#method-exp}{\code{mfGeomEuclidean$exp()}}
-\item \href{#method-log}{\code{mfGeomEuclidean$log()}}
-\item \href{#method-transport}{\code{mfGeomEuclidean$transport()}}
-\item \href{#method-innerprod}{\code{mfGeomEuclidean$innerprod()}}
-\item \href{#method-get_normal}{\code{mfGeomEuclidean$get_normal()}}
-\item \href{#method-validate}{\code{mfGeomEuclidean$validate()}}
-\item \href{#method-clone}{\code{mfGeomEuclidean$clone()}}
+\item \href{#method-mfGeomEuclidean-structure}{\code{mfGeomEuclidean$structure()}}
+\item \href{#method-mfGeomEuclidean-unstructure}{\code{mfGeomEuclidean$unstructure()}}
+\item \href{#method-mfGeomEuclidean-align}{\code{mfGeomEuclidean$align()}}
+\item \href{#method-mfGeomEuclidean-register}{\code{mfGeomEuclidean$register()}}
+\item \href{#method-mfGeomEuclidean-exp}{\code{mfGeomEuclidean$exp()}}
+\item \href{#method-mfGeomEuclidean-log}{\code{mfGeomEuclidean$log()}}
+\item \href{#method-mfGeomEuclidean-transport}{\code{mfGeomEuclidean$transport()}}
+\item \href{#method-mfGeomEuclidean-innerprod}{\code{mfGeomEuclidean$innerprod()}}
+\item \href{#method-mfGeomEuclidean-get_normal}{\code{mfGeomEuclidean$get_normal()}}
+\item \href{#method-mfGeomEuclidean-validate}{\code{mfGeomEuclidean$validate()}}
+\item \href{#method-mfGeomEuclidean-clone}{\code{mfGeomEuclidean$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="unstructure_weights">}\href{../../manifoldboost/html/mfGeometry.html#method-unstructure_weights}{\code{manifoldboost::mfGeometry$unstructure_weights()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance"><a href='../../manifoldboost/html/mfGeometry.html#method-mfGeometry-distance'><code>manifoldboost::mfGeometry$distance()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="unstructure_weights"><a href='../../manifoldboost/html/mfGeometry.html#method-mfGeometry-unstructure_weights'><code>manifoldboost::mfGeometry$unstructure_weights()</code></a></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-structure"></a>}}
-\if{latex}{\out{\hypertarget{method-structure}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-structure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-structure}{}}}
 \subsection{Method \code{structure()}}{
 method for structuring either objects \code{y},
 tangent vectors \code{v}, or weight vectors \code{weights}. Usually the
@@ -68,8 +68,8 @@ STILL ORDER DEPENDEND.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-unstructure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
 inverse of \code{$structure}. FOR COMPLEX VECTORS USE WITH CARE:
 STILL ORDER DEPENDEND.
@@ -92,8 +92,8 @@ STILL ORDER DEPENDEND.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-align"></a>}}
-\if{latex}{\out{\hypertarget{method-align}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-align"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-align}{}}}
 \subsection{Method \code{align()}}{
 The identity.
 \subsection{Usage}{
@@ -111,8 +111,8 @@ The identity.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register"></a>}}
-\if{latex}{\out{\hypertarget{method-register}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-register"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-register}{}}}
 \subsection{Method \code{register()}}{
 The identity.
 \subsection{Usage}{
@@ -128,8 +128,8 @@ The identity.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-exp"></a>}}
-\if{latex}{\out{\hypertarget{method-exp}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-exp"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-exp}{}}}
 \subsection{Method \code{exp()}}{
 Simple addition.
 \subsection{Usage}{
@@ -147,8 +147,8 @@ Simple addition.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-log"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-log}{}}}
 \subsection{Method \code{log()}}{
 Simple substraction.
 \subsection{Usage}{
@@ -166,8 +166,8 @@ Simple substraction.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-transport"></a>}}
-\if{latex}{\out{\hypertarget{method-transport}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-transport"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-transport}{}}}
 \subsection{Method \code{transport()}}{
 The identity.
 \subsection{Usage}{
@@ -187,8 +187,8 @@ The identity.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-innerprod"></a>}}
-\if{latex}{\out{\hypertarget{method-innerprod}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-innerprod"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-innerprod}{}}}
 \subsection{Method \code{innerprod()}}{
 The weighted scalar product.
 \subsection{Usage}{
@@ -208,8 +208,8 @@ The weighted scalar product.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_normal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_normal}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-get_normal"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
 Always returning \code{NULL}.
 \subsection{Usage}{
@@ -225,8 +225,8 @@ Always returning \code{NULL}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-validate"></a>}}
-\if{latex}{\out{\hypertarget{method-validate}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-validate"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-validate}{}}}
 \subsection{Method \code{validate()}}{
 Check whether numeric or complex.
 \subsection{Usage}{
@@ -242,8 +242,8 @@ Check whether numeric or complex.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfGeomEuclidean-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomEuclidean-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

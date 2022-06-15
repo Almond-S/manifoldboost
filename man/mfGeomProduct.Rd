@@ -43,35 +43,35 @@ the components of the product geometry.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{mfGeomProduct$new()}}
-\item \href{#method-slice}{\code{mfGeomProduct$slice()}}
-\item \href{#method-structure}{\code{mfGeomProduct$structure()}}
-\item \href{#method-unstructure}{\code{mfGeomProduct$unstructure()}}
-\item \href{#method-unstructure_weights}{\code{mfGeomProduct$unstructure_weights()}}
-\item \href{#method-structure_weights}{\code{mfGeomProduct$structure_weights()}}
-\item \href{#method-align}{\code{mfGeomProduct$align()}}
-\item \href{#method-register}{\code{mfGeomProduct$register()}}
-\item \href{#method-register_v}{\code{mfGeomProduct$register_v()}}
-\item \href{#method-distance}{\code{mfGeomProduct$distance()}}
-\item \href{#method-exp}{\code{mfGeomProduct$exp()}}
-\item \href{#method-log}{\code{mfGeomProduct$log()}}
-\item \href{#method-transport}{\code{mfGeomProduct$transport()}}
-\item \href{#method-innerprod}{\code{mfGeomProduct$innerprod()}}
-\item \href{#method-plot}{\code{mfGeomProduct$plot()}}
-\item \href{#method-get_normal}{\code{mfGeomProduct$get_normal()}}
-\item \href{#method-validate}{\code{mfGeomProduct$validate()}}
-\item \href{#method-clone}{\code{mfGeomProduct$clone()}}
+\item \href{#method-mfGeomProduct-new}{\code{mfGeomProduct$new()}}
+\item \href{#method-mfGeomProduct-slice}{\code{mfGeomProduct$slice()}}
+\item \href{#method-mfGeomProduct-structure}{\code{mfGeomProduct$structure()}}
+\item \href{#method-mfGeomProduct-unstructure}{\code{mfGeomProduct$unstructure()}}
+\item \href{#method-mfGeomProduct-unstructure_weights}{\code{mfGeomProduct$unstructure_weights()}}
+\item \href{#method-mfGeomProduct-structure_weights}{\code{mfGeomProduct$structure_weights()}}
+\item \href{#method-mfGeomProduct-align}{\code{mfGeomProduct$align()}}
+\item \href{#method-mfGeomProduct-register}{\code{mfGeomProduct$register()}}
+\item \href{#method-mfGeomProduct-register_v}{\code{mfGeomProduct$register_v()}}
+\item \href{#method-mfGeomProduct-distance}{\code{mfGeomProduct$distance()}}
+\item \href{#method-mfGeomProduct-exp}{\code{mfGeomProduct$exp()}}
+\item \href{#method-mfGeomProduct-log}{\code{mfGeomProduct$log()}}
+\item \href{#method-mfGeomProduct-transport}{\code{mfGeomProduct$transport()}}
+\item \href{#method-mfGeomProduct-innerprod}{\code{mfGeomProduct$innerprod()}}
+\item \href{#method-mfGeomProduct-plot}{\code{mfGeomProduct$plot()}}
+\item \href{#method-mfGeomProduct-get_normal}{\code{mfGeomProduct$get_normal()}}
+\item \href{#method-mfGeomProduct-validate}{\code{mfGeomProduct$validate()}}
+\item \href{#method-mfGeomProduct-clone}{\code{mfGeomProduct$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-new"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize product geometry with each
 component the \code{mfGeom_default} based on the
@@ -98,8 +98,8 @@ components.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-slice"></a>}}
-\if{latex}{\out{\hypertarget{method-slice}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-slice"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-slice}{}}}
 \subsection{Method \code{slice()}}{
 subset product geometry to specified components.
 Make sure to clone the product geometry first if
@@ -118,8 +118,8 @@ which elements of \code{y_} should be selected.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-structure"></a>}}
-\if{latex}{\out{\hypertarget{method-structure}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-structure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-structure}{}}}
 \subsection{Method \code{structure()}}{
 bring \code{y} into the right order to
 split and pass it to the component geometries.
@@ -137,8 +137,8 @@ unstructured 'flattened' way}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-unstructure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
 unstructure \code{y_} in the component geometries
 and arrange it into the right order.
@@ -155,8 +155,8 @@ and arrange it into the right order.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure_weights"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure_weights}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-unstructure_weights"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-unstructure_weights}{}}}
 \subsection{Method \code{unstructure_weights()}}{
 unstructure \code{weights_} in the component geometries
 and arrange it into the right order.
@@ -173,8 +173,8 @@ and arrange it into the right order.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-structure_weights"></a>}}
-\if{latex}{\out{\hypertarget{method-structure_weights}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-structure_weights"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-structure_weights}{}}}
 \subsection{Method \code{structure_weights()}}{
 bring \code{weights} into the right order to
 split and pass it to the component geometries.
@@ -192,8 +192,8 @@ as a numeric vector.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-align"></a>}}
-\if{latex}{\out{\hypertarget{method-align}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-align"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-align}{}}}
 \subsection{Method \code{align()}}{
 component-wise alignment.
 \subsection{Usage}{
@@ -213,8 +213,8 @@ component-wise alignment.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register"></a>}}
-\if{latex}{\out{\hypertarget{method-register}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-register"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-register}{}}}
 \subsection{Method \code{register()}}{
 component-wise registration.
 \subsection{Usage}{
@@ -232,8 +232,8 @@ component-wise registration.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register_v"></a>}}
-\if{latex}{\out{\hypertarget{method-register_v}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-register_v"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-register_v}{}}}
 \subsection{Method \code{register_v()}}{
 component-wise registration.
 \subsection{Usage}{
@@ -253,8 +253,8 @@ component-wise registration.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-distance"></a>}}
-\if{latex}{\out{\hypertarget{method-distance}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-distance"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-distance}{}}}
 \subsection{Method \code{distance()}}{
 compute vector of distances in component
 geometries.
@@ -275,8 +275,8 @@ geometries.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-exp"></a>}}
-\if{latex}{\out{\hypertarget{method-exp}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-exp"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-exp}{}}}
 \subsection{Method \code{exp()}}{
 loop over Exp-maps in the component
 geometries.
@@ -297,8 +297,8 @@ geometries.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-log"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-log}{}}}
 \subsection{Method \code{log()}}{
 loop over Log-maps in the component
 geometries.
@@ -319,8 +319,8 @@ geometries.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-transport"></a>}}
-\if{latex}{\out{\hypertarget{method-transport}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-transport"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-transport}{}}}
 \subsection{Method \code{transport()}}{
 loop over parallel transports in the component
 geometries.
@@ -343,8 +343,8 @@ geometries.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-innerprod"></a>}}
-\if{latex}{\out{\hypertarget{method-innerprod}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-innerprod"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-innerprod}{}}}
 \subsection{Method \code{innerprod()}}{
 compute vector of inner products in the
 component geometries. An inner product on the product
@@ -367,8 +367,8 @@ returned vector.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-plot}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-plot}{}}}
 \subsection{Method \code{plot()}}{
 loop over individual plots of the components.
 \subsection{Usage}{
@@ -390,8 +390,8 @@ loop over individual plots of the components.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_normal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_normal}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-get_normal"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
 Obtain "design matrix" of tangent space normal vectors in
 unstructured long format, arranging rows into the right
@@ -412,8 +412,8 @@ normal vectors?}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-validate"></a>}}
-\if{latex}{\out{\hypertarget{method-validate}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-validate"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-validate}{}}}
 \subsection{Method \code{validate()}}{
 loop of validation functions of component geometries.
 \subsection{Usage}{
@@ -429,8 +429,8 @@ loop of validation functions of component geometries.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfGeomProduct-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomProduct-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

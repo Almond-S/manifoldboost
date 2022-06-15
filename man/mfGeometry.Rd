@@ -34,24 +34,24 @@ specify the geometry of interest, such as \code{\link{mfGeomEuclidean}},
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-structure}{\code{mfGeometry$structure()}}
-\item \href{#method-unstructure}{\code{mfGeometry$unstructure()}}
-\item \href{#method-unstructure_weights}{\code{mfGeometry$unstructure_weights()}}
-\item \href{#method-align}{\code{mfGeometry$align()}}
-\item \href{#method-register}{\code{mfGeometry$register()}}
-\item \href{#method-distance}{\code{mfGeometry$distance()}}
-\item \href{#method-exp}{\code{mfGeometry$exp()}}
-\item \href{#method-log}{\code{mfGeometry$log()}}
-\item \href{#method-transport}{\code{mfGeometry$transport()}}
-\item \href{#method-innerprod}{\code{mfGeometry$innerprod()}}
-\item \href{#method-get_normal}{\code{mfGeometry$get_normal()}}
-\item \href{#method-validate}{\code{mfGeometry$validate()}}
-\item \href{#method-clone}{\code{mfGeometry$clone()}}
+\item \href{#method-mfGeometry-structure}{\code{mfGeometry$structure()}}
+\item \href{#method-mfGeometry-unstructure}{\code{mfGeometry$unstructure()}}
+\item \href{#method-mfGeometry-unstructure_weights}{\code{mfGeometry$unstructure_weights()}}
+\item \href{#method-mfGeometry-align}{\code{mfGeometry$align()}}
+\item \href{#method-mfGeometry-register}{\code{mfGeometry$register()}}
+\item \href{#method-mfGeometry-distance}{\code{mfGeometry$distance()}}
+\item \href{#method-mfGeometry-exp}{\code{mfGeometry$exp()}}
+\item \href{#method-mfGeometry-log}{\code{mfGeometry$log()}}
+\item \href{#method-mfGeometry-transport}{\code{mfGeometry$transport()}}
+\item \href{#method-mfGeometry-innerprod}{\code{mfGeometry$innerprod()}}
+\item \href{#method-mfGeometry-get_normal}{\code{mfGeometry$get_normal()}}
+\item \href{#method-mfGeometry-validate}{\code{mfGeometry$validate()}}
+\item \href{#method-mfGeometry-clone}{\code{mfGeometry$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-structure"></a>}}
-\if{latex}{\out{\hypertarget{method-structure}{}}}
+\if{html}{\out{<a id="method-mfGeometry-structure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-structure}{}}}
 \subsection{Method \code{structure()}}{
 structure a vector containing the elements of the response
 \code{y} in long format in the internal format of the geometry.
@@ -68,8 +68,8 @@ structure a vector containing the elements of the response
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure}{}}}
+\if{html}{\out{<a id="method-mfGeometry-unstructure"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-unstructure}{}}}
 \subsection{Method \code{unstructure()}}{
 inverse operation of \code{structure}.
 \subsection{Usage}{
@@ -85,8 +85,8 @@ inverse operation of \code{structure}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unstructure_weights"></a>}}
-\if{latex}{\out{\hypertarget{method-unstructure_weights}{}}}
+\if{html}{\out{<a id="method-mfGeometry-unstructure_weights"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-unstructure_weights}{}}}
 \subsection{Method \code{unstructure_weights()}}{
 convert internal inner product weights to a weight vector
 matching the un-structered response \code{y} in long format.
@@ -103,8 +103,8 @@ matching the un-structered response \code{y} in long format.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-align"></a>}}
-\if{latex}{\out{\hypertarget{method-align}{}}}
+\if{html}{\out{<a id="method-mfGeometry-align"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-align}{}}}
 \subsection{Method \code{align()}}{
 a function aligning \code{y_} to \code{y0_} primarly intended
 for quotient geometries.
@@ -123,8 +123,8 @@ for quotient geometries.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register"></a>}}
-\if{latex}{\out{\hypertarget{method-register}{}}}
+\if{html}{\out{<a id="method-mfGeometry-register"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-register}{}}}
 \subsection{Method \code{register()}}{
 a function registering \code{y_} to a proper subset, say to
 a subspace or an embedded submanifold.
@@ -141,8 +141,8 @@ a subspace or an embedded submanifold.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-distance"></a>}}
-\if{latex}{\out{\hypertarget{method-distance}{}}}
+\if{html}{\out{<a id="method-mfGeometry-distance"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-distance}{}}}
 \subsection{Method \code{distance()}}{
 computes the distance or a vector of distances between objects.
 \subsection{Usage}{
@@ -162,8 +162,8 @@ computes the distance or a vector of distances between objects.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-exp"></a>}}
-\if{latex}{\out{\hypertarget{method-exp}{}}}
+\if{html}{\out{<a id="method-mfGeometry-exp"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-exp}{}}}
 \subsection{Method \code{exp()}}{
 the Riemannian Exp map mapping a tangent vector \code{v_}
 at \code{y_} to the manifold.
@@ -184,8 +184,8 @@ at \code{y_} to the manifold.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-mfGeometry-log"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-log}{}}}
 \subsection{Method \code{log()}}{
 the inverse of the Riemannian Exp map.
 \subsection{Usage}{
@@ -205,8 +205,8 @@ the inverse of the Riemannian Exp map.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-transport"></a>}}
-\if{latex}{\out{\hypertarget{method-transport}{}}}
+\if{html}{\out{<a id="method-mfGeometry-transport"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-transport}{}}}
 \subsection{Method \code{transport()}}{
 parallel transport of a tangent vector \code{v0_}
 at \code{y0_} to the tangent space at \code{y1_}.
@@ -229,8 +229,8 @@ at \code{y0_} to the tangent space at \code{y1_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-innerprod"></a>}}
-\if{latex}{\out{\hypertarget{method-innerprod}{}}}
+\if{html}{\out{<a id="method-mfGeometry-innerprod"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-innerprod}{}}}
 \subsection{Method \code{innerprod()}}{
 computes the inner product or a vector of inner products
 between objects.
@@ -251,8 +251,8 @@ between objects.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_normal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_normal}{}}}
+\if{html}{\out{<a id="method-mfGeometry-get_normal"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
 returns the normal vector (in unstructured format) to the
 tangent space at a point \code{y0_} considered as a linear subspace.
@@ -271,8 +271,8 @@ tangent space at a point \code{y0_} considered as a linear subspace.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-validate"></a>}}
-\if{latex}{\out{\hypertarget{method-validate}{}}}
+\if{html}{\out{<a id="method-mfGeometry-validate"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-validate}{}}}
 \subsection{Method \code{validate()}}{
 function for validating structure of internal object \code{y_}.
 \subsection{Usage}{
@@ -290,8 +290,8 @@ function for validating structure of internal object \code{y_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfGeometry-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeometry-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

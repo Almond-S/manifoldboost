@@ -14,34 +14,34 @@ invariant.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-register}{\code{mfGeomPlanarSizeShape$register()}}
-\item \href{#method-register_v}{\code{mfGeomPlanarSizeShape$register_v()}}
-\item \href{#method-log}{\code{mfGeomPlanarSizeShape$log()}}
-\item \href{#method-exp}{\code{mfGeomPlanarSizeShape$exp()}}
-\item \href{#method-transport}{\code{mfGeomPlanarSizeShape$transport()}}
-\item \href{#method-plot}{\code{mfGeomPlanarSizeShape$plot()}}
-\item \href{#method-get_normal}{\code{mfGeomPlanarSizeShape$get_normal()}}
-\item \href{#method-clone}{\code{mfGeomPlanarSizeShape$clone()}}
+\item \href{#method-mfGeomPlanarSizeShape-register}{\code{mfGeomPlanarSizeShape$register()}}
+\item \href{#method-mfGeomPlanarSizeShape-register_v}{\code{mfGeomPlanarSizeShape$register_v()}}
+\item \href{#method-mfGeomPlanarSizeShape-log}{\code{mfGeomPlanarSizeShape$log()}}
+\item \href{#method-mfGeomPlanarSizeShape-exp}{\code{mfGeomPlanarSizeShape$exp()}}
+\item \href{#method-mfGeomPlanarSizeShape-transport}{\code{mfGeomPlanarSizeShape$transport()}}
+\item \href{#method-mfGeomPlanarSizeShape-plot}{\code{mfGeomPlanarSizeShape$plot()}}
+\item \href{#method-mfGeomPlanarSizeShape-get_normal}{\code{mfGeomPlanarSizeShape$get_normal()}}
+\item \href{#method-mfGeomPlanarSizeShape-clone}{\code{mfGeomPlanarSizeShape$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance">}\href{../../manifoldboost/html/mfGeometry.html#method-distance}{\code{manifoldboost::mfGeometry$distance()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-align}{\code{manifoldboost::mfGeomEuclidean$align()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod">}\href{../../manifoldboost/html/mfGeomEuclidean.html#method-innerprod}{\code{manifoldboost::mfGeomEuclidean$innerprod()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="initialize">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-initialize}{\code{manifoldboost::mfGeomPlanarShape$initialize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-structure}{\code{manifoldboost::mfGeomPlanarShape$structure()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure_weights">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-structure_weights}{\code{manifoldboost::mfGeomPlanarShape$structure_weights()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="unstructure">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-unstructure}{\code{manifoldboost::mfGeomPlanarShape$unstructure()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="unstructure_weights">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-unstructure_weights}{\code{manifoldboost::mfGeomPlanarShape$unstructure_weights()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="validate">}\href{../../manifoldboost/html/mfGeomPlanarShape.html#method-validate}{\code{manifoldboost::mfGeomPlanarShape$validate()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeometry" data-id="distance"><a href='../../manifoldboost/html/mfGeometry.html#method-mfGeometry-distance'><code>manifoldboost::mfGeometry$distance()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="align"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-align'><code>manifoldboost::mfGeomEuclidean$align()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomEuclidean" data-id="innerprod"><a href='../../manifoldboost/html/mfGeomEuclidean.html#method-mfGeomEuclidean-innerprod'><code>manifoldboost::mfGeomEuclidean$innerprod()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="initialize"><a href='../../manifoldboost/html/mfGeomPlanarShape.html#method-mfGeomPlanarShape-initialize'><code>manifoldboost::mfGeomPlanarShape$initialize()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure"><a href='../../manifoldboost/html/mfGeomPlanarShape.html#method-mfGeomPlanarShape-structure'><code>manifoldboost::mfGeomPlanarShape$structure()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="structure_weights"><a href='../../manifoldboost/html/mfGeomPlanarShape.html#method-mfGeomPlanarShape-structure_weights'><code>manifoldboost::mfGeomPlanarShape$structure_weights()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="unstructure"><a href='../../manifoldboost/html/mfGeomPlanarShape.html#method-mfGeomPlanarShape-unstructure'><code>manifoldboost::mfGeomPlanarShape$unstructure()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="unstructure_weights"><a href='../../manifoldboost/html/mfGeomPlanarShape.html#method-mfGeomPlanarShape-unstructure_weights'><code>manifoldboost::mfGeomPlanarShape$unstructure_weights()</code></a></li>
+<li><span class="pkg-link" data-pkg="manifoldboost" data-topic="mfGeomPlanarShape" data-id="validate"><a href='../../manifoldboost/html/mfGeomPlanarShape.html#method-mfGeomPlanarShape-validate'><code>manifoldboost::mfGeomPlanarShape$validate()</code></a></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register"></a>}}
-\if{latex}{\out{\hypertarget{method-register}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-register"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-register}{}}}
 \subsection{Method \code{register()}}{
 center \code{y_}.
 \subsection{Usage}{
@@ -57,8 +57,8 @@ center \code{y_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-register_v"></a>}}
-\if{latex}{\out{\hypertarget{method-register_v}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-register_v"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-register_v}{}}}
 \subsection{Method \code{register_v()}}{
 orthogonally project \code{v_} into the tangent space of \code{y0_}.
 \subsection{Usage}{
@@ -76,8 +76,8 @@ orthogonally project \code{v_} into the tangent space of \code{y0_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log"></a>}}
-\if{latex}{\out{\hypertarget{method-log}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-log"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-log}{}}}
 \subsection{Method \code{log()}}{
 \code{y_-y0_} after aligning \code{y_} to \code{y0_}.
 \subsection{Usage}{
@@ -95,8 +95,8 @@ orthogonally project \code{v_} into the tangent space of \code{y0_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-exp"></a>}}
-\if{latex}{\out{\hypertarget{method-exp}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-exp"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-exp}{}}}
 \subsection{Method \code{exp()}}{
 \code{y0_+v_} assuming \code{v_} in the tangent space of \code{y0_}.
 \subsection{Usage}{
@@ -114,8 +114,8 @@ orthogonally project \code{v_} into the tangent space of \code{y0_}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-transport"></a>}}
-\if{latex}{\out{\hypertarget{method-transport}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-transport"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-transport}{}}}
 \subsection{Method \code{transport()}}{
 size-and-shape parallel transport
 \subsection{Usage}{
@@ -138,8 +138,8 @@ and \code{v0_} a proper horizontal tangent vector at \code{y0_}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-plot}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-plot}{}}}
 \subsection{Method \code{plot()}}{
 default plotting function for planar shapes, plotting \code{y_}
 in front of \code{y0_} (after alignment).
@@ -176,8 +176,8 @@ and \code{y0_}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_normal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_normal}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-get_normal"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-get_normal}{}}}
 \subsection{Method \code{get_normal()}}{
 Obtain "design matrix" of tangent space normal vectors in
 unstructured long format.
@@ -197,8 +197,8 @@ normal vectors?}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-mfGeomPlanarSizeShape-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-mfGeomPlanarSizeShape-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
