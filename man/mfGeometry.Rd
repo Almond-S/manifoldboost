@@ -146,7 +146,7 @@ a subspace or an embedded submanifold.
 \subsection{Method \code{distance()}}{
 computes the distance or a vector of distances between objects.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$distance(y0_, y1_)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{mfGeometry$distance(y0_, y1_, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -155,6 +155,8 @@ computes the distance or a vector of distances between objects.
 \item{\code{y0_}}{an object in the internal format of the geometry}
 
 \item{\code{y1_}}{an object in the internal format of the geometry}
+
+\item{\code{...}}{other arguments.}
 }
 \if{html}{\out{</div>}}
 }

@@ -10,5 +10,14 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Depends: FDboost
+Imports:
+	Matrix,
+	R6,
+	dplyr,
+	formula.tools,
+	mboost,
+	MASS,
+	rlang,
+	tidyr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

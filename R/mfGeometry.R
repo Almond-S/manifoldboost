@@ -66,7 +66,7 @@ mfGeometry <- R6Class("mfGeometry",
      private$.undefined(fun) },
    
     #' @description computes the distance or a vector of distances between objects.
-   distance = function(y0_, y1_)
+   distance = function(y0_, y1_, ...)
      private$.distance(y0_, y1_, ...),
     #' @description the Riemannian Exp map mapping a tangent vector \code{v_} 
     #' at \code{y_} to the manifold.
